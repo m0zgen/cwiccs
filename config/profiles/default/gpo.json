@@ -1,0 +1,404 @@
+{
+  "password_policy":[
+    {
+      "Name":  "MinimumPasswordAge",
+      "State":  1
+    },
+    {
+      "Name":  "MaximumPasswordAge",
+      "State":  90
+    },
+    {
+      "Name":  "MinimumPasswordLength",
+      "State":  7
+    },
+    {
+      "Name":  "PasswordComplexity",
+      "State":  1
+    },
+    {
+      "Name":  "PasswordHistorySize",
+      "State":  6
+    },
+    {
+      "Name":  "LockoutBadCount",
+      "State":  6
+    },
+    {
+      "Name":  "ResetLockoutCount",
+      "State":  30
+    },
+    {
+      "Name":  "LockoutDuration",
+      "State":  30
+    },
+    {
+      "Name":  "EnableAdminAccount",
+      "State":  0
+    },
+    {
+      "Name":  "EnableGuestAccount",
+      "State":  0
+    },
+    {
+      "Name":  "NewGuestName",
+      "State":  "Guest"
+    },
+    {
+      "Name":  "NewAdministratorName",
+      "State":  "Administrator"
+    }
+  ],
+  "audit_policy":[
+    {
+      "Name":  "AuditAccountLogon",
+      "State":  3
+    },
+    {
+      "Name":  "AuditAccountManage",
+      "State":  3
+    },
+    {
+      "Name":  "AuditLogonEvents",
+      "State":  3
+    },
+    {
+      "Name":  "AuditObjectAccess",
+      "State":  3
+    },
+    {
+      "Name":  "AuditPolicyChange",
+      "State":  3
+    },
+    {
+      "Name":  "AuditPrivilegeUse",
+      "State":  3
+    },
+    {
+      "Name":  "AuditProcessTracking",
+      "State":  3
+    },
+    {
+      "Name":  "AuditSystemEvents",
+      "State":  3
+    },
+    {
+      "Name":  "AuditDSAccess",
+      "State":  0
+    }
+  ],
+  "registry_policy":[
+    {
+      "Path":  "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+      "Value_Name": "AllocateCDRoms",
+      "Value":  0,
+      "GPO_Name": "Devices: Restrict CD-ROM access to locally logged-on user only"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+      "Value_Name": "AllocateFloppies",
+      "Value":  0,
+      "GPO_Name": "Devices: Restrict Floppies access to locally logged-on user only"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+      "Value_Name": "CachedLogonsCount",
+      "Value":  10,
+      "GPO_Name": "Interactive logon: Number of previous logons to cache"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+      "Value_Name": "ForceUnlockLogon",
+      "Value":  0,
+      "GPO_Name": "Interactive logon: Require domain controller authentication to unlock workstation"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+      "Value_Name": "PasswordExpiryWarning",
+      "Value":  20,
+      "GPO_Name": "Interactive Logon: Prompt user to change password before expiration"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+      "Value_Name": "ScRemoveOption",
+      "Value":  0,
+      "GPO_Name": "Interactive logon: Smart card removal behavior"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows NT\\CurrentVersion\\Setup\\RecoveryConsole",
+      "Value_Name": "SecurityLevel",
+      "Value":  0,
+      "GPO_Name": "Recovery Console: Allow automatic administrative logon"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows NT\\CurrentVersion\\Setup\\RecoveryConsole",
+      "Value_Name": "SetCommand",
+      "Value":  0,
+      "GPO_Name": "Recovery Console: Allow floppy copy and access to all drives and all folders"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "ConsentPromptBehaviorAdmin",
+      "Value":  5,
+      "GPO_Name": "User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "ConsentPromptBehaviorUser",
+      "Value":  3,
+      "GPO_Name": "User Account Control: Behavior of the elevation prompt for standard users"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "DisableCAD",
+      "Value":  0,
+      "GPO_Name": "Interactive Logon: Do not require CTRL ALT DEL"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "DontDisplayLastUserName",
+      "Value":  1,
+      "GPO_Name": "Interactive logon: Do not display last user name"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "EnableInstallerDetection",
+      "Value":  1,
+      "GPO_Name": "User Account Control: Detect application installations and prompt for elevation"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "EnableLUA",
+      "Value":  1,
+      "GPO_Name": "User Account Control: Turn on Admin Approval Mode"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "EnableSecureUIAPaths",
+      "Value":  1,
+      "GPO_Name": "User Account Control: Only elevate UIAccess applications that are installed in secure locations"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "EnableUIADesktopToggle",
+      "Value":  0,
+      "GPO_Name": "User Account Control: Allow UIAccess applications to prompt for elevation without using the secure desktop"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "FilterAdministratorToken",
+      "Value":  1,
+      "GPO_Name": "User Account Control: Admin Approval Mode for the Built-in Administrator account"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "LegalNoticeCaption",
+      "Value":  "",
+      "GPO_Name": "Interactive Logon: Message title for users attempting to log on"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "LegalNoticeText",
+      "Value":  "",
+      "GPO_Name": "Interactive Logon: Message text for users attempting to log on"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "PromptOnSecureDesktop",
+      "Value":  1,
+      "GPO_Name": "User Account Control: Switch to the secure desktop when prompting for elevation"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "ScForceOption",
+      "Value":  0,
+      "GPO_Name": "Interactive logon: Require smart card"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "ShutdownWithoutLogon",
+      "Value":  0,
+      "GPO_Name": "Shutdown: Allow system to be shutdown without having to log on"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "UndockWithoutLogon",
+      "Value":  0,
+      "GPO_Name": "Devices: Allow Undock Without Having to Log On"
+    },
+    {
+      "Path":  "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+      "Value_Name": "ValidateAdminCodeSignatures",
+      "Value":  0,
+      "GPO_Name": "User Account Control: Only elevate executables that are signed and validated"
+    },
+    {
+      "Path":  "Software\\Policies\\Microsoft\\Windows\\Safer\\CodeIdentifiers",
+      "Value_Name": "AuthenticodeEnabled",
+      "Value":  0,
+      "GPO_Name": "System settings: Use Certificate Rules on Windows Executables for Software Restriction Policies (need research)"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "AuditBaseObjects",
+      "Value":  0,
+      "GPO_Name": "Audit: Audit the access of global system objects"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "CrashOnAuditFail",
+      "Value":  0,
+      "GPO_Name": "Audit: Shut down system immediately if unable to log security audits"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "DisableDomainCreds",
+      "Value":  1,
+      "GPO_Name": "Network access: Do not allow storage of passwords and credentials for network authentication"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "EveryoneIncludesAnonymous",
+      "Value":  0,
+      "GPO_Name": "Network access: Let everyone permissions apply to anonymous users"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa\\FIPSAlgorithmPolicy",
+      "Value_Name": "Enabled",
+      "Value":  1,
+      "GPO_Name": "System cryptography: Use FIPS"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "ForceGuest",
+      "Value":  0,
+      "GPO_Name": "Network access: Sharing and security model for local accounts"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "FullPrivilegeAuditing",
+      "Value":  0,
+      "GPO_Name": "Audit: Audit the use of Backup and Restore privilege"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "LimitBlankPasswordUse",
+      "Value":  1,
+      "GPO_Name": "Accounts: Limit local account use of blank passwords to console logon only"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "NoLMHash",
+      "Value":  1,
+      "GPO_Name": "Network security: Do not store LAN Manager hash value on next password change"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "RestrictAnonymous",
+      "Value":  1,
+      "GPO_Name": "Network access: Do not allow anonymous enumeration of SAM accounts and shares (forced)"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Lsa",
+      "Value_Name": "RestrictAnonymousSAM",
+      "Value":  1,
+      "GPO_Name": "Network access: Do not allow anonymous enumeration of SAM accounts"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Print\\Providers\\LanMan Print Services\\Servers",
+      "Value_Name": "AddPrinterDrivers",
+      "Value":  1,
+      "GPO_Name": "Devices: Prevent users from installing printer drivers"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Session Manager\\Kernel",
+      "Value_Name": "ObCaseInsensitive",
+      "Value":  1,
+      "GPO_Name": "System objects: Require case insensitivity for non-Windows subsystems"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Session Manager\\Memory Management",
+      "Value_Name": "ClearPageFileAtShutdown",
+      "Value":  1,
+      "GPO_Name": "Shutdown: Clear virtual memory pagefile"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Session Manager",
+      "Value_Name": "ProtectionMode",
+      "Value":  1,
+      "GPO_Name": "System Objects: Strengthen default permissions of internal system objects (e.g. Symbolic links)"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Control\\Session Manager\\SubSystems",
+      "Value_Name": "optional",
+      "Value":  "",
+      "GPO_Name": "System Settings: Optional Subsystems"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
+      "Value_Name": "AutoDisconnect",
+      "Value":  15,
+      "GPO_Name": "Microsoft network server: Amount of idle time required before suspending a session"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
+      "Value_Name": "EnableForcedLogOff",
+      "Value":  1,
+      "GPO_Name": "Microsoft Network Server: Disconnect Clients When Logon Hours Expire"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
+      "Value_Name": "EnableSecuritySignature",
+      "Value":  1,
+      "GPO_Name": "Microsoft Network Server: Digitally sign communications (if Client agrees)"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
+      "Value_Name": "NullSessionPipes",
+      "Value":  "",
+      "GPO_Name": "Network access: Named pipes that can be accessed anonymously (forced)"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
+      "Value_Name": "RequireSecuritySignature",
+      "Value":  0,
+      "GPO_Name": "Microsoft network server: Digitally sign communications (always) (need research)"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanManServer\\Parameters",
+      "Value_Name": "RestrictNullSessAccess",
+      "Value":  1,
+      "GPO_Name": "Network access: Restrict anonymous access to Named Pipes and Shares"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters",
+      "Value_Name": "EnablePlainTextPassword",
+      "Value":  0,
+      "GPO_Name": "Microsoft network client (LanmanWorkstation): Send unencrypted password to third-party SMB servers"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters",
+      "Value_Name": "EnableSecuritySignature",
+      "Value":  1,
+      "GPO_Name": "Microsoft network client (LanmanWorkstation): Digitally sign communications (if server agrees)"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters",
+      "Value_Name": "RequireSecuritySignature",
+      "Value":  0,
+      "GPO_Name": "Microsoft network client (LanmanWorkstation): Digitally sign communications (always) (need research)"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\LDAP",
+      "Value_Name": "LDAPClientIntegrity",
+      "Value":  1,
+      "GPO_Name": "Network security: LDAP client signing requirements"
+    },
+    {
+      "Path":  "System\\CurrentControlSet\\Services\\Netlogon\\Parameters",
+      "Value_Name": "DisablePasswordChange",
+      "Value":  0,
+      "GPO_Name": "Network security: LDAP client signing requirements"
+    }
+  ]
+}

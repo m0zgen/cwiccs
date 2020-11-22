@@ -1,0 +1,1074 @@
+{
+	"default_services":[
+		
+	    {
+	        "Name":  "AJRouter",
+	        "StartType":  3,
+	        "DisplayName":  "AllJoyn Router Service"
+	    },
+	    {
+	        "Name":  "ALG",
+	        "StartType":  3,
+	        "DisplayName":  "Application Layer Gateway Service"
+	    },
+	    {
+	        "Name":  "AppIDSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Application Identity"
+	    },
+	    {
+	        "Name":  "Appinfo",
+	        "StartType":  3,
+	        "DisplayName":  "Application Information"
+	    },
+	    {
+	        "Name":  "AppMgmt",
+	        "StartType":  3,
+	        "DisplayName":  "Application Management"
+	    },
+	    {
+	        "Name":  "AppReadiness",
+	        "StartType":  3,
+	        "DisplayName":  "App Readiness"
+	    },
+	    {
+	        "Name":  "AppVClient",
+	        "StartType":  4,
+	        "DisplayName":  "Microsoft App-V Client"
+	    },
+	    {
+	        "Name":  "AppXSvc",
+	        "StartType":  3,
+	        "DisplayName":  "AppX Deployment Service (AppXSVC)"
+	    },
+	    {
+	        "Name":  "AudioEndpointBuilder",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Audio Endpoint Builder"
+	    },
+	    {
+	        "Name":  "Audiosrv",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Audio"
+	    },
+	    {
+	        "Name":  "AxInstSV",
+	        "StartType":  3,
+	        "DisplayName":  "ActiveX Installer (AxInstSV)"
+	    },
+	    {
+	        "Name":  "BFE",
+	        "StartType":  2,
+	        "DisplayName":  "Base Filtering Engine"
+	    },
+	    {
+	        "Name":  "BITS",
+	        "StartType":  3,
+	        "DisplayName":  "Background Intelligent Transfer Service"
+	    },
+	    {
+	        "Name":  "BrokerInfrastructure",
+	        "StartType":  2,
+	        "DisplayName":  "Background Tasks Infrastructure Service"
+	    },
+	    {
+	        "Name":  "Browser",
+	        "StartType":  4,
+	        "DisplayName":  "Computer Browser"
+	    },
+	    {
+	        "Name":  "bthserv",
+	        "StartType":  3,
+	        "DisplayName":  "Bluetooth Support Service"
+	    },
+	    {
+	        "Name":  "CDPSvc",
+	        "StartType":  2,
+	        "DisplayName":  "Connected Devices Platform Service"
+	    },
+	    {
+	        "Name":  "CertPropSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Certificate Propagation"
+	    },
+	    {
+	        "Name":  "ClipSVC",
+	        "StartType":  3,
+	        "DisplayName":  "Client License Service (ClipSVC)"
+	    },
+	    {
+	        "Name":  "COMSysApp",
+	        "StartType":  3,
+	        "DisplayName":  "COM+ System Application"
+	    },
+	    {
+	        "Name":  "CoreMessagingRegistrar",
+	        "StartType":  2,
+	        "DisplayName":  "CoreMessaging"
+	    },
+	    {
+	        "Name":  "CryptSvc",
+	        "StartType":  2,
+	        "DisplayName":  "Cryptographic Services"
+	    },
+	    {
+	        "Name":  "CscService",
+	        "StartType":  4,
+	        "DisplayName":  "Offline Files"
+	    },
+	    {
+	        "Name":  "DcomLaunch",
+	        "StartType":  2,
+	        "DisplayName":  "DCOM Server Process Launcher"
+	    },
+	    {
+	        "Name":  "DcpSvc",
+	        "StartType":  3,
+	        "DisplayName":  "DataCollectionPublishingService"
+	    },
+	    {
+	        "Name":  "defragsvc",
+	        "StartType":  3,
+	        "DisplayName":  "Optimize drives"
+	    },
+	    {
+	        "Name":  "DeviceAssociationService",
+	        "StartType":  3,
+	        "DisplayName":  "Device Association Service"
+	    },
+	    {
+	        "Name":  "DeviceInstall",
+	        "StartType":  3,
+	        "DisplayName":  "Device Install Service"
+	    },
+	    {
+	        "Name":  "DevQueryBroker",
+	        "StartType":  3,
+	        "DisplayName":  "DevQuery Background Discovery Broker"
+	    },
+	    {
+	        "Name":  "Dhcp",
+	        "StartType":  2,
+	        "DisplayName":  "DHCP Client"
+	    },
+	    {
+	        "Name":  "diagnosticshub.standardcollector.service",
+	        "StartType":  3,
+	        "DisplayName":  "Microsoft (R) Diagnostics Hub Standard Collector Service"
+	    },
+	    {
+	        "Name":  "DiagTrack",
+	        "StartType":  4,
+	        "DisplayName":  "Connected User Experiences and Telemetry"
+	    },
+	    {
+	        "Name":  "DmEnrollmentSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Device Management Enrollment Service"
+	    },
+	    {
+	        "Name":  "dmwappushservice",
+	        "StartType":  3,
+	        "DisplayName":  "dmwappushsvc"
+	    },
+	    {
+	        "Name":  "Dnscache",
+	        "StartType":  2,
+	        "DisplayName":  "DNS Client"
+	    },
+	    {
+	        "Name":  "dot3svc",
+	        "StartType":  3,
+	        "DisplayName":  "Wired AutoConfig"
+	    },
+	    {
+	        "Name":  "DPS",
+	        "StartType":  2,
+	        "DisplayName":  "Diagnostic Policy Service"
+	    },
+	    {
+	        "Name":  "DsmSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Device Setup Manager"
+	    },
+	    {
+	        "Name":  "DsSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Data Sharing Service"
+	    },
+	    {
+	        "Name":  "Eaphost",
+	        "StartType":  3,
+	        "DisplayName":  "Extensible Authentication Protocol"
+	    },
+	    {
+	        "Name":  "EFS",
+	        "StartType":  3,
+	        "DisplayName":  "Encrypting File System (EFS)"
+	    },
+	    {
+	        "Name":  "embeddedmode",
+	        "StartType":  3,
+	        "DisplayName":  "Embedded Mode"
+	    },
+	    {
+	        "Name":  "EntAppSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Enterprise App Management Service"
+	    },
+	    {
+	        "Name":  "EventLog",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Event Log"
+	    },
+	    {
+	        "Name":  "EventSystem",
+	        "StartType":  2,
+	        "DisplayName":  "COM+ Event System"
+	    },
+	    {
+	        "Name":  "fdPHost",
+	        "StartType":  3,
+	        "DisplayName":  "Function Discovery Provider Host"
+	    },
+	    {
+	        "Name":  "FDResPub",
+	        "StartType":  3,
+	        "DisplayName":  "Function Discovery Resource Publication"
+	    },
+	    {
+	        "Name":  "FontCache",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Font Cache Service"
+	    },
+	    {
+	        "Name":  "FrameServer",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Camera Frame Server"
+	    },
+	    {
+	        "Name":  "gpsvc",
+	        "StartType":  2,
+	        "DisplayName":  "Group Policy Client"
+	    },
+	    {
+	        "Name":  "hidserv",
+	        "StartType":  3,
+	        "DisplayName":  "Human Interface Device Service"
+	    },
+	    {
+	        "Name":  "HvHost",
+	        "StartType":  3,
+	        "DisplayName":  "HV Host Service"
+	    },
+	    {
+	        "Name":  "icssvc",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Mobile Hotspot Service"
+	    },
+	    {
+	        "Name":  "IKEEXT",
+	        "StartType":  3,
+	        "DisplayName":  "IKE and AuthIP IPsec Keying Modules"
+	    },
+	    {
+	        "Name":  "iphlpsvc",
+	        "StartType":  2,
+	        "DisplayName":  "IP Helper"
+	    },
+	    {
+	        "Name":  "KeyIso",
+	        "StartType":  3,
+	        "DisplayName":  "CNG Key Isolation"
+	    },
+	    {
+	        "Name":  "KPSSVC",
+	        "StartType":  3,
+	        "DisplayName":  "KDC Proxy Server service (KPS)"
+	    },
+	    {
+	        "Name":  "KtmRm",
+	        "StartType":  3,
+	        "DisplayName":  "KtmRm for Distributed Transaction Coordinator"
+	    },
+	    {
+	        "Name":  "LanmanServer",
+	        "StartType":  2,
+	        "DisplayName":  "Server"
+	    },
+	    {
+	        "Name":  "LanmanWorkstation",
+	        "StartType":  2,
+	        "DisplayName":  "Workstation"
+	    },
+	    {
+	        "Name":  "lfsvc",
+	        "StartType":  3,
+	        "DisplayName":  "Geolocation Service"
+	    },
+	    {
+	        "Name":  "LicenseManager",
+	        "StartType":  3,
+	        "DisplayName":  "Windows License Manager Service"
+	    },
+	    {
+	        "Name":  "lltdsvc",
+	        "StartType":  3,
+	        "DisplayName":  "Link-Layer Topology Discovery Mapper"
+	    },
+	    {
+	        "Name":  "lmhosts",
+	        "StartType":  3,
+	        "DisplayName":  "TCP/IP NetBIOS Helper"
+	    },
+	    {
+	        "Name":  "LSM",
+	        "StartType":  2,
+	        "DisplayName":  "Local Session Manager"
+	    },
+	    {
+	        "Name":  "MapsBroker",
+	        "StartType":  2,
+	        "DisplayName":  "Downloaded Maps Manager"
+	    },
+	    {
+	        "Name":  "MpsSvc",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Firewall"
+	    },
+	    {
+	        "Name":  "MSDTC",
+	        "StartType":  2,
+	        "DisplayName":  "Distributed Transaction Coordinator"
+	    },
+	    {
+	        "Name":  "MSiSCSI",
+	        "StartType":  3,
+	        "DisplayName":  "Microsoft iSCSI Initiator Service"
+	    },
+	    {
+	        "Name":  "msiserver",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Installer"
+	    },
+	    {
+	        "Name":  "NcaSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Network Connectivity Assistant"
+	    },
+	    {
+	        "Name":  "NcbService",
+	        "StartType":  3,
+	        "DisplayName":  "Network Connection Broker"
+	    },
+	    {
+	        "Name":  "Netlogon",
+	        "StartType":  3,
+	        "DisplayName":  "Netlogon"
+	    },
+	    {
+	        "Name":  "Netman",
+	        "StartType":  3,
+	        "DisplayName":  "Network Connections"
+	    },
+	    {
+	        "Name":  "netprofm",
+	        "StartType":  3,
+	        "DisplayName":  "Network List Service"
+	    },
+	    {
+	        "Name":  "NetSetupSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Network Setup Service"
+	    },
+	    {
+	        "Name":  "NetTcpPortSharing",
+	        "StartType":  4,
+	        "DisplayName":  "Net.Tcp Port Sharing Service"
+	    },
+	    {
+	        "Name":  "NgcCtnrSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Microsoft Passport Container"
+	    },
+	    {
+	        "Name":  "NgcSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Microsoft Passport"
+	    },
+	    {
+	        "Name":  "NlaSvc",
+	        "StartType":  2,
+	        "DisplayName":  "Network Location Awareness"
+	    },
+	    {
+	        "Name":  "nsi",
+	        "StartType":  2,
+	        "DisplayName":  "Network Store Interface Service"
+	    },
+	    {
+	        "Name":  "Parallels Coherence Service",
+	        "StartType":  2,
+	        "DisplayName":  "Parallels Coherence Service"
+	    },
+	    {
+	        "Name":  "Parallels Tools Service",
+	        "StartType":  2,
+	        "DisplayName":  "Parallels Tools Service"
+	    },
+	    {
+	        "Name":  "PcaSvc",
+	        "StartType":  2,
+	        "DisplayName":  "Program Compatibility Assistant Service"
+	    },
+	    {
+	        "Name":  "PerfHost",
+	        "StartType":  3,
+	        "DisplayName":  "Performance Counter DLL Host"
+	    },
+	    {
+	        "Name":  "PhoneSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Phone Service"
+	    },
+	    {
+	        "Name":  "pla",
+	        "StartType":  3,
+	        "DisplayName":  "Performance Logs \u0026 Alerts"
+	    },
+	    {
+	        "Name":  "PlugPlay",
+	        "StartType":  3,
+	        "DisplayName":  "Plug and Play"
+	    },
+	    {
+	        "Name":  "PolicyAgent",
+	        "StartType":  3,
+	        "DisplayName":  "IPsec Policy Agent"
+	    },
+	    {
+	        "Name":  "Power",
+	        "StartType":  2,
+	        "DisplayName":  "Power"
+	    },
+	    {
+	        "Name":  "PrintNotify",
+	        "StartType":  3,
+	        "DisplayName":  "Printer Extensions and Notifications"
+	    },
+	    {
+	        "Name":  "ProfSvc",
+	        "StartType":  2,
+	        "DisplayName":  "User Profile Service"
+	    },
+	    {
+	        "Name":  "QWAVE",
+	        "StartType":  3,
+	        "DisplayName":  "Quality Windows Audio Video Experience"
+	    },
+	    {
+	        "Name":  "RasAuto",
+	        "StartType":  3,
+	        "DisplayName":  "Remote Access Auto Connection Manager"
+	    },
+	    {
+	        "Name":  "RasMan",
+	        "StartType":  3,
+	        "DisplayName":  "Remote Access Connection Manager"
+	    },
+	    {
+	        "Name":  "RemoteAccess",
+	        "StartType":  4,
+	        "DisplayName":  "Routing and Remote Access"
+	    },
+	    {
+	        "Name":  "RemoteRegistry",
+	        "StartType":  2,
+	        "DisplayName":  "Remote Registry"
+	    },
+	    {
+	        "Name":  "RmSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Radio Management Service"
+	    },
+	    {
+	        "Name":  "RpcEptMapper",
+	        "StartType":  2,
+	        "DisplayName":  "RPC Endpoint Mapper"
+	    },
+	    {
+	        "Name":  "RpcLocator",
+	        "StartType":  3,
+	        "DisplayName":  "Remote Procedure Call (RPC) Locator"
+	    },
+	    {
+	        "Name":  "RpcSs",
+	        "StartType":  2,
+	        "DisplayName":  "Remote Procedure Call (RPC)"
+	    },
+	    {
+	        "Name":  "RSoPProv",
+	        "StartType":  3,
+	        "DisplayName":  "Resultant Set of Policy Provider"
+	    },
+	    {
+	        "Name":  "sacsvr",
+	        "StartType":  3,
+	        "DisplayName":  "Special Administration Console Helper"
+	    },
+	    {
+	        "Name":  "SamSs",
+	        "StartType":  2,
+	        "DisplayName":  "Security Accounts Manager"
+	    },
+	    {
+	        "Name":  "SCardSvr",
+	        "StartType":  4,
+	        "DisplayName":  "Smart Card"
+	    },
+	    {
+	        "Name":  "ScDeviceEnum",
+	        "StartType":  3,
+	        "DisplayName":  "Smart Card Device Enumeration Service"
+	    },
+	    {
+	        "Name":  "Schedule",
+	        "StartType":  2,
+	        "DisplayName":  "Task Scheduler"
+	    },
+	    {
+	        "Name":  "SCPolicySvc",
+	        "StartType":  3,
+	        "DisplayName":  "Smart Card Removal Policy"
+	    },
+	    {
+	        "Name":  "seclogon",
+	        "StartType":  3,
+	        "DisplayName":  "Secondary Logon"
+	    },
+	    {
+	        "Name":  "SENS",
+	        "StartType":  2,
+	        "DisplayName":  "System Event Notification Service"
+	    },
+	    {
+	        "Name":  "SensorDataService",
+	        "StartType":  3,
+	        "DisplayName":  "Sensor Data Service"
+	    },
+	    {
+	        "Name":  "SensorService",
+	        "StartType":  3,
+	        "DisplayName":  "Sensor Service"
+	    },
+	    {
+	        "Name":  "SensrSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Sensor Monitoring Service"
+	    },
+	    {
+	        "Name":  "SessionEnv",
+	        "StartType":  3,
+	        "DisplayName":  "Remote Desktop Configuration"
+	    },
+	    {
+	        "Name":  "SharedAccess",
+	        "StartType":  3,
+	        "DisplayName":  "Internet Connection Sharing (ICS)"
+	    },
+	    {
+	        "Name":  "ShellHWDetection",
+	        "StartType":  2,
+	        "DisplayName":  "Shell Hardware Detection"
+	    },
+	    {
+	        "Name":  "smphost",
+	        "StartType":  3,
+	        "DisplayName":  "Microsoft Storage Spaces SMP"
+	    },
+	    {
+	        "Name":  "SNMPTRAP",
+	        "StartType":  3,
+	        "DisplayName":  "SNMP Trap"
+	    },
+	    {
+	        "Name":  "Spooler",
+	        "StartType":  2,
+	        "DisplayName":  "Print Spooler"
+	    },
+	    {
+	        "Name":  "sppsvc",
+	        "StartType":  2,
+	        "DisplayName":  "Software Protection"
+	    },
+	    {
+	        "Name":  "SSDPSRV",
+	        "StartType":  3,
+	        "DisplayName":  "SSDP Discovery"
+	    },
+	    {
+	        "Name":  "SstpSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Secure Socket Tunneling Protocol Service"
+	    },
+	    {
+	        "Name":  "StateRepository",
+	        "StartType":  3,
+	        "DisplayName":  "State Repository Service"
+	    },
+	    {
+	        "Name":  "stisvc",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Image Acquisition (WIA)"
+	    },
+	    {
+	        "Name":  "StorSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Storage Service"
+	    },
+	    {
+	        "Name":  "svsvc",
+	        "StartType":  3,
+	        "DisplayName":  "Spot Verifier"
+	    },
+	    {
+	        "Name":  "swprv",
+	        "StartType":  3,
+	        "DisplayName":  "Microsoft Software Shadow Copy Provider"
+	    },
+	    {
+	        "Name":  "SysMain",
+	        "StartType":  3,
+	        "DisplayName":  "Superfetch"
+	    },
+	    {
+	        "Name":  "SystemEventsBroker",
+	        "StartType":  2,
+	        "DisplayName":  "System Events Broker"
+	    },
+	    {
+	        "Name":  "TabletInputService",
+	        "StartType":  2,
+	        "DisplayName":  "Touch Keyboard and Handwriting Panel Service"
+	    },
+	    {
+	        "Name":  "TapiSrv",
+	        "StartType":  3,
+	        "DisplayName":  "Telephony"
+	    },
+	    {
+	        "Name":  "TermService",
+	        "StartType":  3,
+	        "DisplayName":  "Remote Desktop Services"
+	    },
+	    {
+	        "Name":  "Themes",
+	        "StartType":  2,
+	        "DisplayName":  "Themes"
+	    },
+	    {
+	        "Name":  "TieringEngineService",
+	        "StartType":  3,
+	        "DisplayName":  "Storage Tiers Management"
+	    },
+	    {
+	        "Name":  "tiledatamodelsvc",
+	        "StartType":  2,
+	        "DisplayName":  "Tile Data model server"
+	    },
+	    {
+	        "Name":  "TimeBrokerSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Time Broker"
+	    },
+	    {
+	        "Name":  "TrkWks",
+	        "StartType":  2,
+	        "DisplayName":  "Distributed Link Tracking Client"
+	    },
+	    {
+	        "Name":  "TrustedInstaller",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Modules Installer"
+	    },
+	    {
+	        "Name":  "tzautoupdate",
+	        "StartType":  4,
+	        "DisplayName":  "Auto Time Zone Updater"
+	    },
+	    {
+	        "Name":  "UALSVC",
+	        "StartType":  2,
+	        "DisplayName":  "User Access Logging Service"
+	    },
+	    {
+	        "Name":  "UevAgentService",
+	        "StartType":  4,
+	        "DisplayName":  "User Experience Virtualization Service"
+	    },
+	    {
+	        "Name":  "UI0Detect",
+	        "StartType":  3,
+	        "DisplayName":  "Interactive Services Detection"
+	    },
+	    {
+	        "Name":  "UmRdpService",
+	        "StartType":  3,
+	        "DisplayName":  "Remote Desktop Services UserMode Port Redirector"
+	    },
+	    {
+	        "Name":  "upnphost",
+	        "StartType":  3,
+	        "DisplayName":  "UPnP Device Host"
+	    },
+	    {
+	        "Name":  "UserManager",
+	        "StartType":  2,
+	        "DisplayName":  "User Manager"
+	    },
+	    {
+	        "Name":  "UsoSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Update Orchestrator Service for Windows Update"
+	    },
+	    {
+	        "Name":  "VaultSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Credential Manager"
+	    },
+	    {
+	        "Name":  "vds",
+	        "StartType":  3,
+	        "DisplayName":  "Virtual Disk"
+	    },
+	    {
+	        "Name":  "vmicguestinterface",
+	        "StartType":  3,
+	        "DisplayName":  "Hyper-V Guest Service Interface"
+	    },
+	    {
+	        "Name":  "vmicheartbeat",
+	        "StartType":  3,
+	        "DisplayName":  "Hyper-V Heartbeat Service"
+	    },
+	    {
+	        "Name":  "vmickvpexchange",
+	        "StartType":  3,
+	        "DisplayName":  "Hyper-V Data Exchange Service"
+	    },
+	    {
+	        "Name":  "vmicrdv",
+	        "StartType":  3,
+	        "DisplayName":  "Hyper-V Remote Desktop Virtualization Service"
+	    },
+	    {
+	        "Name":  "vmicshutdown",
+	        "StartType":  3,
+	        "DisplayName":  "Hyper-V Guest Shutdown Service"
+	    },
+	    {
+	        "Name":  "vmictimesync",
+	        "StartType":  3,
+	        "DisplayName":  "Hyper-V Time Synchronization Service"
+	    },
+	    {
+	        "Name":  "vmicvmsession",
+	        "StartType":  3,
+	        "DisplayName":  "Hyper-V PowerShell Direct Service"
+	    },
+	    {
+	        "Name":  "vmicvss",
+	        "StartType":  3,
+	        "DisplayName":  "Hyper-V Volume Shadow Copy Requestor"
+	    },
+	    {
+	        "Name":  "VSS",
+	        "StartType":  3,
+	        "DisplayName":  "Volume Shadow Copy"
+	    },
+	    {
+	        "Name":  "W32Time",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Time"
+	    },
+	    {
+	        "Name":  "WalletService",
+	        "StartType":  3,
+	        "DisplayName":  "WalletService"
+	    },
+	    {
+	        "Name":  "WbioSrvc",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Biometric Service"
+	    },
+	    {
+	        "Name":  "Wcmsvc",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Connection Manager"
+	    },
+	    {
+	        "Name":  "WdiServiceHost",
+	        "StartType":  3,
+	        "DisplayName":  "Diagnostic Service Host"
+	    },
+	    {
+	        "Name":  "WdiSystemHost",
+	        "StartType":  3,
+	        "DisplayName":  "Diagnostic System Host"
+	    },
+	    {
+	        "Name":  "WdNisSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Defender Network Inspection Service"
+	    },
+	    {
+	        "Name":  "Wecsvc",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Event Collector"
+	    },
+	    {
+	        "Name":  "WEPHOSTSVC",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Encryption Provider Host Service"
+	    },
+	    {
+	        "Name":  "wercplsupport",
+	        "StartType":  3,
+	        "DisplayName":  "Problem Reports and Solutions Control Panel Support"
+	    },
+	    {
+	        "Name":  "WerSvc",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Error Reporting Service"
+	    },
+	    {
+	        "Name":  "WiaRpc",
+	        "StartType":  3,
+	        "DisplayName":  "Still Image Acquisition Events"
+	    },
+	    {
+	        "Name":  "WinDefend",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Defender Service"
+	    },
+	    {
+	        "Name":  "WinHttpAutoProxySvc",
+	        "StartType":  3,
+	        "DisplayName":  "WinHTTP Web Proxy Auto-Discovery Service"
+	    },
+	    {
+	        "Name":  "Winmgmt",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Management Instrumentation"
+	    },
+	    {
+	        "Name":  "WinRM",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Remote Management (WS-Management)"
+	    },
+	    {
+	        "Name":  "wisvc",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Insider Service"
+	    },
+	    {
+	        "Name":  "wlidsvc",
+	        "StartType":  3,
+	        "DisplayName":  "Microsoft Account Sign-in Assistant"
+	    },
+	    {
+	        "Name":  "WLMS",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Licensing Monitoring Service"
+	    },
+	    {
+	        "Name":  "wmiApSrv",
+	        "StartType":  3,
+	        "DisplayName":  "WMI Performance Adapter"
+	    },
+	    {
+	        "Name":  "WPDBusEnum",
+	        "StartType":  3,
+	        "DisplayName":  "Portable Device Enumerator Service"
+	    },
+	    {
+	        "Name":  "WpnService",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Push Notifications System Service"
+	    },
+	    {
+	        "Name":  "WSearch",
+	        "StartType":  4,
+	        "DisplayName":  "Windows Search"
+	    },
+	    {
+	        "Name":  "wuauserv",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Update"
+	    },
+	    {
+	        "Name":  "wudfsvc",
+	        "StartType":  3,
+	        "DisplayName":  "Windows Driver Foundation - User-mode Driver Framework"
+	    },
+	    {
+	        "Name":  "XblAuthManager",
+	        "StartType":  3,
+	        "DisplayName":  "Xbox Live Auth Manager"
+	    },
+	    {
+	        "Name":  "XblGameSave",
+	        "StartType":  3,
+	        "DisplayName":  "Xbox Live Game Save"
+	    }
+	],
+	"restricted_services":[
+		{
+	        "Name":  "AppVClient",
+	        "StartType":  4,
+	        "DisplayName":  "Microsoft App-V Client"
+	    },
+	    {
+	        "Name":  "AudioEndpointBuilder",
+	        "StartType":  4,
+	        "DisplayName":  "Windows Audio Endpoint Builder"
+	    },
+	    {
+	        "Name":  "Audiosrv",
+	        "StartType":  4,
+	        "DisplayName":  "Windows Audio"
+	    },
+	    {
+	        "Name":  "QWAVE",
+	        "StartType":  4,
+	        "DisplayName":  "Quality Windows Audio Video Experience"
+	    },
+	    {
+	        "Name":  "Browser",
+	        "StartType":  4,
+	        "DisplayName":  "Computer Browser"
+	    },
+	    {
+	        "Name":  "CscService",
+	        "StartType":  4,
+	        "DisplayName":  "Offline Files"
+	    },
+	    {
+	        "Name":  "DiagTrack",
+	        "StartType":  4,
+	        "DisplayName":  "Connected User Experiences and Telemetry"
+	    },
+	    {
+	        "Name":  "iphlpsvc",
+	        "StartType":  4,
+	        "DisplayName":  "IP Helper"
+	    },
+	    {
+	        "Name":  "LanmanServer",
+	        "StartType":  4,
+	        "DisplayName":  "Server"
+	    },
+		{
+			"Name":  "MapsBroker",
+			"StartType":  4,
+			"DisplayName":  "Server"
+		},
+	    {
+	        "Name":  "RemoteAccess",
+	        "StartType":  4,
+	        "DisplayName":  "Routing and Remote Access"
+	    },
+	    {
+	        "Name":  "RemoteRegistry",
+	        "StartType":  4,
+	        "DisplayName":  "Remote Registry"
+	    },
+	    {
+	        "Name":  "SCardSvr",
+	        "StartType":  4,
+	        "DisplayName":  "Smart Card"
+	    },
+	    {
+	        "Name":  "PrintNotify",
+	        "StartType":  4,
+	        "DisplayName":  "Printer Extensions and Notifications"
+	    },
+	    {
+	        "Name":  "Spooler",
+	        "StartType":  4,
+	        "DisplayName":  "Print Spooler"
+	    },
+	    {
+	        "Name":  "tzautoupdate",
+	        "StartType":  4,
+	        "DisplayName":  "Auto Time Zone Updater"
+	    },
+	    {
+	        "Name":  "TabletInputService",
+	        "StartType":  4,
+	        "DisplayName":  "Touch Keyboard and Handwriting Panel Service"
+	    },
+	    {
+	        "Name":  "UevAgentService",
+	        "StartType":  4,
+	        "DisplayName":  "User Experience Virtualization Service"
+	    },
+	    {
+	        "Name":  "WSearch",
+	        "StartType":  4,
+	        "DisplayName":  "Windows Search"
+	    }
+	],
+	"required_services":[
+		{
+	        "Name":  "W32Time",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Time"
+	    },
+	    {
+	        "Name":  "CryptSvc",
+	        "StartType":  2,
+	        "DisplayName":  "Cryptographic Services"
+	    },
+	    {
+	        "Name":  "Dnscache",
+	        "StartType":  2,
+	        "DisplayName":  "DNS Client"
+	    },
+	    {
+	        "Name":  "EventLog",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Event Log"
+	    },
+		{
+			"Name":  "NetTcpPortSharing",
+			"StartType":  2,
+			"DisplayName":  "Net.Tcp Port Sharing Service (Required for IIS)"
+		},
+	    {
+	        "Name":  "gpsvc",
+	        "StartType":  2,
+	        "DisplayName":  "Group Policy Client"
+	    },
+	    {
+	        "Name":  "MpsSvc",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Firewall"
+	    },
+	    {
+	        "Name":  "nxlog",
+	        "StartType":  2,
+	        "DisplayName":  "Nxlog"
+	    },
+	    {
+	        "Name":  "Schedule",
+	        "StartType":  2,
+	        "DisplayName":  "Task Scheduler"
+	    },
+	    {
+	        "Name":  "WinDefend",
+	        "StartType":  2,
+	        "DisplayName":  "Windows Defender Service"
+	    }
+	]
+}

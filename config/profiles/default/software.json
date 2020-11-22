@@ -1,0 +1,60 @@
+{
+	"required_software":[
+		{
+	        "Name":  "7-Zip",
+	        "Version":  19.00
+	    },
+	    {
+	        "Name":  "NXLog-CE",
+	        "Version":  2.10
+	    },
+	    {
+	        "Name":  "OSSEC HIDS",
+	        "Version":  3.6
+	    },
+	    {
+	        "Name":  "TEST",
+	        "Version":  3.6
+	    },
+	    {
+	        "Name":  "Far Manager",
+	        "Version":  3.0
+	    },
+		{
+			"Name":  "AQTRONIX WebKnight",
+			"Version":  4.6
+		},
+		{
+			"Name":  "Microsoft Visual C",
+			"Version":  9.0
+		},
+		{
+			"Name":  "Panopta Agent",
+			"Version":  0
+		},
+		{
+			"Name":  "Rapid7 Insight Agent",
+			"Version":  0
+		},
+		{
+			"Name":  "Trend Micro Deep Security Agent",
+			"Version":  0
+		},
+		{
+			"Name":  "VMware Tools",
+			"Version":  0
+		},
+		{
+			"Name":  "IIS URL Rewrite Module 2",
+			"Version":  7.2
+		},
+		{
+			"Name":  "Microsoft Web Deploy 3.6",
+			"Version":  10.0
+		},
+		{
+			"Name":  "Microsoft Web Platform Installer 5.1",
+			"Version":  5.1
+		}
+	]
+}

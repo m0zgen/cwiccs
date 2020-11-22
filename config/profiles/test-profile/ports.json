@@ -1,0 +1,52 @@
+{
+	"allowed_ports":[
+		{
+	        "LocalPort":  80,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "WEB Server"
+	    },
+	    {
+	        "LocalPort":  443,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "WEB Server"
+	    },
+	    {
+	        "LocalPort":  389,
+	        "Process":  "System",
+			"Protocol":  "TCP",
+	        "Description":  "LDAP"
+	    },
+	    {
+	        "LocalPort":  47001,
+	        "Process":  "System",
+			"Protocol":  "TCP",
+			"Description":  "WinRM"
+	    },
+	    {
+	        "LocalPort":  5985,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "WinRM"
+	    },
+	    {
+	        "LocalPort":  5986,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "WinRM"
+	    }
+	],
+	"ranges_ports":[
+		{
+	        "RangeFrom": 49152,
+	        "RangeTo": 65535,
+	        "Description":  "Windows rewirement dynamic RPC ports"
+	    },
+	    {
+	    	"RangeFrom": 1024,
+	        "RangeTo": 5000,
+	        "Description":  "Windows RPC randomly allocated high TCP ports"
+	    }
+	]
+}

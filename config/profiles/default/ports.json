@@ -1,0 +1,82 @@
+{
+	"allowed_ports":[
+		{
+	        "LocalPort":  80,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "WEB Server"
+	    },
+	    {
+	        "LocalPort":  443,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "WEB Server"
+	    },
+	    {
+	        "LocalPort":  135,
+	        "Process":  "svchost",
+	        "Protocol":  "TCP",
+	        "Description":  "RPC"
+	    },
+	    {
+	        "LocalPort":  139,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "File sharing Windows feature"
+	    },
+	    {
+	        "LocalPort":  445,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "File sharing Windows feature"
+	    },
+	    {
+	        "LocalPort":  389,
+	        "Process":  "System",
+			"Protocol":  "TCP",
+	        "Description":  "LDAP"
+	    },
+		{
+			"LocalPort":  3389,
+			"Process":  "System",
+			"Protocol":  "TCP",
+			"Description":  "RDP"
+		},
+	    {
+	        "LocalPort":  47001,
+	        "Process":  "System",
+			"Protocol":  "TCP",
+			"Description":  "WinRM"
+	    },
+	    {
+	        "LocalPort":  5985,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "WinRM"
+	    },
+	    {
+	        "LocalPort":  5986,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "WinRM"
+	    },
+		{
+			"LocalPort":  4118,
+			"Process":  "Armor",
+			"Protocol":  "TCP",
+			"Description":  "Need research"
+		}
+	],
+	"ranges_ports":[
+		{
+	        "RangeFrom": 49152,
+	        "RangeTo": 65535,
+	        "Description":  "Windows rewirement dynamic RPC ports"
+	    },
+	    {
+	    	"RangeFrom": 1024,
+	        "RangeTo": 5000,
+	        "Description":  "Windows RPC randomly allocated high TCP ports"
+	    }
+	]
+}
