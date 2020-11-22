@@ -54,7 +54,13 @@ CWiCCS can works with two modes:
 
 `-autofix` option can works only from elevated mode
 
-## Options
+## Runs / Options
+
+Please `cd` to cwiccs folder and them run script:
+
+```
+.\cwiccs.ps1
+```
 
 Available options:
 ```
