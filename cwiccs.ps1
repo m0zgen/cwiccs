@@ -6,16 +6,15 @@ This is a Powershell script to check and fix secirity settings
 .DESCRIPTION
 Scitpt can use from everywhere. Required files / folders:
 - config
-- cwcc.ps1
-- check-sec-settings-signed.ps1
+- cwiccs.ps1
 
 Available arguments
-- cwcc.ps1 [-autofix] [-report] [-elevate] [-admin] [-profile] <profilename> [-profilelist] [-help]
+- cwiccs.ps1 [-autofix] [-report] [-elevate] [-admin] [-profile] <profilename> [-profilelist] [-help]
 - [-elevate] and [-admin] arguments it is same (made for convenience)
 
 .EXAMPLE
-./cwss.ps1
-./cwcc.ps1 -report
+./cwiccs.ps1
+./cwiccs.ps1 -report
 
 #>
 
