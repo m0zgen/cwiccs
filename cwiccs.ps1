@@ -22,7 +22,7 @@ Available arguments
 <#
 
 Author: Yevgeniy Goncharov
-Name: Check Windows and Control Configs ans Security - CWiCCS (read as QUICKS) Framework
+Name: Check and Fix Windows and Control Configs and Security - CWiCCS (read as QUICKS) Framework
 Purpose: Base Security Settings Windows Operation System Checker
 
 #>
@@ -82,6 +82,11 @@ $secPolExported = $( $Env:TEMP ) + "\security-policy.inf"
 # Create log folder
 createFolder $logFolder; createFolder $reportsFolder
 $log = $logFolder + "\check-" + $dateStamp + ".log"
+
+# HTML
+New-Variable -Force -Name htmlData -Option AllScope -Value @()
+$htmlReport = $scriptFolder + "\reports\sec-report-" + $hostName + "-" + $dateStamp + ".html"
+
 
 # Profiles (script folder location depensed)
 # -------------------------------------------------------------------------------------------\

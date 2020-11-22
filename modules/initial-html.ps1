@@ -1,8 +1,6 @@
 
 # HTML
 # -------------------------------------------------------------------------------------------\
-New-Variable -Force -Name htmlData -Option AllScope -Value @()
-$htmlReport = $scriptFolder + "\reports\sec-report-" + $hostName + "-" + $dateStamp + ".html"
 
 $Head = @"
 <title>Security report from $hostName</title>
