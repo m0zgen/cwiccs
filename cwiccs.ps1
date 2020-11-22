@@ -130,10 +130,15 @@ if ($autofix)
 # Extra
 # -------------------------------------------------------------------------------------------\
 
-$extra = Get-ChildItem -Path extra -Recurse -File -Force -ErrorAction SilentlyContinue | Select-Object Name
+$extra = Get-ChildItem -Filter ex_*.ps1 -Path extra -Recurse -File -Force -ErrorAction SilentlyContinue | Select-Object Name
 
 if ($extra) {
-    . .\extra\sendToTeams.ps1
+    
+    foreach ($ex in $extra)
+    { 
+        $name = $ex.Name
+        . ".\extra\$name"
+    }
     $isExtra = 1    
 } else {
     $isExtra = 0
