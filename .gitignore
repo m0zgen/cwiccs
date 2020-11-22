@@ -1,0 +1,16 @@
+.DS_Store
+.idea
+.vscode
+
+base
+signed
+log
+tmp
+temp
+tests
+todos
+
+report*
+extend*
+extra*
+debug*
