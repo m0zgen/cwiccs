@@ -45,18 +45,28 @@ CWiCCS can generate:
 * HTML reports
 * Working status logs
 
-## Operating Modes
+## Support Platforms
 
-CWiCCS can works with two modes:
+CWiCCS tested on native Windows PowerShell on the:
+* Windows 2012R2
+* Windows 2016
+* Windows 2019
 
-1. from simple user
-2. from elevated (Administrator) mode
+## Download / Install
 
-`-autofix` option can works only from elevated mode
+You can clone repository:
+
+```
+git clone https://github.com/m0zgen/cwiccs.git
+```
+
+or
+
+You can download archive from repository - Code > Download as ZIP
 
 ## Runs / Options
 
-Please `cd` to cwiccs folder and them run script:
+After download CWiCCS, please `cd` to `cwiccs` folder and them run script:
 
 ```
 .\cwiccs.ps1
@@ -67,6 +77,15 @@ Available options:
 - cwiccs.ps1 [-autofix] [-report] [-elevate] [-admin] [-profile] <profilename> [-profilelist] [-help]
 - [-elevate] and [-admin] arguments it is same (made for convenience)
 ```
+
+## Operating Modes
+
+CWiCCS can works with two modes:
+
+1. from simple user
+2. from elevated (Administrator) mode
+
+`-autofix` option can works only from elevated mode
 
 ## Profiles
 
