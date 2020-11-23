@@ -172,7 +172,7 @@ function disableSMB2_3
 {
     if ($autofix)
     {
-        Set-SmbServerConfiguration –EnableSMB2Protocol $false -Confirm:$false # or -Force
+        Set-SmbServerConfiguration -EnableSMB2Protocol $false -Confirm:$false # or -Force
         checkSMB2
     }
     else
@@ -329,7 +329,7 @@ function checkRegPols
 
         if (Test-RegistryValue -Path $p -ValueName $key.Value_Name)
         {
-            $currentState = (Get-ItemProperty –Path $p -Name $key.Value_Name).$( $key.Value_Name )
+            $currentState = (Get-ItemProperty -Path $p -Name $key.Value_Name).$( $key.Value_Name )
 
             # If byte array
             if ($currentState -is [array])
@@ -378,7 +378,7 @@ function disableSharing
     {
         if ($autofix)
         {
-            Disable-NetAdapterBinding –InterfaceAlias “Ethernet” –ComponentID ms_server
+            Disable-NetAdapterBinding -InterfaceAlias "Ethernet" -ComponentID ms_server
         }
     }
     else
@@ -390,7 +390,7 @@ function disableSharing
 
 function enableSharing
 {
-    Enable-NetAdapterBinding –InterfaceAlias “Ethernet” –ComponentID ms_server
+    Enable-NetAdapterBinding -InterfaceAlias "Ethernet" -ComponentID ms_server
 }
 
 function checkFileSharingStatus
@@ -460,7 +460,7 @@ function checkFileSharingStatus
 
 function disableIPv6
 {
-    Disable-NetAdapterBinding –InterfaceAlias “Ethernet” –ComponentID ms_tcpip6
+    Disable-NetAdapterBinding -InterfaceAlias "Ethernet" -ComponentID ms_tcpip6
 }
 
 function checkIPv6Status
