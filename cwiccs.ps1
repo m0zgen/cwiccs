@@ -563,7 +563,7 @@ if (!$debug)
     $line
 }
 disableSharing
-disableIPv6
+# disableIPv6
 checkFileSharingStatus
 checkIPv6Status
 disableSMB1
