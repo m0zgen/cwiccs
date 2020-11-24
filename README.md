@@ -52,6 +52,8 @@ CWiCCS tested on native Windows PowerShell on the:
 * Windows 2016
 * Windows 2019
 
+On the PowerShell versions v5, v6
+
 ## Download / Install
 
 You can clone repository:
@@ -101,3 +103,6 @@ You can define own profile. CWiCCS use as default DEFAUL profile. Defined profil
 
 You can send me feature requests to [forum.sys-adm.in](https://forum.sys-adm.in/) with new topic which contains `#cwiccs` tag
 
+## Info
+
+* Russian Article - [CWiCCS (Check Windows and Control Configs and Security) - PowerShell инструмент для проверки и контроля Windows конфигураций](https://sys-adm.in/systadm/windows/933-cwiccs-check-windows-and-control-configs-and-security-powershell-instrument-dlya-proverki-i-kontrolya-windows-konfiguratsij.html)
