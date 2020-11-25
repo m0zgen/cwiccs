@@ -41,6 +41,17 @@ param (
     [array]$profile
 )
 
+# Init script location
+# Get script location path
+function getScriptDirPath
+{
+    $scriptInvocation = (Get-Variable MyInvocation -Scope 1).Value
+    return Split-Path $scriptInvocation.MyCommand.Path
+}
+
+$scriptFolder = $( getScriptDirPath )
+cd $scriptFolder
+
 # Initial functions / messages / warnings / etc
 . .\modules\common.ps1
 
@@ -61,7 +72,6 @@ param (
 # VARS
 # -------------------------------------------------------------------------------------------\
 
-$scriptFolder = $( getScriptDirPath )
 $scriptName = $MyInvocation.MyCommand.Name
 $os = Get-WMIObject -class win32_operatingsystem
 $osName = $os.Name.Substring(0,$os.Name.IndexOf('|'))
@@ -676,6 +686,8 @@ if ($report)
 {
     start $htmlReport
 }
+
+
 
 # Temporary section
 # ----------------
