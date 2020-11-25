@@ -49,8 +49,7 @@ function getScriptDirPath
     return Split-Path $scriptInvocation.MyCommand.Path
 }
 
-$scriptFolder = $( getScriptDirPath )
-cd $scriptFolder
+$scriptFolder = $( getScriptDirPath ); cd $scriptFolder
 
 # Initial functions / messages / warnings / etc
 . .\modules\common.ps1
@@ -302,6 +301,19 @@ else
     bindReportArray -arrType "auditPolicy" -Name "Need elevated" -state "0" -status "WARNING"
 }
 
+$passParamsTable = @{
+
+  "Minimum password age (days)" = "MinimumPasswordAge"
+  "Maximum password age (days)" = "MaximumPasswordAge"
+  "Minimum password length" = "MinimumPasswordLength"
+  "Length of password history maintained" = "PasswordHistorySize"
+  "Lockout threshold" = "LockoutBadCount"
+  "Lockout duration (minutes)" = "LockoutDuration"
+  "Lockout observation window (minutes)" = "ResetLockoutCount"
+
+ }
+
+
 # https://stackoverflow.com/questions/60117943/powershell-script-to-report-account-lockout-policy-settings
 function checkPassPols
 {
@@ -314,6 +326,7 @@ function checkPassPols
     {
         if ($line -like "*password*" -or $line -like "*lockout*" -and $line -notlike "machine\*" -and $line -notlike "require*")
         {
+            
             $policy = $line.substring(0,$line.IndexOf(":"))
 
             $values = $line.substring($line.IndexOf(":") + 1, $line.Length - ($line.IndexOf(":") + 1))
@@ -322,11 +335,68 @@ function checkPassPols
             # $localPasswordPolicy.Add($policy,$splitted) #output edited version
             bindReportArray -arrType "passwordPolicy" -Name $policy -state $splitted -status "INFO"
 
-            regularMsg -msg "$policy "
-            infoMsg -msg "$splitted`n"
+            # regularMsg -msg "$policy "
+            # infoMsg -msg "$splitted`n"
+
+            # Verify matching
+
+            $passParamsTable.keys | ForEach-Object {
+                # Write-Output "$_"
+                # Write-Output "Value = $($passParamsTable[$_])"
+
+                if ($policy -eq "$_") {
+                    # warningMsg -msg "MATCH"
+
+                    foreach ($gpoparam in $gpo.password_policy)
+                    {
+                        if ($gpoparam.Name -eq $($passParamsTable[$_])) {
+
+                            # regularMsg -msg "$policy ( GPO name - $( $gpoparam.Name ) ) "
+                            regularMsg -msg "$policy "
+
+                            if ($splitted -eq $gpoparam.State) {
+                                infoMsg -msg "$splitted - OK`n"
+                            } else {
+                                errorMsg -msg "$splitted - must be $( $gpoparam.State ) FAIL`n"
+                            }
+
+
+                        }
+                    
+                    }
+
+                }
+
+            
+            }
+
         }
     }
 }
+
+
+# Testing
+function getGPOProfile
+{
+
+    $passParamsTable.keys | ForEach-Object {
+        Write-Output "$_"
+        Write-Output "Value = $($passParamsTable[$_])"
+
+        foreach ($gpoparam in $gpo.password_policy)
+        {
+
+            if ($gpoparam.Name -eq $($passParamsTable[$_])) {
+                warningMsg -msg "MATCH"
+            }
+
+        }
+
+        Write-Output '----------'
+    }
+
+}
+
 
 function checkRegPols
 {
@@ -559,7 +629,7 @@ $line
 checkRegPols
 $line
 if (!$debug)
-{
+{    
     checkFeatures
     $line
     checkOldUpdates
@@ -688,6 +758,7 @@ if ($report)
 }
 
 
+# getGPOProfile
 
 # Temporary section
 # ----------------
