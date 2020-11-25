@@ -359,7 +359,7 @@ function checkPassPols
                             if ($splitted -eq $gpoparam.State) {
                                 infoMsg -msg "$splitted - OK`n"
                             } else {
-                                errorMsg -msg "$splitted - must be $( $gpoparam.State ) FAIL`n"
+                                errorMsg -msg "FAIL ($( $gpoparam.State ) required, current state - $splitted)`n"
                             }
 
 
@@ -368,7 +368,6 @@ function checkPassPols
                     }
 
                 }
-
             
             }
 
