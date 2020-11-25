@@ -335,7 +335,7 @@ function checkPassPols
             $values = $values.trim() -split ","
             $splitted = ($values -split ":")[0]
             # $localPasswordPolicy.Add($policy,$splitted) #output edited version
-            bindReportArray -arrType "passwordPolicy" -Name $policy -state $splitted -status "INFO"
+            # bindReportArray -arrType "passwordPolicy" -Name $policy -state $splitted -status "INFO"
 
             # regularMsg -msg "$policy "
             # infoMsg -msg "$splitted`n"
@@ -358,8 +358,10 @@ function checkPassPols
 
                             if ($splitted -eq $gpoparam.State) {
                                 infoMsg -msg "$splitted - OK`n"
+                                bindReportArray -arrType "passwordPolicy" -Name $policy -state $splitted -status "OK"
                             } else {
                                 errorMsg -msg "FAIL ($( $gpoparam.State ) required, current state - $splitted)`n"
+                                bindReportArray -arrType "passwordPolicy" -Name $policy -state $splitted -status "FAIL"
                             }
 
 
