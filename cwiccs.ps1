@@ -301,6 +301,8 @@ else
     bindReportArray -arrType "auditPolicy" -Name "Need elevated" -state "0" -status "WARNING"
 }
 
+
+# Data from CMD - data from gpo profile
 $passParamsTable = @{
 
   "Minimum password age (days)" = "MinimumPasswordAge"
