@@ -135,3 +135,17 @@ function sendErrorToEvtx
     )
     eventcreate /Id 500 /D "$service - $errorMessage" /T ERROR /L system
 }
+
+function checkPowerShellVersion
+{
+    if ($PSVersionTable.PSVersion.Major -gt 5 -or $PSVersionTable.PSVersion.Major -eq 5 -and $PSVersionTable.PSVersion.Major -lt 7)
+    {
+        Write-Output "PowerShell version is $( $PSVersionTable.PSVersion.Major )..."
+    }
+    else
+    {
+        Write-Output "This PowerShell version does not supported yet. Supported versions v5-v6"
+        Exit 1
+    }
+}
+

@@ -54,6 +54,7 @@ $scriptFolder = $( getScriptDirPath )
 
 # Initial functions / messages / warnings / etc
 . "$scriptFolder\modules\common.ps1"
+checkPowerShellVersion
 
 . "$scriptFolder\modules\bind-arrays.ps1"
 . "$scriptFolder\modules\initial-html.ps1"
