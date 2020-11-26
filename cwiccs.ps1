@@ -49,24 +49,25 @@ function getScriptDirPath
     return Split-Path $scriptInvocation.MyCommand.Path
 }
 
-$scriptFolder = $( getScriptDirPath ); cd $scriptFolder
+$scriptFolder = $( getScriptDirPath )
+# cd $scriptFolder
 
 # Initial functions / messages / warnings / etc
-. .\modules\common.ps1
+. "$scriptFolder\modules\common.ps1"
 
-. .\modules\bind-arrays.ps1
-. .\modules\initial-html.ps1
+. "$scriptFolder\modules\bind-arrays.ps1"
+. "$scriptFolder\modules\initial-html.ps1"
 
-. .\modules\os.ps1
-. .\modules\localusers.ps1
-. .\modules\checkPorts.ps1
-. .\modules\getInstalledSoftware.ps1
-. .\modules\reg-handler.ps1
-. .\modules\uac.ps1
-. .\modules\svc-handler.ps1
-. .\modules\ntp.ps1
+. "$scriptFolder\modules\os.ps1"
+. "$scriptFolder\modules\localusers.ps1"
+. "$scriptFolder\modules\checkPorts.ps1"
+. "$scriptFolder\modules\getInstalledSoftware.ps1"
+. "$scriptFolder\modules\reg-handler.ps1"
+. "$scriptFolder\modules\uac.ps1"
+. "$scriptFolder\modules\svc-handler.ps1"
+. "$scriptFolder\modules\ntp.ps1"
 
-. .\modules\features.ps1
+. "$scriptFolder\modules\features.ps1"
 
 # VARS
 # -------------------------------------------------------------------------------------------\
@@ -109,14 +110,14 @@ if ($profilelist)
 }
 
 # Binding profiles
-. .\modules\bind-profiles.ps1
+. "$scriptFolder\modules\bind-profiles.ps1"
 
 # Common / Service Functions
 # -------------------------------------------------------------------------------------------\
 
 if ($help)
 {   
-    . .\modules\help.ps1
+    . "$scriptFolder\modules\help.ps1"
     # pass data from module
     Write-Host $helpDetails
     # and them exit
@@ -135,6 +136,13 @@ if ($autofix)
         Break Script
     }
 }
+
+function sendInfoToTerminal($info)
+{
+    infoMsg -msg "INFO "
+    warningMsg -msg "$info`n"
+}
+
 
 # Extra
 # -------------------------------------------------------------------------------------------\
@@ -238,7 +246,7 @@ $ScriptBlock = {
     function exportGPO
     {
         param($p)
-        secedit.exe /export /cfg $p
+        secedit.exe /export /cfg $p > $null
         # Write-Host $p
     }
 }
@@ -279,26 +287,45 @@ function getAuditPolicy
     bindReportArray -arrType "auditPolicy" -Name "Audit Process Tracking" -state $SecPool.'Event Audit'.AuditProcessTracking -status "INFO"
     bindReportArray -arrType "auditPolicy" -Name "Audit System Events" -state $SecPool.'Event Audit'.AuditSystemEvents -status "INFO"
 
+
+    ##
+    regularMsg -msg "Audit Account Logon "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditAccountLogon ) - INFO`n"
+    regularMsg -msg "Audit Account Manage "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditAccountManage ) - INFO`n"
+    regularMsg -msg "Audit DS Access "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditDSAccess ) - INFO`n"
+    regularMsg -msg "Audit Logon Events "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditLogonEvents ) - INFO`n"
+    regularMsg -msg "Audit Object Access "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditObjectAccess ) - INFO`n"
+    regularMsg -msg "Audit Policy Change "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditPolicyChange ) - INFO`n"
+
+    regularMsg -msg "Audit Privilege Use "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditPrivilegeUse ) - INFO`n"
+    regularMsg -msg "Audit Process Tracking "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditProcessTracking ) - INFO`n"
+    regularMsg -msg "Audit System Events "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditSystemEvents ) - INFO`n"
+    ##
+
 }
 
 #if ($admin -or $elevate)
 #{
 #    Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
 #}
-if ($isAdmin)
+
+function checkAuditPolicy
 {
-    secedit.exe /export /cfg $secPolExported
-    getAuditPolicy
-}
-elseif ($admin -or $elevate)
-{
-    # Can using -NoExit for debug
-    Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
-    getAuditPolicy
-}
-else
-{
-    bindReportArray -arrType "auditPolicy" -Name "Need elevated" -state "0" -status "WARNING"
+    if ($isAdmin)
+    {
+        secedit.exe /export /cfg $secPolExported
+        getAuditPolicy
+    }
+    elseif ($admin -or $elevate)
+    {
+        # Can using -NoExit for debug
+        Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
+        getAuditPolicy
+    }
+    else
+    {
+        sendInfoToTerminal "You can get GPO audit policies only from 'Run As Administrator' prompt"
+        bindReportArray -arrType "auditPolicy" -Name "Need elevated" -state "0" -status "WARNING"
+    }
 }
 
 
@@ -629,6 +656,8 @@ getLocalUsers
 $line
 checkPassPols
 $line
+checkAuditPolicy
+$line
 checkRegPols
 $line
 if (!$debug)
@@ -760,6 +789,7 @@ if ($report)
     start $htmlReport
 }
 
+# $reportSoft | ConvertTo-Json | Set-Content -Path "c:\tmp\reportSoft.json"
 
 # getGPOProfile
 
