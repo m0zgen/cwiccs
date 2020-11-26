@@ -31,7 +31,9 @@
     {
       "Name":  "LockoutDuration",
       "State":  30
-    },
+    }
+  ],
+  "builtin_accouns":[
     {
       "Name":  "EnableAdminAccount",
       "State":  0
