@@ -29,7 +29,7 @@ function getLocalUsers
         }
     }
 
-    $line; regularMsg "Users info... "
+    $line; regularMsg "Users info...`n"
     foreach ($user in $localUsers)
     {
         $user.Las
