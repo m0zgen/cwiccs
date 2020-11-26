@@ -16,13 +16,6 @@ New-Variable -Force -Name reportSoft -Option AllScope -Value @()
 New-Variable -Force -Name reportBaseSettings -Option AllScope -Value @()
 New-Variable -Force -Name reportFeatures -Option AllScope -Value @()
 
-# Get script location path
-function getScriptDirPath
-{
-    $scriptInvocation = (Get-Variable MyInvocation -Scope 1).Value
-    return Split-Path $scriptInvocation.MyCommand.Path
-}
-
 # Get local IP server address
 function getIP
 {
@@ -38,19 +31,29 @@ function isAdministrator
 }
 
 # Generate folder
+
 function createFolder($path)
 {
-    $global:foldPath = $null
-    foreach ($foldername in $path.split("\"))
+    If(!(test-path $path))
     {
-        $global:foldPath += ($foldername + "\")
-        if (!(Test-Path $global:foldPath))
-        {
-            New-Item -ItemType Directory -Path $global:foldPath > $null
-            # Write-Host "$global:foldPath Folder Created Successfully"
-        }
+          New-Item -ItemType Directory -Force -Path $path > $null
     }
 }
+
+# function createFolder($path)
+# {
+#     $foldPath = $null
+#     foreach ($foldername in $path.split("\"))
+#     {
+#         $foldPath += ($foldername + "\")
+#         if (!(Test-Path $foldPath))
+#         {
+#             New-Item -ItemType Directory -Path $path > $null
+#             Write-Host "$global:foldPath Folder Created Successfully"
+#             Write-Host "$path Folder Created Successfully"
+#         }
+#     }
+# }
 
 # Logging / Messaging
 # -------------------------------------------------------------------------------------------\
