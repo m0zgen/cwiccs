@@ -49,6 +49,10 @@ function bindReportArray
         # warningMsg -msg "SOFT CHECKING"
         $reportSoft += $obj
     }
+    elseif ($arrType -eq "disk")
+    {
+        $reportDisks += $obj
+    }
     elseif ($arrType -eq "base")
     {
         $reportBaseSettings += $obj
