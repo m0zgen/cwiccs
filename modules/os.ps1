@@ -3,7 +3,7 @@
 function getOSWorksTime
 {
     # $wmi = Get-WmiObject -class Win32_OperatingSystem -computer $hostName
-    $wmi = Get-CimInstance -class Win32_OperatingSystem -computer $hostName
+    $wmi = Get-CimInstance -class Win32_OperatingSystem -computer $localhost # TODO: shall be $hostname for Arministrators need be checking procedure
 
     #List boot time
     # $lastBootUpTime = $wmi.ConvertToDateTime($wmi.LastBootUpTime)

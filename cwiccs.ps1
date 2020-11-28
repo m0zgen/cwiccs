@@ -82,6 +82,7 @@ $osInstallDate = $os.InstallDate
 # $osInstallDate = [System.Management.ManagementDateTimeConverter]::ToDateTime($os.InstallDate)
 $isAdmin = $( isAdministrator )
 $hostName = $env:computername
+$localhost = 'localhost'
 $currentUser = $env:USERNAME
 $internalIP = $( getIP )
 $countError = 0
@@ -664,8 +665,19 @@ checkOSVersion
 getOSWorksTime
 getLocalUsers
 $line
-getDiskInfo
-$line
+
+# if ($isAdmin)
+# {
+   getDiskInfo
+    $line
+# }
+# else
+# {
+#     sendInfoToTerminal "You can get disk info only from 'Run As Administrator' prompt"
+#     bindReportArray -arrType "disk" -Name "Need elevated" -state "0" -status "WARNING"
+#     $line
+# }
+
 checkPassPols
 $line
 checkAuditPolicy

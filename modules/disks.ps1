@@ -26,8 +26,8 @@ function getDiskInfo
         Name       = 'Free (%)'
     }
      
-    # Calculation
-    $allDisksInfo = Get-CimInstance -namespace "root/cimv2" -computername $hostname -query "SELECT Name, Capacity, FreeSpace FROM Win32_Volume WHERE Capacity > 0 and (DriveType = 2 OR DriveType = 3)" |
+    # Calculation # TODO: shall be $hostname instead $localhost for Arministrators need be checking procedure
+    $allDisksInfo = Get-CimInstance -namespace "root/cimv2" -computername $localhost -query "SELECT Name, Capacity, FreeSpace FROM Win32_Volume WHERE Capacity > 0 and (DriveType = 2 OR DriveType = 3)" |
     # Display of values
     Select-Object -Property Name, $TCapacity, $Freespace, $PercentFree  | Sort-Object 'Free (%)' -Descending
 
