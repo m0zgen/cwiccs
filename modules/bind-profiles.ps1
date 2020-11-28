@@ -12,7 +12,9 @@ function bindConfigs
         [string]$configName
     )
 
-    Write-Host "Bind profile - $($configName.ToUpper() )"
+    # Write-Host "Bind profile - $($configName.ToUpper() )"
+    regularMsg -msg "Bind profile "
+    infoMsg -msg "$( $configName.ToUpper() )`n"
 
     # Configs / Whitelists / Profiles
     if (Test-Path -LiteralPath @($scriptFolder + "\config\profiles\$( $configName )\services.json"))

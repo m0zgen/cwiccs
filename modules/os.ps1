@@ -97,3 +97,30 @@ function checkPowerShellPolicy()
         bindReportArray -arrType "base" -Name "Restriction policy" -state "$statePol" -status "OK"
     }
 }
+
+# Checks domain member status
+# -------------------------------------------------------------------------------------------\
+function isDomainMember
+{
+    if ((gwmi win32_computersystem).partofdomain -eq $true) {
+        return $true;
+    }
+    return $false;
+}
+
+# DomainRole
+# Data type: uint16
+# Access type: Read-only
+
+# Value Meaning
+# 0 (0x0)  Standalone Workstation
+# 1 (0x1)  Member Workstation
+# 2 (0x2)  Standalone Server
+# 3 (0x3)  Member Server
+# 4 (0x4)  Backup Domain Controller
+# 5 (0x5)  Primary Domain Controller
+
+function detectDomainRole
+{
+    Get-WmiObject -Class Win32_ComputerSystem | Select-Object -ExpandProperty DomainRole
+}

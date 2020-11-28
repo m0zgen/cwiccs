@@ -143,10 +143,10 @@ function checkPowerShellVersion
     
     $psv = $PSVersionTable.PSVersion.Major
 
-    regularMsg -msg "PowerShell status "
+    regularMsg -msg "PowerShell version "
     if ($psv -gt 5 -or $psv -eq 5 -and $psv -lt 8)
     {
-        infoMsg -msg "v$( $psv )...`n"
+        infoMsg -msg "v$( $psv )`n"
     }
     elseif ($psv -lt 5)
     {
@@ -166,6 +166,8 @@ function clearSpace($val)
     return $val
 }
 
+# Checks domain member status
+# -------------------------------------------------------------------------------------------\
 function isDomainMember
 {
     if ((gwmi win32_computersystem).partofdomain -eq $true) {
@@ -173,3 +175,28 @@ function isDomainMember
     }
     return $false;
 }
+
+# DomainRole
+# Data type: uint16
+# Access type: Read-only
+
+# Value Meaning
+# 0 (0x0)  Standalone Workstation
+# 1 (0x1)  Member Workstation
+# 2 (0x2)  Standalone Server
+# 3 (0x3)  Member Server
+# 4 (0x4)  Backup Domain Controller
+# 5 (0x5)  Primary Domain Controller
+
+function detectDomainRole
+{
+    Get-WmiObject -Class Win32_ComputerSystem | Select-Object -ExpandProperty DomainRole
+}
+
+$global:isDomain = $( isDomainMember )
+if ($isDomain)
+{
+    $global:domainName = ((gwmi Win32_ComputerSystem).Domain)
+    $global:domainRole = $( detectDomainRole )
+}
+

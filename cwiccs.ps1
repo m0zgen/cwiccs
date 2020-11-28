@@ -156,12 +156,16 @@ function sendInfoToTerminal($info)
 
 function statusDomainMemeber
 {
-    regularMsg -msg "Computer status "
-    if ( [bool](isDomainMember) ) {
-        infoMsg -msg "Domain member`n"
-    } else {
-        infoMsg -msg "Workgroup member`n"
-    }
+    regularMsg -msg "Computer status: "
+    if ($isDomain) {
+        
+        infoMsg -msg "Domain member`n"; regularMsg -msg "Domain name: "; infoMsg -msg "$domainName`n"
+        
+        # if ($domainRole -eq 5) {
+        #     warningMsg -msg "This is PDC (PDC - does not has local users info)`n"
+        # }
+    } 
+    else { infoMsg -msg "Workgroup member`n" }
 }
 
 
@@ -682,10 +686,10 @@ checkPassPols
 $line
 checkAuditPolicy
 $line
-checkRegPols
-$line
 if (!$debug)
-{    
+{ 
+    checkRegPols
+    $line   
     checkFeatures
     $line
     checkOldUpdates
@@ -710,9 +714,9 @@ if (!$debug)
     checkWindowsTime
     #TODO: Add next step - Checking states
     $line
+    checkPorts
+    $line
 }
-checkPorts
-$line
 checkUAC
 checkPowerShellPolicy
 ###
