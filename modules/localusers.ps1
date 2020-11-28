@@ -2,7 +2,9 @@
 function getLocalUsers
 {
     $now = Get-Date
-    $AllLocalAccounts = Get-CimInstance -Class Win32_UserAccount -Namespace "root\cimv2" ` -Filter "LocalAccount='$True'"
+    $AllLocalAccounts = Get-CimInstance -Class Win32_UserAccount -Filter "LocalAccount='$True'"
+    # $AllLocalAccounts = Get-CimInstance -Class Win32_UserAccount -Namespace "root\cimv2" ` -Filter "LocalAccount='$True'"
+
     $localUsers = $AllLocalAccounts | ForEach-Object {
         $user = ([adsi]"WinNT://$computer/$( $_.Name ),user")
         $pwAge = $user.PasswordAge.Value
@@ -29,7 +31,7 @@ function getLocalUsers
         }
     }
 
-    $line; regularMsg "Users info...`n"
+    $line; regularMsg "Local users info...`n"
     foreach ($user in $localUsers)
     {
         $user.Las
