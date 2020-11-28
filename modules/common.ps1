@@ -170,7 +170,7 @@ function clearSpace($val)
 # -------------------------------------------------------------------------------------------\
 function isDomainMember
 {
-    if ((gwmi win32_computersystem).partofdomain -eq $true) {
+    if ((Get-CimInstance win32_computersystem).partofdomain -eq $true) {
         return $true;
     }
     return $false;
@@ -190,7 +190,7 @@ function isDomainMember
 
 function detectDomainRole
 {
-    Get-WmiObject -Class Win32_ComputerSystem | Select-Object -ExpandProperty DomainRole
+    Get-CimInstance -Class Win32_ComputerSystem | Select-Object -ExpandProperty DomainRole
 }
 
 $global:isDomain = $( isDomainMember )
