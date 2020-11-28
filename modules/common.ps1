@@ -143,9 +143,10 @@ function checkPowerShellVersion
     
     $psv = $PSVersionTable.PSVersion.Major
 
+    regularMsg -msg "PowerShell status "
     if ($psv -gt 5 -or $psv -eq 5 -and $psv -lt 8)
     {
-        infoMsg -msg "PowerShell version is $( $psv )..."
+        infoMsg -msg "v$( $psv )...`n"
     }
     elseif ($psv -lt 5)
     {
@@ -165,3 +166,10 @@ function clearSpace($val)
     return $val
 }
 
+function isDomainMember
+{
+    if ((gwmi win32_computersystem).partofdomain -eq $true) {
+        return $true;
+    }
+    return $false;
+}

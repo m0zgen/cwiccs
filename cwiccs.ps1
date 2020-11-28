@@ -154,6 +154,16 @@ function sendInfoToTerminal($info)
     warningMsg -msg "$info`n"
 }
 
+function statusDomainMemeber
+{
+    regularMsg -msg "Computer status "
+    if ( [bool](isDomainMember) ) {
+        infoMsg -msg "Domain member`n"
+    } else {
+        infoMsg -msg "Workgroup member`n"
+    }
+}
+
 
 # Extra
 # -------------------------------------------------------------------------------------------\
@@ -663,21 +673,11 @@ function finalSteps
 # writeLog -msg "Start script $timeStamp" -Severity Information
 checkOSVersion
 getOSWorksTime
+statusDomainMemeber
 getLocalUsers
 $line
-
-# if ($isAdmin)
-# {
-   getDiskInfo
-    $line
-# }
-# else
-# {
-#     sendInfoToTerminal "You can get disk info only from 'Run As Administrator' prompt"
-#     bindReportArray -arrType "disk" -Name "Need elevated" -state "0" -status "WARNING"
-#     $line
-# }
-
+getDiskInfo
+$line
 checkPassPols
 $line
 checkAuditPolicy
