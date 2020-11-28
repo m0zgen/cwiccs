@@ -138,14 +138,22 @@ function sendErrorToEvtx
 
 function checkPowerShellVersion
 {
-    if ($PSVersionTable.PSVersion.Major -gt 5 -or $PSVersionTable.PSVersion.Major -eq 5 -and $PSVersionTable.PSVersion.Major -lt 7)
+    
+    $psv = $PSVersionTable.PSVersion.Major
+
+    if ($psv -gt 5 -or $psv -eq 5 -and $psv -lt 8)
     {
-        Write-Output "PowerShell version is $( $PSVersionTable.PSVersion.Major )..."
+        infoMsg -msg "PowerShell version is $( $psv )..."
+    }
+    elseif ($psv -lt 5)
+    {
+        warningMsg -msg "Please upgrade your PowerShell version (minimal v5).`nCurrent version is $( $psv )"
     }
     else
     {
-        Write-Output "This PowerShell version does not supported yet. Supported versions v5-v6"
+        warningMsg -msg "This PowerShell version does not supported yet. Supported versions v5-v6.`nCurrent version is $( $psv )"
         Exit 1
     }
+
 }
 

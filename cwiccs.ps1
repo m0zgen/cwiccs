@@ -1,4 +1,5 @@
-﻿<#
+﻿#Requires -Version 2
+<#
 
 .SYNOPSIS
 This is a Powershell script to check and fix secirity settings
@@ -54,7 +55,6 @@ $scriptFolder = $( getScriptDirPath )
 
 # Initial functions / messages / warnings / etc
 . "$scriptFolder\modules\common.ps1"
-checkPowerShellVersion
 
 . "$scriptFolder\modules\bind-arrays.ps1"
 . "$scriptFolder\modules\initial-html.ps1"
@@ -74,9 +74,11 @@ checkPowerShellVersion
 # -------------------------------------------------------------------------------------------\
 
 $scriptName = $MyInvocation.MyCommand.Name
-$os = Get-WMIObject -class win32_operatingsystem
+# $os = Get-WMIObject -class win32_operatingsystem
+$os = Get-CimInstance -class Win32_OperatingSystem
 $osName = $os.Name.Substring(0,$os.Name.IndexOf('|'))
-$osInstallDate = $os.ConvertToDateTime($os.InstallDate)
+$osInstallDate = $os.InstallDate
+# $osInstallDate = [System.Management.ManagementDateTimeConverter]::ToDateTime($os.InstallDate)
 $isAdmin = $( isAdministrator )
 $hostName = $env:computername
 $currentUser = $env:USERNAME
@@ -96,6 +98,12 @@ $log = $logFolder + "\check-" + $dateStamp + ".log"
 # HTML
 New-Variable -Force -Name htmlData -Option AllScope -Value @()
 $htmlReport = $scriptFolder + "\reports\sec-report-" + $hostName + "-" + $dateStamp + ".html"
+
+# Initial procedures
+# -------------------------------------------------------------------------------------------\
+if (!$debug) {
+    checkPowerShellVersion    
+}
 
 
 # Profiles (script folder location depensed)

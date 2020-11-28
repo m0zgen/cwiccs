@@ -2,18 +2,21 @@
 # Collect OS information
 function getOSWorksTime
 {
-    $wmi = Get-WmiObject -class Win32_OperatingSystem -computer $hostName
+    # $wmi = Get-WmiObject -class Win32_OperatingSystem -computer $hostName
+    $wmi = Get-CimInstance -class Win32_OperatingSystem -computer $hostName
 
     #List boot time
-    $lastBootUpTime = $wmi.ConvertToDateTime($wmi.LastBootUpTime)
+    # $lastBootUpTime = $wmi.ConvertToDateTime($wmi.LastBootUpTime)
+    # $lastBootUpTime = [System.Management.ManagementDateTimeConverter]::ToDateTime($wmi.LastBootUpTime)
+    $lastBootUpTime = $wmi.LastBootUpTime
 
     #Calculate
     $now = Get-Date
     $upTime = $now - $lastBootUpTime
-    $days = $Uptime.Days
-    $hours = $Uptime.Hours
-    $min = $uptime.Minutes
-    $sec = $uptime.Seconds
+    $days = $upTime.Days
+    $hours = $upTime.Hours
+    $min = $upTime.Minutes
+    $sec = $upTime.Seconds
 
     regularMsg -msg "Last Boot Time: "
     infoMsg -msg "$( $lastBootUpTime )`n"
