@@ -3,7 +3,8 @@
 function getOSWorksTime
 {
     # $wmi = Get-WmiObject -class Win32_OperatingSystem -computer $hostName
-    $wmi = Get-CimInstance -class Win32_OperatingSystem -computer $localhost # TODO: shall be $hostname for Arministrators need be checking procedure
+    # Win 10 disabled -computer argument (experimental)
+    $wmi = Get-CimInstance -class Win32_OperatingSystem # -computer $localhost # TODO: shall be $hostname for Arministrators need be checking procedure
 
     #List boot time
     # $lastBootUpTime = $wmi.ConvertToDateTime($wmi.LastBootUpTime)
@@ -32,16 +33,25 @@ function getOSWorksTime
 
 function checkOSVersion()
 {
-    if ($osName -like '*201*')
+    $line; regularMsg "Checking OS version... "
+    # For Windows 10 deleted "-computer" parameter - what not to enable winrm (experimental)
+    if ($osName -like 'Microsoft Windows Server 201*')
     {
-        $line; regularMsg "Checking OS version... "
         infoMsg "$( $osName ) - OK`n"; $line
+        $global:osVersion = "server"
+    }
+    elseif ($osName -like 'Microsoft Windows 10*')
+    {
+        infoMsg "$( $osName )`n"; 
+        warningMsg -msg "Windows 10 supported as EXPERIMENTAL " 
+        infoMsg -msg "OK`n"; $line
+        $global:osVersion = "client"
     }
     else
     {
-        $line; regularMsg "Checking OS version... "
-        errorMsg "Windows 2016 - Error`n"; $line
-        writeLog -msg "Windows version checking error. OS should be 201*" -Severity Error
+        errorMsg "Unsupported Windows Version - Error`n"; $line
+        writeLog -msg "Windows version checking error. OS should be 201* (like as 2016, 2019 versions)" -Severity Error
+        $global:osVersion = "unknown"
     }
 }
 
@@ -98,29 +108,3 @@ function checkPowerShellPolicy()
     }
 }
 
-# Checks domain member status
-# -------------------------------------------------------------------------------------------\
-function isDomainMember
-{
-    if ((gwmi win32_computersystem).partofdomain -eq $true) {
-        return $true;
-    }
-    return $false;
-}
-
-# DomainRole
-# Data type: uint16
-# Access type: Read-only
-
-# Value Meaning
-# 0 (0x0)  Standalone Workstation
-# 1 (0x1)  Member Workstation
-# 2 (0x2)  Standalone Server
-# 3 (0x3)  Member Server
-# 4 (0x4)  Backup Domain Controller
-# 5 (0x5)  Primary Domain Controller
-
-function detectDomainRole
-{
-    Get-WmiObject -Class Win32_ComputerSystem | Select-Object -ExpandProperty DomainRole
-}

@@ -1,30 +1,40 @@
 
-# Collext installed features
+# Collect installed features
 function checkFeatures
 {
+    # Exclude checking features for Win 10        
+    # infoMsg -msg "$( $osName ) - $( $osVersion )`n"
 
-    if ($isAdmin)
-    {
-         $installedFeatures = Get-WindowsFeature -ComputerName $hostName | Where-Object { $_.Installed -match $True }
+    if ($osVersion -eq "server") {
+        if ($isAdmin)
+            {
+                 $installedFeatures = Get-WindowsFeature -ComputerName $hostName | Where-Object { $_.Installed -match $True }
 
-        foreach ( $feat in $installedFeatures ) {
-            regularMsg -msg "$( $feat.DisplayName )"
-            infoMsg -msg "installed - (INFO)`n"
-            bindReportArray -arrType "features" -Name "$( $feat.Path )" -state "Installed" -status "INFO"
-        }
+                foreach ( $feat in $installedFeatures ) {
+                    regularMsg -msg "$( $feat.DisplayName )"
+                    infoMsg -msg "installed - (INFO)`n"
+                    bindReportArray -arrType "features" -Name "$( $feat.Path )" -state "Installed" -status "INFO"
+                }
+            }
+            elseif ($admin -or $elevate)
+            {
+                # Can using -NoExit for debug
+                sendInfoToTerminal "You can get features list only from 'Run As Administrator' prompt"
+                bindReportArray -arrType "features" -Name "Need elevated" -state "0" -status "WARNING"
+            }
+            else
+            {
+                sendInfoToTerminal "You can get features list only from 'Run As Administrator' prompt"
+                bindReportArray -arrType "features" -Name "Need elevated" -state "0" -status "WARNING"
+            }
     }
-    elseif ($admin -or $elevate)
-    {
-        # Can using -NoExit for debug
-        sendInfoToTerminal "You can get features list only from 'Run As Administrator' prompt"
-        bindReportArray -arrType "features" -Name "Need elevated" -state "0" -status "WARNING"
+    elseif ($osVersion -eq "client") {
+        regularMsg -msg "$( $osVersion ) - does not has server features"
+        infoMsg -msg "(INFO)`n"
     }
-    else
-    {
-        sendInfoToTerminal "You can get features list only from 'Run As Administrator' prompt"
-        bindReportArray -arrType "features" -Name "Need elevated" -state "0" -status "WARNING"
+    else {
+        warningMsg -msg "Unsupported Windows Version - Error`n"
     }
-
 
 } 
 

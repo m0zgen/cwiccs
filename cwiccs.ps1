@@ -50,11 +50,14 @@ function getScriptDirPath
     return Split-Path $scriptInvocation.MyCommand.Path
 }
 
-$scriptFolder = $( getScriptDirPath )
+$global:scriptFolder = $( getScriptDirPath )
 # cd $scriptFolder
 
 # Initial functions / messages / warnings / etc
+
+
 . "$scriptFolder\modules\common.ps1"
+. "$scriptFolder\modules\vars.ps1"
 
 . "$scriptFolder\modules\bind-arrays.ps1"
 . "$scriptFolder\modules\initial-html.ps1"
@@ -70,36 +73,6 @@ $scriptFolder = $( getScriptDirPath )
 . "$scriptFolder\modules\disks.ps1"
 
 . "$scriptFolder\modules\features.ps1"
-
-# VARS
-# -------------------------------------------------------------------------------------------\
-
-$scriptName = $MyInvocation.MyCommand.Name
-# $os = Get-WMIObject -class win32_operatingsystem
-$os = Get-CimInstance -class Win32_OperatingSystem
-$osName = $os.Name.Substring(0,$os.Name.IndexOf('|'))
-$osInstallDate = $os.InstallDate
-# $osInstallDate = [System.Management.ManagementDateTimeConverter]::ToDateTime($os.InstallDate)
-$isAdmin = $( isAdministrator )
-$hostName = $env:computername
-$localhost = '.' # or you can determine localhost directly as 'localhost'
-$currentUser = $env:USERNAME
-$internalIP = $( getIP )
-$countError = 0
-$line = "-------------------------------------------------"
-# Get services array
-$timeStamp = (Get-Date).toString("yyyy/MM/dd HH:mm:ss")
-$dateStamp = (Get-Date).toString("yyyy-MM-dd")
-$logFolder = $scriptFolder + "\log"
-$reportsFolder = $scriptFolder + "\reports"
-$secPolExported = $( $Env:TEMP ) + "\security-policy.inf"
-# Create log folder
-createFolder $logFolder; createFolder $reportsFolder
-$log = $logFolder + "\check-" + $dateStamp + ".log"
-
-# HTML
-New-Variable -Force -Name htmlData -Option AllScope -Value @()
-$htmlReport = $scriptFolder + "\reports\sec-report-" + $hostName + "-" + $dateStamp + ".html"
 
 # Initial procedures
 # -------------------------------------------------------------------------------------------\
@@ -337,7 +310,7 @@ function checkAuditPolicy
 {
     if ($isAdmin)
     {
-        secedit.exe /export /cfg $secPolExported
+        secedit.exe /export /cfg $secPolExported > $null
         getAuditPolicy
     }
     elseif ($admin -or $elevate)
@@ -775,8 +748,7 @@ $scriptSnippet = @"
   var element = document.getElementById('errorTag');
   element.style.fontWeight = "900";
   if (element.innerHTML.indexOf("0") !== -1) {
-      element.style.color = "#4aa74a";
-
+      element.style.color = "#d85c5c";
     }
     else {
         element.style.color = "#d85c5c";
