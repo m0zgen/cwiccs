@@ -151,6 +151,7 @@ function checkPowerShellVersion
     elseif ($psv -lt 5)
     {
         warningMsg -msg "Please upgrade your PowerShell version (minimal v5).`nCurrent version is $( $psv )"
+        Exit 1
     }
     else
     {
