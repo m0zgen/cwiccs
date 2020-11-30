@@ -150,8 +150,8 @@ function checkPowerShellVersion
     }
     elseif ($psv -lt 5)
     {
-        warningMsg -msg "Please upgrade your PowerShell version (minimal v5).`nCurrent version is $( $psv )`n
-        You can download WMF 5.1 from here - https://www.microsoft.com/en-us/download/details.aspx?id=54616"
+        warningMsg -msg "Please upgrade your PowerShell version (minimal v5).`nCurrent version is $( $psv )
+You can download WMF 5.1 from here - https://www.microsoft.com/en-us/download/details.aspx?id=54616"
         Exit 1
     }
     else
