@@ -3,6 +3,7 @@ New-Variable -Force -Name software -Option AllScope -Value @()
 New-Variable -Force -Name features -Option AllScope -Value @()
 New-Variable -Force -Name ports -Option AllScope -Value @()
 New-Variable -Force -Name gpo -Option AllScope -Value @()
+New-Variable -Force -Name config -Option AllScope -Value @()
 
 # Configs / Whitelists / Profiles
 function bindConfigs
@@ -11,6 +12,16 @@ function bindConfigs
         [Parameter(Mandatory = $true)]
         [string]$configName
     )
+
+    # Bind general config
+    # Configs / Whitelists / Profiles
+    if (Test-Path -LiteralPath @($scriptFolder + "\config\cwiccs.json"))
+    {
+        $config = Get-Content -Path @($scriptFolder + "\config\cwiccs.json") | ConvertFrom-Json
+    }
+
+    regularMsg -msg "$($config.App_Name) "
+    infoMsg "Started...`n"
 
     # Write-Host "Bind profile - $($configName.ToUpper() )"
     regularMsg -msg "Bind profile "

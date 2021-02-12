@@ -1,0 +1,10 @@
+- add OS UUID
+- add OS Key 
+- add OS Arch
+- add OS Serial
+- add JSON reports
+- add JSON web requests
+- disk info
+- general configuration for cwiccs - cwiccs.json
+- fix collect features bug
+- add new cwiccs argument - -json

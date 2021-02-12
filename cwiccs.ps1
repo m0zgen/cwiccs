@@ -34,6 +34,7 @@ Purpose: Base Security Settings Windows Operation System Checker
 param (
     [Switch]$autofix,
     [Switch]$report,
+    [Switch]$json,
     [Switch]$elevate,
     [Switch]$admin,
     [Switch]$help,
@@ -568,7 +569,18 @@ function checkFileSharingStatus
 
 function disableIPv6
 {
-    Disable-NetAdapterBinding -InterfaceAlias "Ethernet" -ComponentID ms_tcpip6
+
+    if ($isAdmin)
+    {
+        if ($autofix)
+        {
+            Disable-NetAdapterBinding –InterfaceAlias “Ethernet” –ComponentID ms_tcpip6
+        }
+    }
+    else
+    {
+        warningMsg -msg "For fix status use -autofix argument with elevated prompt`n"
+    }
 }
 
 function checkIPv6Status
@@ -709,9 +721,14 @@ $mainSnippet = @"
     <li>Computer name - <b>$hostName</b></li>
     <li>OS - <b>$osName</b>
         <ul>
-            <li>OS last boot time - <b>$osBootTime</b></li>
-            <li>OS has been up for - <b>$osWorksTime</b></li>
+            <li>Last boot time - <b>$osBootTime</b></li>
+            <li>Has been up for - <b>$osWorksTime</b></li>
             <li>Installation date - <b>$osInstallDate</b></li>
+            <li>Build number - <b>$osBuild</b></li>
+            <li>Architecture - <b>$osArch</b></li>
+            <li>Product ID - <b>$osSerial</b></li>
+            <li>Product Key - <b>$osKey</b></li>
+            <li>UUID - <b>$osUUID</b></li>
         </ul>
     </li>
     <li>User - <b>$currentUser (elevated - $isAdmin)</b></li>
@@ -783,6 +800,37 @@ function createReport
     ConvertTo-Html -head $Head -Title $title -Body $data | Out-File $htmlReport
 }
 
+function createJSON
+{
+    param(
+        [Parameter(Mandatory = $true)]$fileName,
+        [Parameter(Mandatory = $true)]$data,
+        [Parameter(Mandatory = $true)]$apiLink
+    )
+
+    $header = @{"X-CWiCCS"="Hello world!"}
+    $header += @{"X-CWiCCS-TOKEN"=$config.App_Token}
+    $body = $data | ConvertTo-Json
+
+    $path = $jsonFolder + "\" + $fileName
+    $data | ConvertTo-Json | Set-Content -Path $path
+
+    # TODO - create folder for computer and collect json to jsonFolder
+    # Invoke-WebRequest "http://192.168.10.19:8000/test-post"  -Body $body -Method 'POST' -Headers $header
+
+    if (checkHttpStatus -url $config.App_Web_Server)
+    {
+        $uri = $config.App_Web_Server + $apiLink
+        Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
+    }
+    else
+    {
+        Write-Host "Web serer is down!"
+    }
+
+
+}
+
 createReport -title "Security report - $hostName" -data $html
 
 if ($report)
@@ -790,7 +838,27 @@ if ($report)
     start $htmlReport
 }
 
-# $reportSoft | ConvertTo-Json | Set-Content -Path "c:\tmp\reportSoft.json"
+if ($json)
+{
+    createJSON -data $localUsers -fileName "localUsers.json" -apiLink "/test-post"
+
+    #$localUsers | ConvertTo-Json | Set-Content -Path "c:\tmp\localUsers.json"
+    #$diskInfo | ConvertTo-Json | Set-Content -Path "c:\tmp\diskInfo.json"
+    #$localPasswordPolicy | ConvertTo-Json | Set-Content -Path "c:\tmp\localPasswordPolicy.json"
+    #$localAuditPolicy | ConvertTo-Json | Set-Content -Path "c:\tmp\localAuditPolicy.json"
+    #$localRegistryPolicy | ConvertTo-Json | Set-Content -Path "c:\tmp\localRegistryPolicy.json"
+    #$reportBaseSettings | ConvertTo-Json | Set-Content -Path "c:\tmp\reportBaseSettings.json"
+    #$reportFeatures | ConvertTo-Json | Set-Content -Path "c:\tmp\reportFeatures.json"
+    #$reportRequiredServices | ConvertTo-Json | Set-Content -Path "c:\tmp\reportRequrementServices.json"
+    #$reportRestrictedServices | ConvertTo-Json | Set-Content -Path "c:\tmp\reportRestrictedServices.json"
+    #$reportPorts | ConvertTo-Json | Set-Content -Path "c:\tmp\reportPorts.json"
+    #$reportSoft | ConvertTo-Json | Set-Content -Path "c:\tmp\reportSoft.json"
+
+    # DONE - отправлять токен в хедерсах попутно с каждым json
+    # TODO - идетнтификатор машины (устройства) в хедерсах к каждому файлу отправлять
+    # TODO - добавить  cwiccs.config
+}
+
 
 # getGPOProfile
 

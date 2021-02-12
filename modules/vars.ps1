@@ -3,8 +3,14 @@
 $scriptName = $MyInvocation.MyCommand.Name
 # $os = Get-WMIObject -class win32_operatingsystem
 $os = Get-CimInstance -class Win32_OperatingSystem
+# This method can be use - $os.Caption
 $osName = $os.Name.Substring(0,$os.Name.IndexOf('|'))
+$osBuild = $os.BuildNumber
+$osArch = $os.OSArchitecture
+$osSerial = $os.SerialNumber
 $osInstallDate = $os.InstallDate
+$osKey = $( Get-WindowsProductKey )
+$osUUID = $( Get-OsUUID )
 # $osInstallDate = [System.Management.ManagementDateTimeConverter]::ToDateTime($os.InstallDate)
 $isAdmin = $( isAdministrator )
 $hostName = $env:computername
@@ -18,11 +24,19 @@ $timeStamp = (Get-Date).toString("yyyy/MM/dd HH:mm:ss")
 $dateStamp = (Get-Date).toString("yyyy-MM-dd")
 $logFolder = $scriptFolder + "\log"
 $reportsFolder = $scriptFolder + "\reports"
+$jsonFolder = $scriptFolder + "\reports\json"
 $secPolExported = $( $Env:TEMP ) + "\security-policy.inf"
+
+$global:isDomain = $( isDomainMember )
+if ($isDomain)
+{
+    $global:domainName = ((gwmi Win32_ComputerSystem).Domain)
+    $global:domainRole = $( detectDomainRole )
+}
 
 # Logs / Report folders
 # -------------------------------------------------------------------------------------------\
-createFolder $logFolder; createFolder $reportsFolder
+createFolder $logFolder; createFolder $reportsFolder; createFolder $jsonFolder
 $log = $logFolder + "\check-" + $dateStamp + ".log"
 
 # HTML
