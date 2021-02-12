@@ -70,8 +70,14 @@ You can download archive from repository - Code > Download as ZIP
 
 After download CWiCCS, please `cd` to `cwiccs` folder and them run script:
 
-```
+```powershell
 .\cwiccs.ps1
+```
+
+Run with bypass powershell execution policy:
+
+```powershell
+powershell.exe -ep Bypass .\cwiccs.ps1 -report
 ```
 
 Available options:
