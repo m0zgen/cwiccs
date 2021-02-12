@@ -52,6 +52,7 @@ function getScriptDirPath
 }
 
 $global:scriptFolder = $( getScriptDirPath )
+$scriptName = $MyInvocation.MyCommand.Name
 # cd $scriptFolder
 
 # Initial functions / messages / warnings / etc

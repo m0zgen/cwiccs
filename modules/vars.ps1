@@ -1,6 +1,5 @@
 # VARS
 # -------------------------------------------------------------------------------------------\
-$scriptName = $MyInvocation.MyCommand.Name
 # $os = Get-WMIObject -class win32_operatingsystem
 $os = Get-CimInstance -class Win32_OperatingSystem
 # This method can be use - $os.Caption
