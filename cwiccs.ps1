@@ -816,8 +816,9 @@ function createJSON
         [Parameter(Mandatory = $true)]$apiLink
     )
 
-    $header = @{"X-CWiCCS"="Hello world!"}
-    $header += @{"X-CWiCCS-TOKEN"=$config.App_Token}
+    $header = @{"X-CWiCCS"=$config.App_Name}
+    $header += @{"Authorization"="Token " + $config.App_Token}
+
     $body = $data | ConvertTo-Json
 
     $path = $jsonFolder + "\" + $fileName
@@ -847,7 +848,7 @@ if ($report)
 
 if ($json)
 {
-    createJSON -data $localUsers -fileName "localUsers.json" -apiLink "/test-post"
+    createJSON -data $localUsers -fileName "localUsers.json" -apiLink "/local-users"
 
     #$localUsers | ConvertTo-Json | Set-Content -Path "c:\tmp\localUsers.json"
     #$diskInfo | ConvertTo-Json | Set-Content -Path "c:\tmp\diskInfo.json"

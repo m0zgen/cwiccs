@@ -17,7 +17,33 @@ function bindConfigs
     # Configs / Whitelists / Profiles
     if (Test-Path -LiteralPath @($scriptFolder + "\config\cwiccs.json"))
     {
-        $config = Get-Content -Path @($scriptFolder + "\config\cwiccs.json") | ConvertFrom-Json
+        $conf = Get-Content -Path @($scriptFolder + "\config\cwiccs.json") | ConvertFrom-Json
+
+        if ($conf.App_Status -eq "Production")
+        {
+            $config = Get-Content -Path @($scriptFolder + "\config\cwiccs.json") | ConvertFrom-Json
+        }
+        elseif ($conf.App_Status -eq "Development")
+        {
+            if (Test-Path -LiteralPath @($scriptFolder + "\config\cwiccs-dev1.json"))
+            {
+                $config = Get-Content -Path @($scriptFolder + "\config\cwiccs-dev.json") | ConvertFrom-Json
+            }
+            else
+            {
+                Write-Error "Config file - cwiccs-dev.json does not found. Please setup 'Production' mode in the cwiccs.json" -ErrorAction Stop
+            }
+        }
+        else
+        {
+            $config = Get-Content -Path @($scriptFolder + "\config\cwiccs.json") | ConvertFrom-Json
+        }
+
+
+    }
+    else
+    {
+        Write-Error "Config file - cwiccs.json does not found." -ErrorAction Stop
     }
 
     regularMsg -msg "$($config.App_Name) "
