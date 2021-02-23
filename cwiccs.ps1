@@ -147,19 +147,28 @@ function statusDomainMemeber
 # Extra
 # -------------------------------------------------------------------------------------------\
 
-$extra = Get-ChildItem -Filter ex_*.ps1 -Path extra -Recurse -File -Force -ErrorAction SilentlyContinue | Select-Object Name
 
-if ($extra) {
-    
-    foreach ($ex in $extra)
-    { 
-        $name = $ex.Name
-        . ".\extra\$name"
+if ($config.App_Extra)
+{
+    regularMsg -msg "App Extra "
+    infoMsg -msg "Enabled`n"
+    $extra = Get-ChildItem -Filter ex_*.ps1 -Path extra -Recurse -File -Force -ErrorAction SilentlyContinue | Select-Object Name
+
+    if ($extra) {
+
+        foreach ($ex in $extra)
+        {
+            $name = $ex.Name
+            . ".\extra\$name"
+        }
+        $isExtra = 1
+    } else {
+        $isExtra = 0
     }
-    $isExtra = 1    
 } else {
     $isExtra = 0
 }
+
 
 # Processing
 # -------------------------------------------------------------------------------------------\
@@ -196,7 +205,6 @@ function disableSMB2_3
     {
         cmAutofixNote
     }
-
 
 }
 
@@ -286,7 +294,6 @@ function getAuditPolicy
     bindReportArray -arrType "auditPolicy" -Name "Audit Privilege Use" -state $SecPool.'Event Audit'.AuditPrivilegeUse -status "INFO"
     bindReportArray -arrType "auditPolicy" -Name "Audit Process Tracking" -state $SecPool.'Event Audit'.AuditProcessTracking -status "INFO"
     bindReportArray -arrType "auditPolicy" -Name "Audit System Events" -state $SecPool.'Event Audit'.AuditSystemEvents -status "INFO"
-
 
     ##
     regularMsg -msg "Audit Account Logon "; infoMsg -msg "$( $SecPool.'Event Audit'.AuditAccountLogon ) - INFO`n"
@@ -828,7 +835,6 @@ function createJSON
     {
         Write-Host "Web serer is down!"
     }
-
 
 }
 
