@@ -1,4 +1,10 @@
 + App Extra config
++ Fix report folder permission checking
++ Dev Cwiccs-dev.json config
++ Generate folder for JSON data collections by computer UUID
+* Checking web token
++ Checking internet connecions
++ Retrieve ID from web site (if you have a token)
 
 - add OS UUID
 - add OS Key 

@@ -25,7 +25,7 @@ function bindConfigs
         }
         elseif ($conf.App_Status -eq "Development")
         {
-            if (Test-Path -LiteralPath @($scriptFolder + "\config\cwiccs-dev1.json"))
+            if (Test-Path -LiteralPath @($scriptFolder + "\config\cwiccs-dev.json"))
             {
                 $config = Get-Content -Path @($scriptFolder + "\config\cwiccs-dev.json") | ConvertFrom-Json
             }
@@ -38,7 +38,6 @@ function bindConfigs
         {
             $config = Get-Content -Path @($scriptFolder + "\config\cwiccs.json") | ConvertFrom-Json
         }
-
 
     }
     else

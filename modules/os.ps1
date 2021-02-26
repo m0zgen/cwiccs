@@ -108,3 +108,12 @@ function checkPowerShellPolicy()
     }
 }
 
+function deviceId()
+{
+    $deviceId = New-Object PSObject -Property @{
+
+        "device_id" = $osUUID
+        "name" = $hostName
+
+    }
+}

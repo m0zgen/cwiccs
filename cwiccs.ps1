@@ -34,7 +34,7 @@ Purpose: Base Security Settings Windows Operation System Checker
 param (
     [Switch]$autofix,
     [Switch]$report,
-    [Switch]$json,
+    [Switch]$online,
     [Switch]$elevate,
     [Switch]$admin,
     [Switch]$help,
@@ -57,17 +57,16 @@ $scriptName = $MyInvocation.MyCommand.Name
 
 # Initial functions / messages / warnings / etc
 
-
 . "$scriptFolder\modules\common.ps1"
 . "$scriptFolder\modules\vars.ps1"
 
 . "$scriptFolder\modules\bind-arrays.ps1"
-. "$scriptFolder\modules\initial-html.ps1"
+. "$scriptFolder\modules\html\initial-html.ps1"
 
 . "$scriptFolder\modules\os.ps1"
 . "$scriptFolder\modules\localusers.ps1"
 . "$scriptFolder\modules\checkPorts.ps1"
-. "$scriptFolder\modules\getInstalledSoftware.ps1"
+. "$scriptFolder\modules\software.ps1"
 . "$scriptFolder\modules\reg-handler.ps1"
 . "$scriptFolder\modules\uac.ps1"
 . "$scriptFolder\modules\svc-handler.ps1"
@@ -623,6 +622,77 @@ function checkIPv6Status
     }
 }
 
+# Reports and JSON
+function createReport
+{
+    param (
+        [Parameter(Mandatory = $true)]$title,
+        [Parameter(Mandatory = $true)]$data
+    )
+
+    try
+    {
+        ConvertTo-Html -head $Head -Title $title -Body $data | Out-File $htmlReport
+    }
+    catch
+    {
+        Write-Host "Can't write report $htmlReport file - Permission denied"
+    }
+
+}
+
+function sendJSON
+{
+    param(
+        [Parameter(Mandatory = $true)]$fileName,
+        [Parameter(Mandatory = $true)]$data,
+        [Parameter(Mandatory = $true)]$apiLink
+    )
+
+    $header = @{"X-CWiCCS"=$config.App_Name}
+    $header += @{"Authorization"="Token " + $config.App_Token}
+    $header += @{"UUID"=$osUUID}
+
+    $body = $data | ConvertTo-Json
+
+    # Invoke-WebRequest "http://192.168.10.19:8000/test-post"  -Body $body -Method 'POST' -Headers $header
+
+    if (checkHttpStatus -url $config.App_Web_Server)
+    {
+        $uri = $config.App_Web_Server + $apiLink
+        Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
+    }
+    else
+    {
+        Write-Host "Web serer is down!"
+    }
+
+}
+
+function createJSON
+{
+    param(
+        [Parameter(Mandatory = $true)]$fileName,
+        [Parameter(Mandatory = $true)]$data
+    )
+
+    # Save to json
+    try
+    {
+        # JSON Data saver
+        $path = $jsonFolder + "\" + $osUUID # + "\" + $fileName
+        $dataFile = $path + "\" + $fileName
+        createFolder $path
+
+        $data | ConvertTo-Json | Set-Content -Path $dataFile
+    }
+    catch
+    {
+        Write-Host "Can't write report $path file - Permission denied"
+    }
+}
+
+
 # # # End Processing
 
 # Final
@@ -660,6 +730,19 @@ function finalSteps
         runExtra
     }
 
+    #
+    deviceId
+
+    $line
+    # Generate HTML Body and bind data to html object
+    . "$scriptFolder\modules\html\core-html.ps1"
+    . "$scriptFolder\modules\json\interface.ps1"
+    # Generate HTML report in the reports folder
+    createReport -title "Security report - $hostName" -data $html
+    # Open report in the default browser
+    if ($report) { start $htmlReport }
+
+    # Show help message
     $line; regularMsg -msg "Notice: "
     infoMsg -msg "Read help .\$( $scriptName ) -help `n"
 }
@@ -720,152 +803,44 @@ checkPowerShellPolicy
 # Count errors, send log
 finalSteps
 
-# HTML
-$mainSnippet = @"
-<div class="header">
-<h1>Security report. $hostName</h1>
-<hr>
-<ul>
-    <li>Computer name - <b>$hostName</b></li>
-    <li>OS - <b>$osName</b>
-        <ul>
-            <li>Last boot time - <b>$osBootTime</b></li>
-            <li>Has been up for - <b>$osWorksTime</b></li>
-            <li>Installation date - <b>$osInstallDate</b></li>
-            <li>Build number - <b>$osBuild</b></li>
-            <li>Architecture - <b>$osArch</b></li>
-            <li>Product ID - <b>$osSerial</b></li>
-            <li>Product Key - <b>$osKey</b></li>
-            <li>UUID - <b>$osUUID</b></li>
-        </ul>
-    </li>
-    <li>User - <b>$currentUser (elevated - $isAdmin)</b></li>
-    <li>Internal IP - <b>$internalIP</b></li>
-    <li>Founded Errors / Warnings - <b id="errorTag">$countError</b></li>
-</ul>
-</div>
-<hr>
-<div class="main">
-"@
 
-$scriptSnippet = @"
-</div>
-<footer><i>Report created - <b>$timeStamp</b></i></footer>
-<script type="text/javascript">
-  var tds = document.getElementsByTagName('td');
-  for (var i = 0; i < tds.length; i++) {
-    if (tds[i].innerHTML.indexOf("FAIL") !== -1) {
-      console.log('The ' + tds[i].textContent + ' is endangered!');
-      tds[i].style.color = "#d85c5c";
-      tds[i].style.fontWeight = "900";
-    }
-    if (tds[i].innerHTML.indexOf("OK") !== -1) {
-      tds[i].style.color = "#4aa74a";
-      tds[i].style.fontWeight = "900";
-    }
-    if (tds[i].innerHTML.indexOf("WARNING") !== -1) {
-      tds[i].style.color = "#fd772d";
-      tds[i].style.fontWeight = "900";
-    }
-    if (tds[i].innerHTML.indexOf("INFO") !== -1) {
-      tds[i].style.color = "#003366";
-    }
-  var element = document.getElementById('errorTag');
-  element.style.fontWeight = "900";
-  if (element.innerHTML.indexOf("0") !== -1) {
-      element.style.color = "#d85c5c";
-    }
-    else {
-        element.style.color = "#d85c5c";
-    }
-  }
-</script>
-"@
 
-$html += $mainSnippet
+# Generate JSON data in the UUID computer folder in the reports folder
+createJSON -data $diskInfo -fileName "disks.json"
+createJSON -data $reportFeatures -fileName "features.json"
+createJSON -data $localAuditPolicy -fileName "local-audit-policies.json"
+createJSON -data $localPasswordPolicy -fileName "local-password-policies.json"
+createJSON -data $localRegistryPolicy -fileName "local-registry-policies.json"
+createJSON -data $localUsers -fileName "local-users.json"
+createJSON -data $reportPorts -fileName "ports.json"
+createJSON -data $reportRequiredServices -fileName "requred-services.json"
+createJSON -data $reportRestrictedServices -fileName "restricted-services.json"
+createJSON -data $reportBaseSettings -fileName "settings.json"
+createJSON -data $reportSoft -fileName "soft.json"
+createJSON -data $deviceId -fileName "device.json"
 
-$html += $localUsers | Select Name, Disabled, LockOut, 'Password Expires', 'Password Last Set', 'Last logon' | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Local Users Information</h2>"
-$html += $diskInfo | Select Name, 'Total(GB)', 'Free(GB)', 'Free(%)' | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Disk info (sorted by free space percentage)</h2>"
-$html += $localPasswordPolicy | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Password policy info</h2>"
-$html += $localAuditPolicy | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Audit policy info</h2>"
-$html += $localRegistryPolicy | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Security Options policy info</h2>"
-$html += $reportBaseSettings | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Base security settings</h2>"
-$html += $reportFeatures | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Installed Windows features</h2>"
-$html += $reportRequiredServices | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Requred services status</h2>"
-$html += $reportRestrictedServices | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Restricted services status</h2>"
-$html += $reportPorts | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Listening ports</h2>"
-$html += $reportSoft | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Software</h2>"
 
-$html += $scriptSnippet
 
-function createReport
-{
-    param (
-        [Parameter(Mandatory = $true)]$title,
-        [Parameter(Mandatory = $true)]$data
-    )
 
-    ConvertTo-Html -head $Head -Title $title -Body $data | Out-File $htmlReport
-}
 
-function createJSON
-{
-    param(
-        [Parameter(Mandatory = $true)]$fileName,
-        [Parameter(Mandatory = $true)]$data,
-        [Parameter(Mandatory = $true)]$apiLink
-    )
 
-    $header = @{"X-CWiCCS"=$config.App_Name}
-    $header += @{"Authorization"="Token " + $config.App_Token}
 
-    $body = $data | ConvertTo-Json
 
-    $path = $jsonFolder + "\" + $fileName
-    $data | ConvertTo-Json | Set-Content -Path $path
 
-    # TODO - create folder for computer and collect json to jsonFolder
-    # Invoke-WebRequest "http://192.168.10.19:8000/test-post"  -Body $body -Method 'POST' -Headers $header
+Write-Host $onlineId.id
+Write-Host $deviceId
 
-    if (checkHttpStatus -url $config.App_Web_Server)
-    {
-        $uri = $config.App_Web_Server + $apiLink
-        Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
-    }
-    else
-    {
-        Write-Host "Web serer is down!"
-    }
 
-}
+Write-Host $reportSoft
+$reportSoft = $reportSoft | Add-Member -NotePropertyMembers @{device=$onlineId.id} -PassThru
+Write-Host $reportSoft
+$body2 = $reportSoft | ConvertTo-Json
+Write-Host $body2
+#Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body2 -Uri https://cwiccs.org/api/disks/
 
-createReport -title "Security report - $hostName" -data $html
+# 710e2bdb5ef4ee274fa4dac12ea50f1d7bca96ea
 
-if ($report)
-{
-    start $htmlReport
-}
 
-if ($json)
-{
-    createJSON -data $localUsers -fileName "localUsers.json" -apiLink "/local-users"
-
-    #$localUsers | ConvertTo-Json | Set-Content -Path "c:\tmp\localUsers.json"
-    #$diskInfo | ConvertTo-Json | Set-Content -Path "c:\tmp\diskInfo.json"
-    #$localPasswordPolicy | ConvertTo-Json | Set-Content -Path "c:\tmp\localPasswordPolicy.json"
-    #$localAuditPolicy | ConvertTo-Json | Set-Content -Path "c:\tmp\localAuditPolicy.json"
-    #$localRegistryPolicy | ConvertTo-Json | Set-Content -Path "c:\tmp\localRegistryPolicy.json"
-    #$reportBaseSettings | ConvertTo-Json | Set-Content -Path "c:\tmp\reportBaseSettings.json"
-    #$reportFeatures | ConvertTo-Json | Set-Content -Path "c:\tmp\reportFeatures.json"
-    #$reportRequiredServices | ConvertTo-Json | Set-Content -Path "c:\tmp\reportRequrementServices.json"
-    #$reportRestrictedServices | ConvertTo-Json | Set-Content -Path "c:\tmp\reportRestrictedServices.json"
-    #$reportPorts | ConvertTo-Json | Set-Content -Path "c:\tmp\reportPorts.json"
-    #$reportSoft | ConvertTo-Json | Set-Content -Path "c:\tmp\reportSoft.json"
-
-    # DONE - отправлять токен в хедерсах попутно с каждым json
-    # TODO - идетнтификатор машины (устройства) в хедерсах к каждому файлу отправлять
-    # TODO - добавить  cwiccs.config
-}
 
 
 # getGPOProfile
@@ -874,3 +849,7 @@ if ($json)
 # ----------------
 # start $htmlReport
 # Write-Host $reportSoft.Count
+
+$jsonDiskInfo | ConvertTo-Json
+$diskInfo
+

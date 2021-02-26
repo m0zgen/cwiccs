@@ -1,7 +1,7 @@
 {
   "App_Name":  "CWiCCS - Check Windows and Control Configs and Security",
   "App_Status":  "Development",
-  "App_Token": "APP-TOKEN-1234",
-  "App_Web_Server": "http://localhost:8000",
+  "App_Token": "",
+  "App_Web_Server": "",
   "App_Extra": false
 }
