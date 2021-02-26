@@ -75,7 +75,6 @@ function bindReportArray
     }
     else
     {
-
         warningMsg -msg "Warning "
         errorMsg -msg "Can't bind report array - $arrType`n"
     }

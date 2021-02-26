@@ -56,11 +56,19 @@ function writeLog
         [string]$Severity = 'Error'
     )
 
-    [pscustomobject]@{
-        Time = (Get-Date -f g)
-        Message = $msg
-        Severity = $Severity
-    } | Export-Csv -Path "$log" -Append -NoTypeInformation
+    try
+    {
+        [pscustomobject]@{
+            Time = (Get-Date -f g)
+            Message = $msg
+            Severity = $Severity
+        } | Export-Csv -Path "$log" -Append -NoTypeInformation
+    }
+    catch
+    {
+        Write-Host "Can't write log file - Permission denied"
+    }
+
 }
 
 # Messages
@@ -183,32 +191,6 @@ if ($isDomain)
     $global:domainRole = $( detectDomainRole )
 }
 
-function checkHttpStatus
-{
-    param (
-        [Parameter(Mandatory = $true)]$url
-    )
-    try {
-        Write-host "Verifying $url" -ForegroundColor Yellow
-        $checkConnection = Invoke-WebRequest -Uri $url
-        if ($checkConnection.StatusCode -eq 200) {
-            Write-Host "Connection Verified!" -ForegroundColor Green
-            return 1
-        }
-
-    }
-    catch [System.Net.WebException] {
-        $exceptionMessage = $Error[0].Exception
-        if ($exceptionMessage -match "503") {
-            Write-Host "Server Unavaiable" -ForegroundColor Red
-        }
-        elseif ($exceptionMessage -match "404") {
-            Write-Host "Page Not found" -ForegroundColor Red
-        }
-        return 0
-    }
-}
-
 # Get Windows Product Key
 function Get-WindowsProductKey
 {
@@ -328,3 +310,67 @@ function Get-OsUUID
 {
     (Get-CimInstance -Class Win32_ComputerSystemProduct).UUID
 }
+
+
+# HTTP worker
+# Accept Self Signed cert
+if (-not ([System.Management.Automation.PSTypeName]'ServerCertificateValidationCallback').Type)
+{
+    $certCallback = @"
+    using System;
+    using System.Net;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
+    public class ServerCertificateValidationCallback
+    {
+        public static void Ignore()
+        {
+            if(ServicePointManager.ServerCertificateValidationCallback ==null)
+            {
+                ServicePointManager.ServerCertificateValidationCallback +=
+                    delegate
+                    (
+                        Object obj,
+                        X509Certificate certificate,
+                        X509Chain chain,
+                        SslPolicyErrors errors
+                    )
+                    {
+                        return true;
+                    };
+            }
+        }
+    }
+"@
+    Add-Type $certCallback
+}
+
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12;
+[ServerCertificateValidationCallback]::Ignore()
+
+function checkHttpStatus
+{
+    param (
+        [Parameter(Mandatory = $true)]$url
+    )
+    try {
+        Write-host "Verifying $url" -ForegroundColor Yellow
+        $checkConnection = Invoke-WebRequest -Uri $url
+        if ($checkConnection.StatusCode -eq 200) {
+            Write-Host "Connection Verified!" -ForegroundColor Green
+            return 1
+        }
+
+    }
+    catch [System.Net.WebException] {
+        $exceptionMessage = $Error[0].Exception
+        if ($exceptionMessage -match "503") {
+            Write-Host "Server Unavaiable" -ForegroundColor Red
+        }
+        elseif ($exceptionMessage -match "404") {
+            Write-Host "Page Not found" -ForegroundColor Red
+        }
+        return 0
+    }
+}
+ #>
