@@ -9,15 +9,37 @@ function Test-RegistryValue
         [parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]$ValueName
     )
-    try
-    {
-        Get-ItemProperty -Path $Path | Select-Object -ExpandProperty $ValueName -ErrorAction Stop | Out-Null
-        return $true
+
+    if (Test-Path $Path) {
+
+        $Key = Get-Item -LiteralPath $Path
+        if ($Key.GetValue($ValueName, $null) -ne $null) {
+            if ($PassThru) {
+                Get-ItemProperty $Path $Name
+            } else {
+                $true
+            }
+        } else {
+            $false
+        }
+
+
+        # try
+        #     {
+        #         Get-ItemProperty -Path $Path | Select-Object -ExpandProperty $ValueName -ErrorAction Stop | Out-Null
+        #         return $true
+        #     }
+        #     catch
+        #     {
+        #         return $false
+        #     }
     }
-    catch
-    {
-        return $false
+    else {
+        $false
     }
+
+
+    
 }
 
 # Checking HKLM value 0/1. Return false/true
