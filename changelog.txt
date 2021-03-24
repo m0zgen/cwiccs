@@ -2,9 +2,16 @@
 + Fix report folder permission checking
 + Dev Cwiccs-dev.json config
 + Generate folder for JSON data collections by computer UUID
-* Checking web token
++ Checking web token
 + Checking internet connecions
 + Retrieve ID from web site (if you have a token)
+
++ Fix export local audit GPO function
++ Addedd cwiccs.ps1 parameters - $savereportjson, $online, $saveonlinejson,
++ Export (save) json from report and from online (<name>-web.json) to report/json/os-UUID/
++ Send online json data to API web server
++ pgAdmin installer created
+- need fix Windows ru locale
 
 - add OS UUID
 - add OS Key 

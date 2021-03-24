@@ -54,7 +54,6 @@ New-Variable -Force -Name diskInfo -Option AllScope -Value @()
 New-Variable -Force -Name localPasswordPolicy -Option AllScope -Value @()
 New-Variable -Force -Name localAuditPolicy -Option AllScope -Value @()
 New-Variable -Force -Name localRegistryPolicy -Option AllScope -Value @()
-New-Variable -Force -Name deviceId -Option AllScope -Value @()
 
 # HTML Report Array Fragments
 New-Variable -Force -Name reportRestrictedServices -Option AllScope -Value @()
@@ -66,7 +65,10 @@ New-Variable -Force -Name reportBaseSettings -Option AllScope -Value @()
 New-Variable -Force -Name reportFeatures -Option AllScope -Value @()
 
 # JSON Objects
+New-Variable -Force -Name deviceId -Option AllScope -Value @()
 New-Variable -Force -Name onlineId -Option AllScope
-New-Variable -Force -Name jsonDiskInfo -Option AllScope -Value @()
+New-Variable -Force -Name jsonDisks -Option AllScope -Value @()
+New-Variable -Force -Name jsonFeatures -Option AllScope -Value @()
+New-Variable -Force -Name jsonLocalAuditPolicies -Option AllScope -Value @()
 
 #>

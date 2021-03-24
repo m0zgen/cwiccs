@@ -34,7 +34,9 @@ Purpose: Base Security Settings Windows Operation System Checker
 param (
     [Switch]$autofix,
     [Switch]$report,
+    [Switch]$savereportjson,
     [Switch]$online,
+    [Switch]$saveonlinejson,
     [Switch]$elevate,
     [Switch]$admin,
     [Switch]$help,
@@ -325,6 +327,7 @@ function checkAuditPolicy
     {
         # Can using -NoExit for debug
         Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
+        Start-Sleep -s 2
         getAuditPolicy
     }
     else
@@ -641,57 +644,6 @@ function createReport
 
 }
 
-function sendJSON
-{
-    param(
-        [Parameter(Mandatory = $true)]$fileName,
-        [Parameter(Mandatory = $true)]$data,
-        [Parameter(Mandatory = $true)]$apiLink
-    )
-
-    $header = @{"X-CWiCCS"=$config.App_Name}
-    $header += @{"Authorization"="Token " + $config.App_Token}
-    $header += @{"UUID"=$osUUID}
-
-    $body = $data | ConvertTo-Json
-
-    # Invoke-WebRequest "http://192.168.10.19:8000/test-post"  -Body $body -Method 'POST' -Headers $header
-
-    if (checkHttpStatus -url $config.App_Web_Server)
-    {
-        $uri = $config.App_Web_Server + $apiLink
-        Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
-    }
-    else
-    {
-        Write-Host "Web serer is down!"
-    }
-
-}
-
-function createJSON
-{
-    param(
-        [Parameter(Mandatory = $true)]$fileName,
-        [Parameter(Mandatory = $true)]$data
-    )
-
-    # Save to json
-    try
-    {
-        # JSON Data saver
-        $path = $jsonFolder + "\" + $osUUID # + "\" + $fileName
-        $dataFile = $path + "\" + $fileName
-        createFolder $path
-
-        $data | ConvertTo-Json | Set-Content -Path $dataFile
-    }
-    catch
-    {
-        Write-Host "Can't write report $path file - Permission denied"
-    }
-}
-
 
 # # # End Processing
 
@@ -736,7 +688,12 @@ function finalSteps
     $line
     # Generate HTML Body and bind data to html object
     . "$scriptFolder\modules\html\core-html.ps1"
-    . "$scriptFolder\modules\json\interface.ps1"
+
+    if ($online)
+    {
+        . "$scriptFolder\modules\live\interface.ps1"
+    }
+
     # Generate HTML report in the reports folder
     createReport -title "Security report - $hostName" -data $html
     # Open report in the default browser
@@ -803,4 +760,4 @@ checkPowerShellPolicy
 # Count errors, send log
 finalSteps
 
-
+# TODO: profile list does not works
