@@ -5,6 +5,7 @@
 + Checking web token
 + Checking internet connecions
 + Retrieve ID from web site (if you have a token)
++ fix registry keys checking function
 
 + Fix export local audit GPO function
 + Addedd cwiccs.ps1 parameters - $savereportjson, $online, $saveonlinejson,
