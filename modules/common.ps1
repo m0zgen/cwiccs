@@ -103,6 +103,17 @@ function noticeMsg
     Write-Host - $msg -ForegroundColor Magenta -NoNewline;
 }
 
+function debugMsg
+{
+    param
+    ([Parameter(Mandatory = $true)]$msg)
+    $line
+    # -BackgroundColor white
+    Write-Host $msg " - DEBUG`n"  -ForegroundColor Magenta -NoNewline; writeLog -msg "$msg" -Severity Warning
+    $line
+    [Console]::ResetColor()
+}
+
 # common Messages
 function cmAutofixNote
 {

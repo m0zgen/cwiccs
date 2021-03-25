@@ -61,6 +61,7 @@ function createJSON
     }
 }
 
+# Deprecated
 function checkEntry
 {
 
@@ -115,7 +116,32 @@ function sendJSON
 #    if (checkHttpStatus -url $config.App_Web_Server)
 #    {
         $uri = $config.App_Web_Server + $apiLink
-        Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
+
+        try
+        {
+            $resp = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
+#            write-host OK
+        }
+        catch
+        {
+            Write-Host "Error send JSON data to web server `n"
+
+            if ($debug)
+            {
+
+                debugMsg -msg "Interface SEND JSON DATA"
+                $_.Exception.Response
+                $result = $_.Exception.Response.GetResponseStream()
+                $reader = New-Object System.IO.StreamReader($result)
+                $reader.BaseStream.Position = 0
+                $reader.DiscardBufferedData()
+                $responseBody = $reader.ReadToEnd();
+
+                Write-Host $responseBody
+            }
+
+        }
+
 #    }
 #    else
 #    {
@@ -146,22 +172,26 @@ function genJSONObjects
 function bindJSON
 {
     # Generate web api JSON objects
-    if (checkEntry -oID $onlineId.id)
-    {
-        regularMsg -msg "Notice: "
-        infoMsg -msg "Device alredy registered. `n"
-    }
-    else
-    {
-        $jsonEntry = $onlineId | ForEach-Object {
-            New-Object -TypeName PSObject -Property @{
-                'id' = $_.id
-                'device' = $_.id
-            }
-        }
 
-        sendJSON -data $jsonEntry -apiLink "/api/entries/" -fileName "entirs-web.json"
+    # Deprecated
+#    if (checkEntry -oID $onlineId.id)
+#    {
+#        regularMsg -msg "Notice: "
+#        infoMsg -msg "Device alredy registered. `n"
+#    }
+#    else
+#    {
+#        # Send data
+#    }
+
+    $jsonEntry = $onlineId | ForEach-Object {
+        New-Object -TypeName PSObject -Property @{
+        #                'id' = $_.id
+            'device' = $_.id
+        }
     }
+
+    sendJSON -data $jsonEntry -apiLink "/api/entries/" -fileName "entirs-web.json"
 
     $jsonDisks = $diskInfo | ForEach-Object {
         New-Object -TypeName PSObject -Property @{
@@ -173,7 +203,7 @@ function bindJSON
         }
     }
 
-#    sendJSON -data $jsonDisks -apiLink "/api/disks/" -fileName "disks-web.json"
+    sendJSON -data $jsonDisks -apiLink "/api/disks/" -fileName "disks-web.json"
 
     $jsonFeatures = genJSONObjects -arrayData $reportFeatures
 #    sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
@@ -239,6 +269,8 @@ if ($savereportjson)
 
 if ($debug)
 {
+
+    debugMsg -msg "Interface JSON"
 
     Write-Host $onlineId.id
     Write-Host $deviceId

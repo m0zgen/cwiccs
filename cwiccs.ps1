@@ -82,6 +82,10 @@ $scriptName = $MyInvocation.MyCommand.Name
 if (!$debug) {
     checkPowerShellVersion    
 }
+else
+{
+    debugMsg -msg "Checking PowerShell version DISABLED"
+}
 
 
 # Profiles (script folder location depensed)
@@ -734,6 +738,10 @@ if (!$debug)
     $line
     checkSoftware
     $line
+}
+else
+{
+    debugMsg -msg "Disabled checking procedures`nRegistry, Features, Updates, Services, Siftware"
 }
 disableSharing
 # disableIPv6
