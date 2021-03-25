@@ -165,8 +165,6 @@ else
 # TODO - идетнтификатор машины (устройства) в хедерсах к каждому файлу отправлять
 # TODO - добавить  cwiccs.config
 
-
-
 # Generate JSON data in the UUID computer folder in the reports folder
 if ($savereportjson)
 {
@@ -185,17 +183,8 @@ if ($savereportjson)
 }
 
 
-
-
-
-
-
-
-
-
 Write-Host $onlineId.id
 Write-Host $deviceId
-
 
 Write-Host $reportSoft
 $reportSoft = $reportSoft | Add-Member -NotePropertyMembers @{device=$onlineId.id} -PassThru
