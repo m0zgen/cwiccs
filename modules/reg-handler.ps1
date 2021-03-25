@@ -13,7 +13,7 @@ function Test-RegistryValue
     if (Test-Path $Path) {
 
         $Key = Get-Item -LiteralPath $Path
-        if ($Key.GetValue($ValueName, $null) -ne $null) {
+        if ($null -ne $Key.GetValue($ValueName, $null)) {
             if ($PassThru) {
                 Get-ItemProperty $Path $Name
             } else {
