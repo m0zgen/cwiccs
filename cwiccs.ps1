@@ -759,5 +759,3 @@ checkPowerShellPolicy
 
 # Count errors, send log
 finalSteps
-
-# TODO: profile list does not works

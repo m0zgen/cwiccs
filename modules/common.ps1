@@ -355,6 +355,7 @@ function checkHttpStatus
     )
     try {
         Write-host "Verifying $url" -ForegroundColor Yellow
+
         $checkConnection = Invoke-WebRequest -Uri $url
         if ($checkConnection.StatusCode -eq 200) {
             Write-Host "Connection Verified!" -ForegroundColor Green
