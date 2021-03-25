@@ -24,3 +24,6 @@
 - general configuration for cwiccs - cwiccs.json
 - fix collect features bug
 - add new cwiccs argument - -json
+
+TODO:
+- copy/duplicate profiles
