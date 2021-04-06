@@ -6,6 +6,24 @@
 	        "Protocol":  "TCP",
 	        "Description":  "WEB Server"
 	    },
+		{
+	        "LocalPort":  135,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "DCOM"
+	    },
+		{
+	        "LocalPort":  139,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "SMB"
+	    },
+		{
+	        "LocalPort":  445,
+	        "Process":  "System",
+	        "Protocol":  "TCP",
+	        "Description":  "SMB"
+	    },
 	    {
 	        "LocalPort":  443,
 	        "Process":  "System",
