@@ -92,7 +92,8 @@ else
 # -------------------------------------------------------------------------------------------\
 if ($profilelist)
 {
-    $profiles = Get-ChildItem -Path config\profiles -Recurse -Directory -Force -ErrorAction SilentlyContinue | Select-Object Name
+    $profilesFolder = $scriptFolder + "\config\profiles"
+    $profiles = Get-ChildItem -Path $profilesFolder -Recurse -Directory -Force -ErrorAction SilentlyContinue | Select-Object Name
     foreach ($profile in $profiles)
     {
         Write-Host $profile.Name
