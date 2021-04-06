@@ -330,8 +330,21 @@ function bindJSON
     sendJSON -data $jsonBaseSettings -apiLink "/api/settings/" -fileName "settings-web.json"
 
     $jsonSoft = genJSONObjects -arrayData $reportSoft
-    sendJSON -data $jsonSoft -apiLink "/api/software/" -fileName "soft-web.json"    
+    sendJSON -data $jsonSoft -apiLink "/api/software/" -fileName "soft-web.json"
+    
+    # Transaction Finality
 
+    # Object for fun :)
+    $jsonFinality  = New-Object -TypeName PSObject -Property @{
+        'entry_id' = $entryId.id
+        'online_id' = $onlineId.device_id
+        'pc_name' = $onlineId.name
+        'hello_from_sa' = 'Sys-Admins POWER! Peace!'
+        'site' = 'https://cwiccs.org'
+        'is_complete' = 'true'
+    }
+    $uriFinality = "/api/entries/" + $entryId.id + "/set_complete/"
+    sendJSON -data $jsonFinality -apiLink $uriFinality -fileName "finality-web.json"
 }
 
 
