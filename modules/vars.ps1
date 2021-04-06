@@ -80,7 +80,4 @@ New-Variable -Force -Name jsonRestrictedServices -Option AllScope -Value @()
 New-Variable -Force -Name jsonBaseSettings -Option AllScope -Value @()
 New-Variable -Force -Name jsonSoft -Option AllScope -Value @()
 
-
-
-
 #>
