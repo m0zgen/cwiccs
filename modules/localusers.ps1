@@ -20,6 +20,8 @@ function getLocalUsers
     else {
         
         $now = Get-Date
+        # $now = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffK")
+
         $AllLocalAccounts = Get-CimInstance -Class Win32_UserAccount -Filter "LocalAccount='$True'"
         # $AllLocalAccounts = Get-CimInstance -Class Win32_UserAccount -Namespace "root\cimv2" ` -Filter "LocalAccount='$True'"
 
@@ -35,7 +37,7 @@ function getLocalUsers
                 'Name' = $_.Name
                 'Full Name' = $_.FullName
                 'Disabled' = $_.Disabled
-                'Status' = $_.Status
+                'Status' = 'INFO'
                 'LockOut' = $_.LockOut
                 'Password Expires' = $_.PasswordExpires
                 'Password Required' = $_.PasswordRequired

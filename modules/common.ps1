@@ -103,6 +103,17 @@ function noticeMsg
     Write-Host - $msg -ForegroundColor Magenta -NoNewline;
 }
 
+function debugMsg
+{
+    param
+    ([Parameter(Mandatory = $true)]$msg)
+    $line
+    # -BackgroundColor white
+    Write-Host $msg " - DEBUG`n"  -ForegroundColor Magenta -NoNewline; writeLog -msg "$msg" -Severity Warning
+    $line
+    [Console]::ResetColor()
+}
+
 # common Messages
 function cmAutofixNote
 {
@@ -355,6 +366,7 @@ function checkHttpStatus
     )
     try {
         Write-host "Verifying $url" -ForegroundColor Yellow
+
         $checkConnection = Invoke-WebRequest -Uri $url
         if ($checkConnection.StatusCode -eq 200) {
             Write-Host "Connection Verified!" -ForegroundColor Green

@@ -45,7 +45,7 @@ $htmlReport = $scriptFolder + "\reports\sec-report-" + $hostName + "-" + $dateSt
 
 # Clear and bind html report vars
 # -------------------------------------------------------------------------------------------\
-Clear-Variable -Name ("count*", "os*", "html*", "report*", "local*", "online*", "json*") -Scope Global
+Clear-Variable -Name ("count*", "os*", "html*", "report*", "local*", "online*", "json*", "*eId") -Scope Global
 New-Variable -Force -Name countError -Option AllScope -Value 0
 New-Variable -Force -Name osBootTime -Option AllScope -Value ""
 New-Variable -Force -Name osWorksTime -Option AllScope -Value ""
@@ -67,8 +67,20 @@ New-Variable -Force -Name reportFeatures -Option AllScope -Value @()
 # JSON Objects
 New-Variable -Force -Name deviceId -Option AllScope -Value @()
 New-Variable -Force -Name onlineId -Option AllScope
+New-Variable -Force -Name entryId -Option AllScope
 New-Variable -Force -Name jsonDisks -Option AllScope -Value @()
 New-Variable -Force -Name jsonFeatures -Option AllScope -Value @()
 New-Variable -Force -Name jsonLocalAuditPolicies -Option AllScope -Value @()
+New-Variable -Force -Name jsonLocalPasswordPolicies -Option AllScope -Value @()
+New-Variable -Force -Name jsonLocalRegistryPolicies -Option AllScope -Value @()
+New-Variable -Force -Name jsonLocalUsers -Option AllScope -Value @()
+New-Variable -Force -Name jsonPorts -Option AllScope -Value @()
+New-Variable -Force -Name jsonRequiredServices -Option AllScope -Value @()
+New-Variable -Force -Name jsonRestrictedServices -Option AllScope -Value @()
+New-Variable -Force -Name jsonBaseSettings -Option AllScope -Value @()
+New-Variable -Force -Name jsonSoft -Option AllScope -Value @()
+
+
+
 
 #>

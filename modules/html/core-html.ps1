@@ -76,3 +76,4 @@ $html += $reportPorts | Select Name, State, Status | ConvertTo-Html -Fragment -A
 $html += $reportSoft | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Software</h2>"
 
 $html += $scriptSnippet
+

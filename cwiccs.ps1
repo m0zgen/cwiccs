@@ -82,6 +82,10 @@ $scriptName = $MyInvocation.MyCommand.Name
 if (!$debug) {
     checkPowerShellVersion    
 }
+else
+{
+    debugMsg -msg "Checking PowerShell version DISABLED"
+}
 
 
 # Profiles (script folder location depensed)
@@ -719,22 +723,27 @@ checkPassPols
 $line
 checkAuditPolicy
 $line
+checkRegPols
+$line
+checkFeatures
+$line
+
 if (!$debug)
-{ 
-    checkRegPols
-    $line   
-    checkFeatures
-    $line
+{
     checkOldUpdates
     $line
-    checkSVCs -services_type "restricted_services"
-    $line
-    checkSVCs -services_type "required_services"
-    # checkServices
-    $line
-    checkSoftware
-    $line
 }
+else
+{
+    debugMsg -msg "Disabled checking procedures`nRegistry, Features, Updates, Services, Siftware"
+}
+checkSVCs -services_type "restricted_services"
+$line
+checkSVCs -services_type "required_services"
+# checkServices
+$line
+checkSoftware
+$line
 disableSharing
 # disableIPv6
 checkFileSharingStatus
@@ -759,5 +768,3 @@ checkPowerShellPolicy
 
 # Count errors, send log
 finalSteps
-
-# TODO: profile list does not works

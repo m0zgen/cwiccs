@@ -1,4 +1,118 @@
+
+# Functions
+# -------------------------------------------------------------------------------------------\
+
+# Deprecated
+function checkEntry
+{
+
+    param(
+        [Parameter(Mandatory = $true)]$oID
+    )
+
+    $header = @{"Authorization"="Token " + $config.App_Token}
+
+    $uri = $config.App_Web_Server + "/api/entries/"
+    $data = Invoke-RestMethod -Method get -ContentType 'Application/Json' -Headers $header -Uri $uri
+
+    if ($data)
+    {
+        if (($data | Foreach {$_.id}) -contains $oID)
+        {
+            return $true
+        }
+        else
+        {
+            return $false
+        }
+    }
+    else
+    {
+        return $false
+    }
+
+}
+
+function sendJSON
+{
+    param(
+        [Parameter(Mandatory = $true)]$data,
+        [Parameter(Mandatory = $true)]$apiLink,
+        [Parameter(Mandatory = $true)]$fileName
+    )
+
+    $header = @{"X-CWiCCS"=$config.App_Name}
+    $header += @{"Authorization"="Token " + $config.App_Token}
+    $header += @{"UUID"=$osUUID}
+
+    $body = $data | ConvertTo-Json
+
+    if ($saveonlinejson)
+    {
+        createJSON -data $data -fileName $fileName
+    }
+
+    # Invoke-WebRequest "http://192.168.10.20:8000/test-post"  -Body $body -Method 'POST' -Headers $header
+
+    #    if (checkHttpStatus -url $config.App_Web_Server)
+    #    {
+    $uri = $config.App_Web_Server + $apiLink
+
+    try
+    {
+        $resp = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
+#        write-host $resp - OK
+    }
+    catch
+    {
+        Write-Host "Error send JSON data to web server `n"
+
+        if ($debug)
+        {
+
+            debugMsg -msg "Interface SEND JSON DATA"
+            $_.Exception.Response
+            $result = $_.Exception.Response.GetResponseStream()
+            $reader = New-Object System.IO.StreamReader($result)
+            $reader.BaseStream.Position = 0
+            $reader.DiscardBufferedData()
+            $responseBody = $reader.ReadToEnd();
+
+            Write-Host $responseBody
+        }
+
+    }
+
+    #    }
+    #    else
+    #    {
+    #        Write-Host "Web serer is down!"
+    #    }
+
+}
+
+function genJSONObjects
+{
+    param(
+        [Parameter(Mandatory = $true)]$arrayData
+    )
+
+    $jsonObject = $arrayData | ForEach-Object {
+        New-Object -TypeName PSObject -Property @{
+            'name' = $_.Name
+            'status' = $_.Status
+            #            'device' = $onlineId.id
+            'entry' = $entryId.id
+            'state' = $_.State
+        }
+    }
+
+    return $jsonObject
+}
+
 # Online checking
+# -------------------------------------------------------------------------------------------\
+
 if (!$config.App_Token -eq "")
 {
     if (checkHttpStatus -url $config.App_Web_Server)
@@ -8,11 +122,44 @@ if (!$config.App_Token -eq "")
         $header += @{"UUID"=$osUUID}
         $body = $deviceId | ConvertTo-Json
 
-        $uri = $config.App_Web_Server + "/api/devices/"
+        $uriDev = $config.App_Web_Server + "/api/devices/"
+        $uriEnt = $config.App_Web_Server + "/api/entries/"
 
         try
         {
-            $onlineId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
+            $onlineId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uriDev
+
+            if ($null -eq $onlineId)
+            {
+                infoMsg -msg "Online ID not provided`n"
+            }
+            else
+            {
+                infoMsg -msg "Inline Id retrieved - OK`n"
+
+                $jsonEntryOID = $onlineId | ForEach-Object {
+                    New-Object -TypeName PSObject -Property @{
+#                        'id' = $_.id
+                        'device' = $_.id
+                    }
+                }
+
+                $jsonEntry = $jsonEntryOID | ConvertTo-Json
+                $entryId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $jsonEntry -Uri $uriEnt
+
+                infoMsg -msg "Entry Id retrieved - OK`n"
+
+                if ($debug)
+                {
+                    debugMsg -msg "Interface JSON - Online and Entry IDs"
+                    Write-Host "Online ID - $onlineId"
+                    Write-Host "Entry oID - $jsonEntryOID"
+                    Write-Host "Entry ID - $entryId"
+                }
+
+            }
+
+
         }
 #        catch [System.Net.WebException],[System.IO.IOException] {
 #            "Unable to download MyDoc.doc from https://cwiccs.org."
@@ -61,84 +208,137 @@ function createJSON
     }
 }
 
-function sendJSON
+function convertStrDateToUTC
 {
     param(
-        [Parameter(Mandatory = $true)]$data,
-        [Parameter(Mandatory = $true)]$apiLink
+        [Parameter(Mandatory = $true)]$strDate
     )
 
-    $header = @{"X-CWiCCS"=$config.App_Name}
-    $header += @{"Authorization"="Token " + $config.App_Token}
-    $header += @{"UUID"=$osUUID}
-
-    $body = $data | ConvertTo-Json
-
-    # Invoke-WebRequest "http://192.168.10.19:8000/test-post"  -Body $body -Method 'POST' -Headers $header
-
-#    if (checkHttpStatus -url $config.App_Web_Server)
-#    {
-        $uri = $config.App_Web_Server + $apiLink
-        Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
-#    }
-#    else
-#    {
-#        Write-Host "Web serer is down!"
-#    }
-
-}
-
-function genJSONObjects
-{
-    param(
-        [Parameter(Mandatory = $true)]$arrayData
-    )
-
-    $jsonObject = $arrayData | ForEach-Object {
-        New-Object -TypeName PSObject -Property @{
-            'name' = $_.Name
-            'status' = $_.Status
-            'device' = $onlineId.id
-            'state' = $_.State
-        }
+    try
+    {
+        $dt = [System.DateTime]$strDate
+        $offset = [TimeZoneInfo]::Local | Select BaseUtcOffset
+        $result = $dt.toUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffK')
+        return $result
+    }
+    catch
+    {
+        return $strDate
     }
 
-    return $jsonObject
+
 }
 
 function bindJSON
 {
     # Generate web api JSON objects
+
+    # Deprecated
+#    if (checkEntry -oID $onlineId.id)
+#    {
+#        regularMsg -msg "Notice: "
+#        infoMsg -msg "Device alredy registered. `n"
+#    }
+#    else
+#    {
+#        # Send data
+#    }
+
+#    $jsonEntry = $onlineId | ForEach-Object {
+#        New-Object -TypeName PSObject -Property @{
+#            'id' = $_.id
+#            'device' = $_.id
+#        }
+#    }
+#
+#    sendJSON -data $jsonEntry -apiLink "/api/entries/" -fileName "entries-web.json"
+
+    if ($debug)
+    {
+        Write-Host $entryId.id
+    }
+
     $jsonDisks = $diskInfo | ForEach-Object {
         New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
             'name' = $_.Name
             'total_size' = $_.'Total(GB)'
             'free_size' = $_.'Free(GB)'
-            'device' = $onlineId.id
+#            'device' = $onlineId.id
         }
     }
 
-    sendJSON -data $jsonDisks -apiLink "/api/disks/"
-    if ($saveonlinejson)
-    { createJSON -data $jsonDisks -fileName "disks-web.json" }
+    sendJSON -data $jsonDisks -apiLink "/api/disks/" -fileName "disks-web.json"
 
+    $jsonLocalUsers = $localUsers | ForEach-Object {
+
+        $pwdExOn = convertStrDateToUTC -strDate $_.'Password Expiry Date'
+
+        New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
+            'name' = $_.Name
+            'full_name' = $_.'Full Name'
+            'description' = $_.'Description'
+            'domain' = $_.'Domain'
+            'password_expires_on' = $pwdExOn
+            'is_disabled' = $_.'Disabled'
+            'is_locked_out' = $_.'LockOut'
+            'is_password_required' = $_.'Password Required'
+            'is_password_expired' = $_.'Password Expires'
+            'status' = $_.'Status'
+        }
+    }
+
+    if ($debug)
+    {
+        debugMsg -msg "Local users data"
+        Write-Host $jsonLocalUsers
+    }
+    sendJSON -data $jsonLocalUsers -apiLink "/api/local-users/" -fileName "local-users-web.json"
+
+    # Info about of listened ports
+    $jsonPorts = $reportPorts | ForEach-Object {
+        New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
+            'port' = $_.State
+            'status' = $_.Status
+        }
+    }
+
+    sendJSON -data $jsonPorts -apiLink "/api/ports/" -fileName "ports-web.json"
+
+    # Interface genrators
     $jsonFeatures = genJSONObjects -arrayData $reportFeatures
-    sendJSON -data $jsonFeatures -apiLink "/api/features/"
-    if ($saveonlinejson)
-    { createJSON -data $jsonFeatures -fileName "features-web.json" }
+    sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
 
     $jsonLocalAuditPolicies = genJSONObjects -arrayData $localAuditPolicy
-    sendJSON -data $jsonLocalAuditPolicies -apiLink "/api/local-audit-policies/"
-    if ($saveonlinejson)
-    { createJSON -data $jsonLocalAuditPolicies -fileName "local-audit-policies-web.json" }
+    sendJSON -data $jsonLocalAuditPolicies -apiLink "/api/local-audit-policies/" -fileName "local-audit-policies-web.json"
+
+    $jsonLocalPasswordPolicies = genJSONObjects -arrayData $localPasswordPolicy
+    sendJSON -data $jsonLocalPasswordPolicies -apiLink "/api/local-password-policies/" -fileName "local-password-policies-web.json"
+
+    $jsonLocalRegistryPolicies = genJSONObjects -arrayData $localRegistryPolicy
+    sendJSON -data $jsonLocalRegistryPolicies -apiLink "/api/local-password-policies/" -fileName "local-registry-policies-web.json"
+
+    $jsonRequiredServices = genJSONObjects -arrayData $reportRequiredServices
+    sendJSON -data $jsonRequiredServices -apiLink "/api/required-services/" -fileName "reqired-services-web.json"
+
+    $jsonRestrictedServices = genJSONObjects -arrayData $reportRestrictedServices
+    sendJSON -data $jsonRestrictedServices -apiLink "/api/restricted-services/" -fileName "restricted-services-web.json"
+
+    $jsonBaseSettings = genJSONObjects -arrayData $reportBaseSettings
+    sendJSON -data $jsonBaseSettings -apiLink "/api/settings/" -fileName "settings-web.json"
+
+    $jsonSoft = genJSONObjects -arrayData $reportSoft
+    sendJSON -data $jsonSoft -apiLink "/api/software/" -fileName "soft-web.json"    
+
 }
 
 
 # Bind, Send JSON data to WEB server
-regularMsg -msg "Web id status "
-if ($onlineId -eq $null)
+regularMsg -msg "- Web id status "
+if ($null -eq $onlineId)
 {
-
     infoMsg -msg "Not provided`n"
 }
 else
@@ -182,25 +382,25 @@ if ($savereportjson)
     createJSON -data $deviceId -fileName "device.json"
 }
 
+if ($debug)
+{
 
-Write-Host $onlineId.id
-Write-Host $deviceId
+    debugMsg -msg "Interface JSON"
 
-Write-Host $reportSoft
-$reportSoft = $reportSoft | Add-Member -NotePropertyMembers @{device=$onlineId.id} -PassThru
-Write-Host $reportSoft
-$body2 = $reportSoft | ConvertTo-Json
-Write-Host $body2
-#Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body2 -Uri https://cwiccs.org/api/disks/
+    Write-Host $onlineId.id
+    Write-Host $deviceId
 
-# 710e2bdb5ef4ee274fa4dac12ea50f1d7bca96ea
+    Write-Host $reportSoft
+    $reportSoft = $reportSoft | Add-Member -NotePropertyMembers @{ device = $onlineId.id } -PassThru
+    Write-Host $reportSoft
+    $body2 = $reportSoft | ConvertTo-Json
+    Write-Host $body2
+    #Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body2 -Uri https://cwiccs.org/api/disks/
 
-# getGPOProfile
+    $jsonLocalAuditPolicies | ConvertTo-Json
 
-# Temporary section
-# ----------------
-# start $htmlReport
-# Write-Host $reportSoft.Count
+}
 
-$jsonLocalAuditPolicies | ConvertTo-Json
+#Write-Host $jsonEntry
+#Write-Host $jsonLocalPasswordPolicies
 
