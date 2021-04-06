@@ -1,65 +1,6 @@
-# Online checking
-if (!$config.App_Token -eq "")
-{
-    if (checkHttpStatus -url $config.App_Web_Server)
-    {
-        $header = @{"X-CWiCCS"=$config.App_Name}
-        $header += @{"Authorization"="Token " + $config.App_Token}
-        $header += @{"UUID"=$osUUID}
-        $body = $deviceId | ConvertTo-Json
 
-        $uri = $config.App_Web_Server + "/api/devices/"
-
-        try
-        {
-            $onlineId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
-        }
-#        catch [System.Net.WebException],[System.IO.IOException] {
-#            "Unable to download MyDoc.doc from https://cwiccs.org."
-#        }
-#        catch {
-#            "An error occurred that could not be resolved."
-#            Write-Host ($_ | ConvertTo-Json)
-#        }
-
-        catch
-        {
-            Write-Host "Invalid web token"
-            # Write-Host ($_ | ConvertTo-Json)
-        }
-    }
-    else
-    {
-        Write-Host "Web serer is down!"
-    }
-}
-else
-{
-    warningMsg -msg "App token does not defined in the cwiccs.json`n"
-}
-
-function createJSON
-{
-    param(
-        [Parameter(Mandatory = $true)]$fileName,
-        [Parameter(Mandatory = $true)]$data
-    )
-
-    # Save to json
-    try
-    {
-        # JSON Data saver
-        $path = $jsonFolder + "\" + $osUUID # + "\" + $fileName
-        $dataFile = $path + "\" + $fileName
-        createFolder $path
-
-        $data | ConvertTo-Json | Set-Content -Path $dataFile
-    }
-    catch
-    {
-        Write-Host "Can't write report $path file - Permission denied"
-    }
-}
+# Functions
+# -------------------------------------------------------------------------------------------\
 
 # Deprecated
 function checkEntry
@@ -113,40 +54,40 @@ function sendJSON
 
     # Invoke-WebRequest "http://192.168.10.20:8000/test-post"  -Body $body -Method 'POST' -Headers $header
 
-#    if (checkHttpStatus -url $config.App_Web_Server)
-#    {
-        $uri = $config.App_Web_Server + $apiLink
+    #    if (checkHttpStatus -url $config.App_Web_Server)
+    #    {
+    $uri = $config.App_Web_Server + $apiLink
 
-        try
+    try
+    {
+        $resp = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
+#        write-host $resp - OK
+    }
+    catch
+    {
+        Write-Host "Error send JSON data to web server `n"
+
+        if ($debug)
         {
-            $resp = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
-#            write-host OK
-        }
-        catch
-        {
-            Write-Host "Error send JSON data to web server `n"
 
-            if ($debug)
-            {
+            debugMsg -msg "Interface SEND JSON DATA"
+            $_.Exception.Response
+            $result = $_.Exception.Response.GetResponseStream()
+            $reader = New-Object System.IO.StreamReader($result)
+            $reader.BaseStream.Position = 0
+            $reader.DiscardBufferedData()
+            $responseBody = $reader.ReadToEnd();
 
-                debugMsg -msg "Interface SEND JSON DATA"
-                $_.Exception.Response
-                $result = $_.Exception.Response.GetResponseStream()
-                $reader = New-Object System.IO.StreamReader($result)
-                $reader.BaseStream.Position = 0
-                $reader.DiscardBufferedData()
-                $responseBody = $reader.ReadToEnd();
-
-                Write-Host $responseBody
-            }
-
+            Write-Host $responseBody
         }
 
-#    }
-#    else
-#    {
-#        Write-Host "Web serer is down!"
-#    }
+    }
+
+    #    }
+    #    else
+    #    {
+    #        Write-Host "Web serer is down!"
+    #    }
 
 }
 
@@ -160,13 +101,109 @@ function genJSONObjects
         New-Object -TypeName PSObject -Property @{
             'name' = $_.Name
             'status' = $_.Status
-#            'device' = $onlineId.id
-            'entry' = $onlineId.id
+            #            'device' = $onlineId.id
+            'entry' = $entryId.id
             'state' = $_.State
         }
     }
 
     return $jsonObject
+}
+
+# Online checking
+# -------------------------------------------------------------------------------------------\
+
+if (!$config.App_Token -eq "")
+{
+    if (checkHttpStatus -url $config.App_Web_Server)
+    {
+        $header = @{"X-CWiCCS"=$config.App_Name}
+        $header += @{"Authorization"="Token " + $config.App_Token}
+        $header += @{"UUID"=$osUUID}
+        $body = $deviceId | ConvertTo-Json
+
+        $uriDev = $config.App_Web_Server + "/api/devices/"
+        $uriEnt = $config.App_Web_Server + "/api/entries/"
+
+        try
+        {
+            $onlineId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uriDev
+
+            if ($null -eq $onlineId)
+            {
+                infoMsg -msg "Online ID not provided`n"
+            }
+            else
+            {
+                infoMsg -msg "Inline Id retrieved - OK`n"
+
+                $jsonEntryOID = $onlineId | ForEach-Object {
+                    New-Object -TypeName PSObject -Property @{
+#                        'id' = $_.id
+                        'device' = $_.id
+                    }
+                }
+
+                $jsonEntry = $jsonEntryOID | ConvertTo-Json
+                $entryId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $jsonEntry -Uri $uriEnt
+
+                if ($debug)
+                {
+                    debugMsg -msg "Interface JSON - Online and Entry IDs"
+                    Write-Host "Online ID - $onlineId"
+                    Write-Host "Entry oID - $jsonEntryOID"
+                    Write-Host "Entry ID - $entryId"
+                }
+
+            }
+
+
+        }
+#        catch [System.Net.WebException],[System.IO.IOException] {
+#            "Unable to download MyDoc.doc from https://cwiccs.org."
+#        }
+#        catch {
+#            "An error occurred that could not be resolved."
+#            Write-Host ($_ | ConvertTo-Json)
+#        }
+
+        catch
+        {
+            Write-Host "Invalid web token"
+            # Write-Host ($_ | ConvertTo-Json)
+        }
+    }
+    else
+    {
+        Write-Host "Web serer is down!"
+    }
+}
+else
+{
+    warningMsg -msg "App token does not defined in the cwiccs.json`n"
+}
+
+function createJSON
+{
+    param(
+        [Parameter(Mandatory = $true)]$fileName,
+        [Parameter(Mandatory = $true)]$data
+    )
+
+    # Save to json
+    try
+    {
+        # JSON Data saver
+        $path = $jsonFolder + "\" + $osUUID # + "\" + $fileName
+        $dataFile = $path + "\" + $fileName
+        createFolder $path
+
+        $data | ConvertTo-Json | Set-Content -Path $dataFile
+    }
+    catch
+    {
+        Write-Host "Can't write report $path file - Permission denied"
+    }
 }
 
 function bindJSON
@@ -184,14 +221,14 @@ function bindJSON
 #        # Send data
 #    }
 
-    $jsonEntry = $onlineId | ForEach-Object {
-        New-Object -TypeName PSObject -Property @{
-        #                'id' = $_.id
-            'device' = $_.id
-        }
-    }
-
-    sendJSON -data $jsonEntry -apiLink "/api/entries/" -fileName "entirs-web.json"
+#    $jsonEntry = $onlineId | ForEach-Object {
+#        New-Object -TypeName PSObject -Property @{
+#            'id' = $_.id
+#            'device' = $_.id
+#        }
+#    }
+#
+#    sendJSON -data $jsonEntry -apiLink "/api/entries/" -fileName "entries-web.json"
 
     $jsonDisks = $diskInfo | ForEach-Object {
         New-Object -TypeName PSObject -Property @{
@@ -199,23 +236,26 @@ function bindJSON
             'total_size' = $_.'Total(GB)'
             'free_size' = $_.'Free(GB)'
 #            'device' = $onlineId.id
-            'entry' = $onlineId.id
+            'entry' = $entryId.id
         }
     }
+
+
+    Write-Host $entryId.id
 
     sendJSON -data $jsonDisks -apiLink "/api/disks/" -fileName "disks-web.json"
 
     $jsonFeatures = genJSONObjects -arrayData $reportFeatures
-#    sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
+    sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
 
     $jsonLocalAuditPolicies = genJSONObjects -arrayData $localAuditPolicy
-#    sendJSON -data $jsonLocalAuditPolicies -apiLink "/api/local-audit-policies/" -fileName "local-audit-policies-web.json"
+    sendJSON -data $jsonLocalAuditPolicies -apiLink "/api/local-audit-policies/" -fileName "local-audit-policies-web.json"
 
     $jsonLocalPasswordPolicies = genJSONObjects -arrayData $localPasswordPolicy
-#    sendJSON -data $jsonLocalPasswordPolicies -apiLink "/api/local-password-policies/" -fileName "local-password-policies-web.json"
+    sendJSON -data $jsonLocalPasswordPolicies -apiLink "/api/local-password-policies/" -fileName "local-password-policies-web.json"
 
     $jsonLocalRegistryPolicies = genJSONObjects -arrayData $localRegistryPolicy
-#    sendJSON -data $jsonLocalRegistryPolicies -apiLink "/api/local-password-policies/" -fileName "local-registry-policies-web.json"
+    sendJSON -data $jsonLocalRegistryPolicies -apiLink "/api/local-password-policies/" -fileName "local-registry-policies-web.json"
 
 }
 
