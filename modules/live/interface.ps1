@@ -147,6 +147,8 @@ if (!$config.App_Token -eq "")
                 $jsonEntry = $jsonEntryOID | ConvertTo-Json
                 $entryId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $jsonEntry -Uri $uriEnt
 
+                infoMsg -msg "Entry Id retrieved - OK`n"
+
                 if ($debug)
                 {
                     debugMsg -msg "Interface JSON - Online and Entry IDs"
@@ -206,6 +208,27 @@ function createJSON
     }
 }
 
+function convertStrDateToUTC
+{
+    param(
+        [Parameter(Mandatory = $true)]$strDate
+    )
+
+    try
+    {
+        $dt = [System.DateTime]$strDate
+        $offset = [TimeZoneInfo]::Local | Select BaseUtcOffset
+        $result = $dt.toUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffK')
+        return $result
+    }
+    catch
+    {
+        return $strDate
+    }
+
+
+}
+
 function bindJSON
 {
     # Generate web api JSON objects
@@ -230,21 +253,47 @@ function bindJSON
 #
 #    sendJSON -data $jsonEntry -apiLink "/api/entries/" -fileName "entries-web.json"
 
+    if ($debug)
+    {
+        Write-Host $entryId.id
+    }
+
     $jsonDisks = $diskInfo | ForEach-Object {
         New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
             'name' = $_.Name
             'total_size' = $_.'Total(GB)'
             'free_size' = $_.'Free(GB)'
 #            'device' = $onlineId.id
-            'entry' = $entryId.id
         }
     }
 
-
-    Write-Host $entryId.id
-
     sendJSON -data $jsonDisks -apiLink "/api/disks/" -fileName "disks-web.json"
 
+    $jsonLocalUsers = $localUsers | ForEach-Object {
+
+        $pwdExOn = convertStrDateToUTC -strDate $_.'Password Expiry Date'
+
+        New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
+            'name' = $_.Name
+            'full_name' = $_.'Full Name'
+            'description' = $_.'Description'
+            'domain' = $_.'Domain'
+            'password_expires_on' = $pwdExOn
+            'is_disabled' = $_.'Disabled'
+            'is_locked_out' = $_.'LockOut'
+            'is_password_required' = $_.'Password Required'
+            'is_password_expired' = $_.'Password Expires'
+            'status' = $_.'Status'
+
+        }
+    }
+
+    Write-Host $jsonLocalUsers
+    sendJSON -data $jsonLocalUsers -apiLink "/api/local-users/" -fileName "local-users-web.json"
+
+    # Interface genrators
     $jsonFeatures = genJSONObjects -arrayData $reportFeatures
     sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
 

@@ -73,5 +73,6 @@ New-Variable -Force -Name jsonFeatures -Option AllScope -Value @()
 New-Variable -Force -Name jsonLocalAuditPolicies -Option AllScope -Value @()
 New-Variable -Force -Name jsonLocalPasswordPolicies -Option AllScope -Value @()
 New-Variable -Force -Name jsonLocalRegistryPolicies -Option AllScope -Value @()
+New-Variable -Force -Name jsonLocalUsers -Option AllScope -Value @()
 
 #>
