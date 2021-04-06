@@ -286,12 +286,26 @@ function bindJSON
             'is_password_required' = $_.'Password Required'
             'is_password_expired' = $_.'Password Expires'
             'status' = $_.'Status'
-
         }
     }
 
-    Write-Host $jsonLocalUsers
+    if ($debug)
+    {
+        debugMsg -msg "Local users data"
+        Write-Host $jsonLocalUsers
+    }
     sendJSON -data $jsonLocalUsers -apiLink "/api/local-users/" -fileName "local-users-web.json"
+
+    # Info about of listened ports
+    $jsonPorts = $reportPorts | ForEach-Object {
+        New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
+            'port' = $_.State
+            'status' = $_.Status
+        }
+    }
+
+    sendJSON -data $jsonPorts -apiLink "/api/ports/" -fileName "ports-web.json"
 
     # Interface genrators
     $jsonFeatures = genJSONObjects -arrayData $reportFeatures
@@ -306,11 +320,23 @@ function bindJSON
     $jsonLocalRegistryPolicies = genJSONObjects -arrayData $localRegistryPolicy
     sendJSON -data $jsonLocalRegistryPolicies -apiLink "/api/local-password-policies/" -fileName "local-registry-policies-web.json"
 
+    $jsonRequiredServices = genJSONObjects -arrayData $reportRequiredServices
+    sendJSON -data $jsonRequiredServices -apiLink "/api/required-services/" -fileName "reqired-services-web.json"
+
+    $jsonRestrictedServices = genJSONObjects -arrayData $reportRestrictedServices
+    sendJSON -data $jsonRestrictedServices -apiLink "/api/restricted-services/" -fileName "restricted-services-web.json"
+
+    $jsonBaseSettings = genJSONObjects -arrayData $reportBaseSettings
+    sendJSON -data $jsonBaseSettings -apiLink "/api/settings/" -fileName "settings-web.json"
+
+    $jsonSoft = genJSONObjects -arrayData $reportSoft
+    sendJSON -data $jsonSoft -apiLink "/api/software/" -fileName "soft-web.json"    
+
 }
 
 
 # Bind, Send JSON data to WEB server
-regularMsg -msg "Web id status "
+regularMsg -msg "- Web id status "
 if ($null -eq $onlineId)
 {
     infoMsg -msg "Not provided`n"

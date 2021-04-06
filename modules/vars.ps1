@@ -74,5 +74,13 @@ New-Variable -Force -Name jsonLocalAuditPolicies -Option AllScope -Value @()
 New-Variable -Force -Name jsonLocalPasswordPolicies -Option AllScope -Value @()
 New-Variable -Force -Name jsonLocalRegistryPolicies -Option AllScope -Value @()
 New-Variable -Force -Name jsonLocalUsers -Option AllScope -Value @()
+New-Variable -Force -Name jsonPorts -Option AllScope -Value @()
+New-Variable -Force -Name jsonRequiredServices -Option AllScope -Value @()
+New-Variable -Force -Name jsonRestrictedServices -Option AllScope -Value @()
+New-Variable -Force -Name jsonBaseSettings -Option AllScope -Value @()
+New-Variable -Force -Name jsonSoft -Option AllScope -Value @()
+
+
+
 
 #>
