@@ -16,6 +16,7 @@ function checkFeatures
     # infoMsg -msg "$( $osName ) - $( $osVersion )`n"
 
     if ($osVersion -eq "server") {
+        $osTypeClient = $false
         if ($isAdmin)
             {
                 collectFeatures
@@ -31,6 +32,7 @@ function checkFeatures
             }
     }
     elseif ($osVersion -eq "client") {
+        $osTypeClient = $true
         regularMsg -msg "$( $osVersion ) - does not has server features"
         infoMsg -msg "(INFO)`n"
     }

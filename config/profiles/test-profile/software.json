@@ -8,9 +8,45 @@
 	        "Name":  "NXLog-CE",
 	        "Version":  2.10
 	    },
+		{
+	        "Name":  "Nmap",
+	        "Version":  7.0
+	    },
+		{
+	        "Name":  "Npcap",
+	        "Version":  0.0
+	    },
+		{
+	        "Name":  "mRemoteNG",
+	        "Version":  0.0
+	    },
+		{
+	        "Name":  "Git version",
+	        "Version":  2.0
+	    },
+		{
+	        "Name":  "Google",
+	        "Version":  0.0
+	    },
+		{
+	        "Name":  "Mozilla",
+	        "Version":  0.0
+	    },
+		{
+	        "Name":  "Mozilla Maintenance Service",
+	        "Version":  0.0
+	    },
+		{
+	        "Name":  "VMware",
+	        "Version":  0.0
+	    },
 	    {
 	        "Name":  "OSSEC HIDS",
 	        "Version":  3.6
+	    },
+		{
+	        "Name":  "Microsoft Visual",
+	        "Version":  0
 	    },
 	    {
 	        "Name":  "Notepad",
@@ -20,9 +56,25 @@
 	        "Name":  "Parallels Tools",
 	        "Version":  15.1
 	    },
+		{
+	        "Name":  "PowerShell",
+	        "Version":  7
+	    },
+		{
+	        "Name":  "Remote Desktop",
+	        "Version":  0
+	    },
 	    {
 	        "Name":  "SonicWall NetExtender",
 	        "Version":  9.0
+	    },
+		{
+	        "Name":  "OpenVPN",
+	        "Version":  2.5
+	    },
+		{
+	        "Name":  "Total",
+	        "Version":  0
 	    },
 	    {
 	        "Name":  "Far Manager",

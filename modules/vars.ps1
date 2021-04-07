@@ -46,9 +46,10 @@ $htmlReport = $scriptFolder + "\reports\sec-report-" + $hostName + "-" + $dateSt
 # Clear and bind html report vars
 # -------------------------------------------------------------------------------------------\
 Clear-Variable -Name ("count*", "os*", "html*", "report*", "local*", "online*", "json*", "*eId") -Scope Global
-New-Variable -Force -Name countError -Option AllScope -Value 0
 New-Variable -Force -Name osBootTime -Option AllScope -Value ""
 New-Variable -Force -Name osWorksTime -Option AllScope -Value ""
+New-Variable -Force -Name osTypeClient -Option AllScope -Value ""
+New-Variable -Force -Name countError -Option AllScope -Value 0
 New-Variable -Force -Name localUsers -Option AllScope -Value @()
 New-Variable -Force -Name diskInfo -Option AllScope -Value @()
 New-Variable -Force -Name localPasswordPolicy -Option AllScope -Value @()
