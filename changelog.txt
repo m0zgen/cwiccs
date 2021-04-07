@@ -1,3 +1,8 @@
+- Add to report used scan profile name
+- Exclide Windows features checking in the Windows 10
+- Added support Windows 10 Russian
+
+
 + App Extra config
 + Fix report folder permission checking
 + Dev Cwiccs-dev.json config

@@ -308,8 +308,19 @@ function bindJSON
     sendJSON -data $jsonPorts -apiLink "/api/ports/" -fileName "ports-web.json"
 
     # Interface genrators
-    $jsonFeatures = genJSONObjects -arrayData $reportFeatures
-    sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
+
+    # Write-Host Is Workstation - $osTypeClient
+    if ($osTypeClient) {
+        $jsonFeatures = New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
+            'name' = 'NoN'
+            'status' = 'NoN'
+        }
+        sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
+    } else {
+        $jsonFeatures = genJSONObjects -arrayData $reportFeatures
+        sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
+    }
 
     $jsonLocalAuditPolicies = genJSONObjects -arrayData $localAuditPolicy
     sendJSON -data $jsonLocalAuditPolicies -apiLink "/api/local-audit-policies/" -fileName "local-audit-policies-web.json"

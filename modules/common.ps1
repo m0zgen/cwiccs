@@ -367,7 +367,8 @@ function checkHttpStatus
     try {
         Write-host "Verifying $url" -ForegroundColor Yellow
 
-        $checkConnection = Invoke-WebRequest -Uri $url
+        # -UseBasicParsing added after Win10 IE settings error
+        $checkConnection = Invoke-WebRequest -Uri $url -UseBasicParsing
         if ($checkConnection.StatusCode -eq 200) {
             Write-Host "Connection Verified!" -ForegroundColor Green
             return 1
