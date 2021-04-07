@@ -307,14 +307,14 @@ function bindJSON
 
     sendJSON -data $jsonPorts -apiLink "/api/ports/" -fileName "ports-web.json"
 
-    # Interface genrators
-
+    # Interface generators
     # Write-Host Is Workstation - $osTypeClient
     if ($osTypeClient) {
         $jsonFeatures = New-Object -TypeName PSObject -Property @{
             'entry' = $entryId.id
             'name' = 'NoN'
-            'status' = 'NoN'
+            'state' = 'NoN'
+            'status' = 'INFO'
         }
         sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
     } else {

@@ -756,10 +756,10 @@ if (!$debug)
 {
     checkWindowsTime
     #TODO: Add next step - Checking states
-    $line
-    checkPorts
-    $line
 }
+$line
+checkPorts
+$line
 checkUAC
 checkPowerShellPolicy
 ###
