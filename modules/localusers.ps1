@@ -24,14 +24,27 @@ function getLocalUsers
 
         $AllLocalAccounts = Get-CimInstance -Class Win32_UserAccount -Filter "LocalAccount='$True'"
         # $AllLocalAccounts = Get-CimInstance -Class Win32_UserAccount -Namespace "root\cimv2" ` -Filter "LocalAccount='$True'"
-
+        
         $localUsers = $AllLocalAccounts | ForEach-Object {
             $user = ([adsi]"WinNT://$computer/$( $_.Name ),user")
             $pwAge = $user.PasswordAge.Value
             $maxPwAge = $user.MaxPasswordAge.Value
             $pwLastSet = $now.AddSeconds(-$pwAge)
-            $lastChangePwd = (net user $_.Name | findstr /B /C:"Password last set").trim("Password last set")
-            $lastlogonstring = (net user $_.Name | findstr /B /C:"Last logon").trim("Last logon")
+            # $lastChangePwd = (net user $_.Name | findstr /B /C:"Password last set").trim("Password last set")
+            # $lastlogonstring = (net user $_.Name | findstr /B /C:"Last logon").trim("Last logon")
+            $userLocal = Get-LocalUser -Name $_.Name | Where-Object {$_.Lastlogon} | Select-Object Name,Enabled,SID,Lastlogon,PasswordLastSet 
+ 
+            if ($null -eq $userLocal.LastLogon) {
+                $lastlogonstring = "Never logon"
+            } else {
+                $lastlogonstring = $userLocal.Lastlogon
+            }
+
+            if ($null -eq $userLocal.PasswordLastSet) {
+                $lastChangePwd = "Never changed"
+            } else {
+                $lastChangePwd = $userLocal.PasswordLastSet
+            }
 
             New-Object -TypeName PSObject -Property @{
                 'Name' = $_.Name
