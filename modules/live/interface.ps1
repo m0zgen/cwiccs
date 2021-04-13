@@ -1,4 +1,5 @@
-
+# 
+$contentType = 'Application/Json; charset=utf-8'
 # Functions
 # -------------------------------------------------------------------------------------------\
 
@@ -13,7 +14,7 @@ function checkEntry
     $header = @{"Authorization"="Token " + $config.App_Token}
 
     $uri = $config.App_Web_Server + "/api/entries/"
-    $data = Invoke-RestMethod -Method get -ContentType 'Application/Json' -Headers $header -Uri $uri
+    $data = Invoke-RestMethod -Method get -ContentType $contentType -Headers $header -Uri $uri
 
     if ($data)
     {
@@ -33,6 +34,49 @@ function checkEntry
 
 }
 
+function createJSON
+{
+    param(
+        [Parameter(Mandatory = $true)]$fileName,
+        [Parameter(Mandatory = $true)]$data
+    )
+
+    # Save to json
+    try
+    {
+        # JSON Data saver
+        $path = $jsonFolder + "\" + $osUUID # + "\" + $fileName
+        $dataFile = $path + "\" + $fileName
+        createFolder $path
+
+        $data | ConvertTo-Json | Set-Content -Path $dataFile -Encoding utf8
+    }
+    catch
+    {
+        Write-Host "Can't write report $path file - Permission denied"
+    }
+}
+
+function convertStrDateToUTC
+{
+    param(
+        [Parameter(Mandatory = $true)]$strDate
+    )
+
+    try
+    {
+        $dt = [System.DateTime]$strDate
+        $offset = [TimeZoneInfo]::Local | Select BaseUtcOffset
+        $result = $dt.toUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffK')
+        return $result
+    }
+    catch
+    {
+        return $strDate
+    }
+
+
+}
 function sendJSON
 {
     param(
@@ -60,7 +104,7 @@ function sendJSON
 
     try
     {
-        $resp = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uri
+        $resp = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uri
 #        write-host $resp - OK
     }
     catch
@@ -91,6 +135,59 @@ function sendJSON
 
 }
 
+function genJSONObjectFeatures {
+    param(
+        [Parameter(Mandatory = $true)]$arrayData
+    )
+    
+    if ($osTypeClient) {
+        $jsonObject = New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
+            'name' = 'NoN'
+            'state' = 'NoN'
+            'status' = 'INFO'
+        }
+
+        return $jsonObject
+    } else {
+        $jsonObject = genJSONObjects -arrayData $reportFeatures
+        return $jsonObject
+    }
+}
+
+function genJSONObjectDisk {
+    param(
+        [Parameter(Mandatory = $true)]$arrayData
+    )
+    
+    $jsonObject = $arrayData | ForEach-Object {
+        New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
+            'name' = $_.Name
+            'total_size' = $_.'Total(GB)'
+            'free_size' = $_.'Free(GB)'
+#            'device' = $onlineId.id
+        }
+    }
+
+    return $jsonObject
+}
+
+function genJSONObjectPorts {
+    param(
+        [Parameter(Mandatory = $true)]$arrayData
+    )
+    
+    $jsonObject = $arrayData | ForEach-Object {
+        New-Object -TypeName PSObject -Property @{
+            'entry' = $entryId.id
+            'port' = $_.State
+            'status' = $_.Status
+        }
+    }
+
+    return $jsonObject
+}
 function genJSONObjects
 {
     param(
@@ -127,7 +224,7 @@ if (!$config.App_Token -eq "")
 
         try
         {
-            $onlineId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body -Uri $uriDev
+            $onlineId = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uriDev
 
             if ($null -eq $onlineId)
             {
@@ -145,7 +242,7 @@ if (!$config.App_Token -eq "")
                 }
 
                 $jsonEntry = $jsonEntryOID | ConvertTo-Json
-                $entryId = Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $jsonEntry -Uri $uriEnt
+                $entryId = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $jsonEntry -Uri $uriEnt
 
                 infoMsg -msg "Entry Id retrieved - OK`n"
 
@@ -185,50 +282,6 @@ else
     warningMsg -msg "App token does not defined in the cwiccs.json`n"
 }
 
-function createJSON
-{
-    param(
-        [Parameter(Mandatory = $true)]$fileName,
-        [Parameter(Mandatory = $true)]$data
-    )
-
-    # Save to json
-    try
-    {
-        # JSON Data saver
-        $path = $jsonFolder + "\" + $osUUID # + "\" + $fileName
-        $dataFile = $path + "\" + $fileName
-        createFolder $path
-
-        $data | ConvertTo-Json | Set-Content -Path $dataFile
-    }
-    catch
-    {
-        Write-Host "Can't write report $path file - Permission denied"
-    }
-}
-
-function convertStrDateToUTC
-{
-    param(
-        [Parameter(Mandatory = $true)]$strDate
-    )
-
-    try
-    {
-        $dt = [System.DateTime]$strDate
-        $offset = [TimeZoneInfo]::Local | Select BaseUtcOffset
-        $result = $dt.toUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffK')
-        return $result
-    }
-    catch
-    {
-        return $strDate
-    }
-
-
-}
-
 function bindJSON
 {
     # Generate web api JSON objects
@@ -258,17 +311,34 @@ function bindJSON
         Write-Host $entryId.id
     }
 
-    $jsonDisks = $diskInfo | ForEach-Object {
-        New-Object -TypeName PSObject -Property @{
-            'entry' = $entryId.id
-            'name' = $_.Name
-            'total_size' = $_.'Total(GB)'
-            'free_size' = $_.'Free(GB)'
-#            'device' = $onlineId.id
-        }
-    }
+    $jsonHDD = genJSONObjectDisk -arrayData $diskInfo
+    sendJSON -data $jsonHDD -apiLink "/api/disks/" -fileName "disks-web.json"
 
-    sendJSON -data $jsonDisks -apiLink "/api/disks/" -fileName "disks-web.json"
+    $jsonPorts = genJSONObjectPorts -arrayData $reportPorts
+    sendJSON -data $jsonPorts -apiLink "/api/ports/" -fileName "ports-web.json"
+
+    $jsonLocalAuditPolicies = genJSONObjects -arrayData $localAuditPolicy
+    sendJSON -data $jsonLocalAuditPolicies -apiLink "/api/local-audit-policies/" -fileName "local-audit-policies-web.json"
+
+    $jsonLocalPasswordPolicies = genJSONObjects -arrayData $localPasswordPolicy
+    sendJSON -data $jsonLocalPasswordPolicies -apiLink "/api/local-password-policies/" -fileName "local-password-policies-web.json"
+
+    $jsonLocalRegistryPolicies = genJSONObjects -arrayData $localRegistryPolicy
+    sendJSON -data $jsonLocalRegistryPolicies -apiLink "/api/local-password-policies/" -fileName "local-registry-policies-web.json"
+
+    $jsonRequiredServices = genJSONObjects -arrayData $reportRequiredServices
+    sendJSON -data $jsonRequiredServices -apiLink "/api/required-services/" -fileName "reqired-services-web.json"
+
+    $jsonRestrictedServices = genJSONObjects -arrayData $reportRestrictedServices
+    sendJSON -data $jsonRestrictedServices -apiLink "/api/restricted-services/" -fileName "restricted-services-web.json"
+
+    $jsonBaseSettings = genJSONObjects -arrayData $reportBaseSettings
+    sendJSON -data $jsonBaseSettings -apiLink "/api/settings/" -fileName "settings-web.json"
+
+    $jsonSoft = genJSONObjects -arrayData $reportSoft
+    sendJSON -data $jsonSoft -apiLink "/api/software/" -fileName "soft-web.json"
+    
+    ##
 
     $jsonLocalUsers = $localUsers | ForEach-Object {
 
@@ -296,55 +366,11 @@ function bindJSON
     }
     sendJSON -data $jsonLocalUsers -apiLink "/api/local-users/" -fileName "local-users-web.json"
 
-    # Info about of listened ports
-    $jsonPorts = $reportPorts | ForEach-Object {
-        New-Object -TypeName PSObject -Property @{
-            'entry' = $entryId.id
-            'port' = $_.State
-            'status' = $_.Status
-        }
-    }
-
-    sendJSON -data $jsonPorts -apiLink "/api/ports/" -fileName "ports-web.json"
-
-    # Interface generators
     # Write-Host Is Workstation - $osTypeClient
-    if ($osTypeClient) {
-        $jsonFeatures = New-Object -TypeName PSObject -Property @{
-            'entry' = $entryId.id
-            'name' = 'NoN'
-            'state' = 'NoN'
-            'status' = 'INFO'
-        }
-        sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
-    } else {
-        $jsonFeatures = genJSONObjects -arrayData $reportFeatures
-        sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
-    }
-
-    $jsonLocalAuditPolicies = genJSONObjects -arrayData $localAuditPolicy
-    sendJSON -data $jsonLocalAuditPolicies -apiLink "/api/local-audit-policies/" -fileName "local-audit-policies-web.json"
-
-    $jsonLocalPasswordPolicies = genJSONObjects -arrayData $localPasswordPolicy
-    sendJSON -data $jsonLocalPasswordPolicies -apiLink "/api/local-password-policies/" -fileName "local-password-policies-web.json"
-
-    $jsonLocalRegistryPolicies = genJSONObjects -arrayData $localRegistryPolicy
-    sendJSON -data $jsonLocalRegistryPolicies -apiLink "/api/local-password-policies/" -fileName "local-registry-policies-web.json"
-
-    $jsonRequiredServices = genJSONObjects -arrayData $reportRequiredServices
-    sendJSON -data $jsonRequiredServices -apiLink "/api/required-services/" -fileName "reqired-services-web.json"
-
-    $jsonRestrictedServices = genJSONObjects -arrayData $reportRestrictedServices
-    sendJSON -data $jsonRestrictedServices -apiLink "/api/restricted-services/" -fileName "restricted-services-web.json"
-
-    $jsonBaseSettings = genJSONObjects -arrayData $reportBaseSettings
-    sendJSON -data $jsonBaseSettings -apiLink "/api/settings/" -fileName "settings-web.json"
-
-    $jsonSoft = genJSONObjects -arrayData $reportSoft
-    sendJSON -data $jsonSoft -apiLink "/api/software/" -fileName "soft-web.json"
+    $jsonFeatures = genJSONObjectFeatures -arrayData $reportFeatures
+    sendJSON -data $jsonFeatures -apiLink "/api/features/" -fileName "features-web.json"
     
     # Transaction Finality
-
     # Object for fun :)
     $jsonFinality  = New-Object -TypeName PSObject -Property @{
         'entry_id' = $entryId.id
@@ -419,7 +445,7 @@ if ($debug)
     Write-Host $reportSoft
     $body2 = $reportSoft | ConvertTo-Json
     Write-Host $body2
-    #Invoke-RestMethod -Method post -ContentType 'Application/Json' -Headers $header -Body $body2 -Uri https://cwiccs.org/api/disks/
+    #Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body2 -Uri https://cwiccs.org/api/disks/
 
     $jsonLocalAuditPolicies | ConvertTo-Json
 
