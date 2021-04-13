@@ -19,13 +19,15 @@ function getOSWorksTime
     $min = $upTime.Minutes
     $sec = $upTime.Seconds
 
+    regularMsg -Msg "OS UUID: "
+    infoMsg -Msg "$( $osUUID )`n"
     regularMsg -msg "Last Boot Time: "
     infoMsg -msg "$( $lastBootUpTime )`n"
     regularMsg -msg "Has been up for: "
     infoMsg -msg "$( $days ) days $( $hours ) hours $( $min ) munutes $( $sec ) secs`n"
 
     $osBootTime = "$( $lastBootUpTime )"
-    $osWorksTime = "$( $days ) days $( $hours ) hours $( $min ) munutes $( $sec ) secs"
+    $osWorksTime = "$( $days ) days $( $hours ) hours $( $min ) munutes $( $sec ) secs`n"
 }
 
 # Checking OS version

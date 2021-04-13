@@ -2,6 +2,12 @@
 - Exclide Windows features checking in the Windows 10
 - Added support Windows 10 Russian
 
+TODO file shares list
+TODO printers
+TODO network disks
+TODO create "home" default security profiles
+TODO create "testing" default security profiles for servers
+TODO add cwiccs-master downloader
 
 + App Extra config
 + Fix report folder permission checking
