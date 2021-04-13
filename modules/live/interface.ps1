@@ -140,7 +140,12 @@ function genJSONObjectFeatures {
         [Parameter(Mandatory = $true)]$arrayData
     )
     
-    if ($osTypeClient) {
+    # Empty or not
+    if ($arrayData) {
+        $jsonObject = genJSONObjects -arrayData $arrayData
+        return $jsonObject
+    }
+    else {
         $jsonObject = New-Object -TypeName PSObject -Property @{
             'entry' = $entryId.id
             'name' = 'NoN'
@@ -149,10 +154,9 @@ function genJSONObjectFeatures {
         }
 
         return $jsonObject
-    } else {
-        $jsonObject = genJSONObjects -arrayData $reportFeatures
-        return $jsonObject
     }
+
+    # if ($osTypeClient) { }
 }
 
 function genJSONObjectDisk {
