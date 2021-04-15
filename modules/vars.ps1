@@ -53,6 +53,7 @@ New-Variable -Force -Name countError -Option AllScope -Value 0
 New-Variable -Force -Name localUsers -Option AllScope -Value @()
 New-Variable -Force -Name diskInfo -Option AllScope -Value @()
 New-Variable -Force -Name localPasswordPolicy -Option AllScope -Value @()
+New-Variable -Force -Name localPasswordPolicyHashe -Option AllScope -Value @{}
 New-Variable -Force -Name localAuditPolicy -Option AllScope -Value @()
 New-Variable -Force -Name localRegistryPolicy -Option AllScope -Value @()
 
