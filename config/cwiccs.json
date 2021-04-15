@@ -2,6 +2,6 @@
   "App_Name":  "CWiCCS - Check Windows and Control Configs and Security",
   "App_Status":  "Development",
   "App_Token": "",
-  "App_Web_Server": "",
+  "App_Web_Server": "https://cwiccs.org",
   "App_Extra": false
 }

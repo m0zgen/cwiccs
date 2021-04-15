@@ -80,7 +80,10 @@ $scriptName = $MyInvocation.MyCommand.Name
 # Initial procedures
 # -------------------------------------------------------------------------------------------\
 if (!$debug) {
-    checkPowerShellVersion    
+
+    regularMsg -msg "PowerShell version "
+    infoMsg -msg "v$( checkPowerShellVersion )`n"
+        
 }
 else
 {
@@ -253,8 +256,15 @@ function checkSMB2
 
 }
 
-# GPO
+# GPO Exporter
 # -------------------------------------------------------\
+
+function clearPreviousExports {
+    if (Test-Path $secPolExported) {
+        Remove-Item $secPolExported -Force
+    }
+}
+clearPreviousExports
 
 $ScriptBlock = {
     function exportGPO
@@ -265,6 +275,29 @@ $ScriptBlock = {
     }
 }
 
+$passParamsTable = @{
+    "Minimum password age (days)" = "MinimumPasswordAge"
+    "Maximum password age (days)" = "MaximumPasswordAge"
+    "Minimum password length" = "MinimumPasswordLength"
+    "Length of password history maintained" = "PasswordHistorySize"
+    "Lockout threshold" = "LockoutBadCount"
+    "Lockout duration (minutes)" = "LockoutDuration"
+    "Lockout observation window (minutes)" = "ResetLockoutCount"
+}
+
+function exportSecurityPolicy {
+    try {
+        Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
+        Start-Sleep -s 2
+        return $true
+    }
+    catch {
+        return $false
+    }    
+}
+
+# GPO Parser
+# -------------------------------------------------------\
 function Parse-SecPol($policyFile)
 {
     # secedit /export /cfg "$CfgFile" | out-null
@@ -287,6 +320,8 @@ function Parse-SecPol($policyFile)
     return $obj
 }
 
+# GPO - Retrievers
+# -------------------------------------------------------\
 function getAuditPolicy
 {
     $SecPool = Parse-SecPol -policyFile $secPolExported
@@ -320,42 +355,88 @@ function getAuditPolicy
 #{
 #    Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
 #}
+# Data from CMD - data from gpo profile
+
+function getPasswordPolicy {
+    $secPol = Parse-SecPol -policyFile $secPolExported
+    Write-Host $secPolExported  
+    
+    foreach ($gpoparam in $gpo.password_policy)
+    {
+        foreach ($key in $passParamsTable.GetEnumerator() | Where-Object {$_.Value -eq $gpoparam.Name})
+        {
+            $polName        = $key.Value
+            $polHumanName   = $key.Name
+            $polVal         = $secPol.'System Access'.$polName
+
+            regularMsg -msg "$polHumanName "
+
+            if ($polVal -eq $gpoparam.State) {
+                    # Write-Host OK - Current policy value: $polVal Profiles value: $gpoparam.State
+                    infoMsg -msg "$polVal - OK`n"
+                    bindReportArray -arrType "passwordPolicy" -Name $polHumanName -state $polVal -status "OK"
+                } else {
+                    # Write-Host FAIL
+                    errorMsg -msg "FAIL ( $( $polHumanName ) - $( $gpoparam.State ) required, current state - $polVal)`n"
+                    bindReportArray -arrType "passwordPolicy" -Name $polHumanName -state $polVal -status "FAIL"
+                }
+        }
+    }   
+}
 
 function checkAuditPolicy
 {
     if ($isAdmin)
     {
-        secedit.exe /export /cfg $secPolExported > $null
+        # That's exported on previous step (password checking policy procedure)
+        # secedit.exe /export /cfg $secPolExported > $null
         getAuditPolicy
     }
     elseif ($admin -or $elevate)
     {
         # Can using -NoExit for debug
-        Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
-        Start-Sleep -s 2
-        getAuditPolicy
+        # That's exported on previous step (password checking policy procedure)
+        # Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
+        # Start-Sleep -s 2
+        if (Test-Path $secPolExported) {
+            getAuditPolicy
+        } else {
+            sendInfoToTerminal "Audit Policy - You are broken elevated prompt. Please try again."
+            bindReportArray -arrType "auditPolicy" -Name "Need elevated" -state "0" -status "WARNING"
+        }
     }
     else
     {
-        sendInfoToTerminal "You can get GPO audit policies only from 'Run As Administrator' prompt"
+        sendInfoToTerminal "Audit Policy - You can get GPO audit policies only from 'Run As Administrator' prompt"
         bindReportArray -arrType "auditPolicy" -Name "Need elevated" -state "0" -status "WARNING"
     }
 }
+function checkPasswordPolicy
+{
+    if ($isAdmin)
+    {
+        secedit.exe /export /cfg $secPolExported > $null
+        getPasswordPolicy
+    }
+    elseif ($admin -or $elevate)
+    {
+        # Can using -NoExit for debug
+        # Start-Process -FilePath PowerShell -ArgumentList "-ExecutionPolicy Bypass -Command & {$ScriptBlock exportGPO -p $secPolExported}" -verb RunAs
+        # Start-Sleep -s 2
 
-
-# Data from CMD - data from gpo profile
-$passParamsTable = @{
-
-  "Minimum password age (days)" = "MinimumPasswordAge"
-  "Maximum password age (days)" = "MaximumPasswordAge"
-  "Minimum password length" = "MinimumPasswordLength"
-  "Length of password history maintained" = "PasswordHistorySize"
-  "Lockout threshold" = "LockoutBadCount"
-  "Lockout duration (minutes)" = "LockoutDuration"
-  "Lockout observation window (minutes)" = "ResetLockoutCount"
-
- }
-
+        if (exportSecurityPolicy) {
+            getPasswordPolicy
+        } else {
+            sendInfoToTerminal "Password Policy - You are broken elevated prompt. Please try again."
+            bindReportArray -arrType "passwordPolicy" -Name "Need elevated" -state "0" -status "WARNING"
+        }
+    }
+    else
+    {
+        sendInfoToTerminal "Password Policy - You can get GPO password policies only from 'Run As Administrator' prompt"
+        bindReportArray -arrType "passwordPolicy" -Name "Need elevated" -state "0" -status "WARNING"
+    }
+}
 
 # https://stackoverflow.com/questions/60117943/powershell-script-to-report-account-lockout-policy-settings
 function checkPassPols
@@ -383,8 +464,12 @@ function checkPassPols
 
             # Verify matching
 
+#            $passParamsTable.Add($policy, $splitted)
+
+            # $localPasswordPolicyHashe.Add($policy, $splitted)
+
             $passParamsTable.keys | ForEach-Object {
-                # Write-Output "$_"
+                # Write-Output "AAAAAAA $_"
                 # Write-Output "Value = $($passParamsTable[$_])"
 
                 if ($policy -eq "$_") {
@@ -720,7 +805,8 @@ getLocalUsers
 $line
 getDiskInfo
 $line
-checkPassPols
+# checkPassPols
+checkPasswordPolicy
 $line
 checkAuditPolicy
 $line
