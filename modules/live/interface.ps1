@@ -117,7 +117,8 @@ function sendJSON
         else {
             $resp = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uri -SkipCertificateCheck
         }
-#        write-host $resp - OK
+        # $rep.Dispose()
+#       write-host $resp - OK
     }
     catch
     {
@@ -177,11 +178,17 @@ function genJSONObjectDisk {
     )
     
     $jsonObject = $arrayData | ForEach-Object {
+
+        $tSize = $_.'Total(GB)'
+        $tSize = $tSize -replace ',','.'
+        $fSize = $_.'Free(GB)'
+        $fSize = $fSize -replace ',','.'
+
         New-Object -TypeName PSObject -Property @{
             'entry' = $entryId.id
             'name' = $_.Name
-            'total_size' = $_.'Total(GB)'
-            'free_size' = $_.'Free(GB)'
+            'total_size' = $tSize
+            'free_size' = $fSize
 #            'device' = $onlineId.id
         }
     }
