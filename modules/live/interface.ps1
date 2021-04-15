@@ -14,7 +14,13 @@ function checkEntry
     $header = @{"Authorization"="Token " + $config.App_Token}
 
     $uri = $config.App_Web_Server + "/api/entries/"
-    $data = Invoke-RestMethod -Method get -ContentType $contentType -Headers $header -Uri $uri
+
+    if ($osPSVersion -lt 6) {
+        $data = Invoke-RestMethod -Method get -ContentType $contentType -Headers $header -Uri $uri
+    }
+    else {
+        $data = Invoke-RestMethod -Method get -ContentType $contentType -Headers $header -Uri $uri -SkipCertificateCheck
+    }
 
     if ($data)
     {
@@ -104,7 +110,13 @@ function sendJSON
 
     try
     {
-        $resp = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uri
+        
+        if ($osPSVersion -lt 6) {
+            $resp = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uri
+        }
+        else {
+            $resp = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uri -SkipCertificateCheck
+        }
 #        write-host $resp - OK
     }
     catch
@@ -228,7 +240,12 @@ if (!$config.App_Token -eq "")
 
         try
         {
-            $onlineId = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uriDev
+            if ($osPSVersion -lt 6) {
+                $onlineId = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uriDev
+            }
+            else {
+                $onlineId = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $body -Uri $uriDev -SkipCertificateCheck
+            }
 
             if ($null -eq $onlineId)
             {
@@ -246,8 +263,12 @@ if (!$config.App_Token -eq "")
                 }
 
                 $jsonEntry = $jsonEntryOID | ConvertTo-Json
-                $entryId = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $jsonEntry -Uri $uriEnt
-
+                if ($osPSVersion -lt 6) {
+                    $entryId = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $jsonEntry -Uri $uriEnt
+                }
+                else {
+                    $entryId = Invoke-RestMethod -Method post -ContentType $contentType -Headers $header -Body $jsonEntry -Uri $uriEnt -SkipCertificateCheck
+                }
                 infoMsg -msg "Entry Id retrieved - OK`n"
 
                 if ($debug)
@@ -273,7 +294,12 @@ if (!$config.App_Token -eq "")
         catch
         {
             Write-Host "Invalid web token"
-            # Write-Host ($_ | ConvertTo-Json)
+
+            if ($debug)
+                {
+                    debugMsg -msg "Web token validation"
+                    Write-Host ($_ | ConvertTo-Json)
+                }
         }
     }
     else
