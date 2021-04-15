@@ -49,11 +49,12 @@ Clear-Variable -Name ("count*", "os*", "html*", "report*", "local*", "online*", 
 New-Variable -Force -Name osBootTime -Option AllScope -Value ""
 New-Variable -Force -Name osWorksTime -Option AllScope -Value ""
 New-Variable -Force -Name osTypeClient -Option AllScope -Value ""
+New-Variable -Force -Name osPSVersion -Option AllScope -Value $( checkPowerShellVersion )
 New-Variable -Force -Name countError -Option AllScope -Value 0
 New-Variable -Force -Name localUsers -Option AllScope -Value @()
 New-Variable -Force -Name diskInfo -Option AllScope -Value @()
 New-Variable -Force -Name localPasswordPolicy -Option AllScope -Value @()
-New-Variable -Force -Name localPasswordPolicyHashe -Option AllScope -Value @{}
+# New-Variable -Force -Name localPasswordPolicyHashe -Option AllScope -Value @{}
 New-Variable -Force -Name localAuditPolicy -Option AllScope -Value @()
 New-Variable -Force -Name localRegistryPolicy -Option AllScope -Value @()
 
