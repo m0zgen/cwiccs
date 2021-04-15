@@ -466,7 +466,7 @@ function checkPassPols
 
 #            $passParamsTable.Add($policy, $splitted)
 
-            $localPasswordPolicyHashe.Add($policy, $splitted)
+            # $localPasswordPolicyHashe.Add($policy, $splitted)
 
             $passParamsTable.keys | ForEach-Object {
                 # Write-Output "AAAAAAA $_"
