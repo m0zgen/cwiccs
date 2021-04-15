@@ -143,10 +143,11 @@ function checkPowerShellVersion
     
     $psv = $PSVersionTable.PSVersion.Major
 
-    regularMsg -msg "PowerShell version "
+    # regularMsg -msg "PowerShell version "
     if ($psv -gt 5 -or $psv -eq 5 -and $psv -lt 8)
     {
-        infoMsg -msg "v$( $psv )`n"
+        # infoMsg -msg "v$( $psv )`n"
+        return $psv
     }
     elseif ($psv -lt 5)
     {
@@ -366,9 +367,17 @@ function checkHttpStatus
     )
     try {
         Write-host "Verifying $url" -ForegroundColor Yellow
+        $psv = checkPowerShellVersion 
 
         # -UseBasicParsing added after Win10 IE settings error
-        $checkConnection = Invoke-WebRequest -Uri $url -UseBasicParsing
+
+        if ($psv -lt 6 ) {
+            $checkConnection = Invoke-WebRequest -Uri $url -UseBasicParsing
+        }
+        else {
+            $checkConnection = Invoke-WebRequest -Uri $url -UseBasicParsing  -SkipCertificateCheck
+        }
+        
         if ($checkConnection.StatusCode -eq 200) {
             Write-Host "Connection Verified!" -ForegroundColor Green
             return 1
