@@ -68,28 +68,70 @@ function getDiskInfo
     ###
 }
 
+function getCDDrives {
 
+    param(
+        [Parameter(Mandatory = $true)]$diskLetter
+    )
+
+    @(Get-WmiObject win32_logicaldisk -filter 'DriveType=5' |
+        ForEach-Object { 
+            $cd = $_.DeviceID + "\"
+            Write-Host -AAAAA  $_.DeviceID -BBBBB $diskLetter
+            # $_.DeviceID
+            if ($cd -eq $diskLetter) {
+                Write-Host TRUE
+                return $true
+            }
+            else {
+                return $false
+                Write-Host FALSE
+            }
+        }
+    )
+}
 function getHddInfo {
     
     #$fss = Get-PSDrive -PSProvider FileSystem
+    
     $fss = Get-PSDrive -PSProvider FileSystem | Select-Object Name, Root, DisplayRoot, @{Name='Used';Expression={$_.Used/1GB}}, @{Name='Free';Expression={$_.Free/1GB}}
 
     $diskInfo = $fss | ForEach-Object {
         
         # exlude readonly and network devices
-        if (!$null -eq $_.Used -and $null -eq $_.DisplayRoot) {
+        if ($null -eq $_.DisplayRoot) {
 
             $f = [math]::Round($_.Free,2)
             $u = [math]::Round($_.Used,2)
             # total size
             $t = $f + $u
             # calculate persents
-            $p = [math]::Round($f / $t * 100,2)
+
+            if (!$null -eq $_.Free) {
+                $p = [math]::Round($f / $t * 100,2)
+            } else {
+                $p = "0"
+            }
+
+            $r = $_.Root
+
+            # if (getCDDrives -diskLetter $r) {
+            #     $r = $r + " CD Drive"
+            # }
+
+            @(Get-WmiObject win32_logicaldisk -filter 'DriveType=5' |
+                ForEach-Object { 
+                    $cd = $_.DeviceID + "\"
+                    if ($cd -eq $r) {
+                        $r = $r + " (CD Drive)"
+                    }
+                }
+            )
 
             # Write-Host $_.Name - $f - $u - $t - $p2 "%" - $_.Root
 
             New-Object -TypeName PSObject -Property @{
-                'Name' = $_.Root
+                'Name' = $r
                 'Total(GB)' = $t -replace ',','.'
                 'Used(GB)' = $u -replace ',','.'
                 'Free(GB)' = $f -replace ',','.'
