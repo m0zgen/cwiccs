@@ -803,7 +803,8 @@ getOSWorksTime
 statusDomainMemeber
 getLocalUsers
 $line
-getDiskInfo
+# getDiskInfo
+getHddInfo
 $line
 # checkPassPols
 checkPasswordPolicy

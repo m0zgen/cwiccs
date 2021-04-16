@@ -64,7 +64,7 @@ $scriptSnippet = @"
 $html += $mainSnippet
 
 $html += $localUsers | Select Name, Disabled, LockOut, 'Password Expires', 'Password Last Set', 'Last logon' | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Local Users Information</h2>"
-$html += $diskInfo | Select Name, 'Total(GB)', 'Free(GB)', 'Free(%)' | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Disk info (sorted by free space percentage)</h2>"
+$html += $diskInfo | Select Name, 'Total(GB)', 'Used(GB)','Free(GB)', 'Free(%)' | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Disk info</h2>"
 $html += $localPasswordPolicy | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Password policy info</h2>"
 $html += $localAuditPolicy | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Audit policy info</h2>"
 $html += $localRegistryPolicy | Select Name, State, Status | ConvertTo-Html -Fragment -As Table -PreContent "<h2>Security Options policy info</h2>"
