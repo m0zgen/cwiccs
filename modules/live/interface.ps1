@@ -180,9 +180,9 @@ function genJSONObjectDisk {
     $jsonObject = $arrayData | ForEach-Object {
 
         $tSize = $_.'Total(GB)'
-        $tSize = $tSize -replace ',','.'
+        $tSize = $tSize
         $fSize = $_.'Free(GB)'
-        $fSize = $fSize -replace ',','.'
+        $fSize = $fSize
 
         New-Object -TypeName PSObject -Property @{
             'entry' = $entryId.id
