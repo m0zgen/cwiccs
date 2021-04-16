@@ -90,10 +90,10 @@ function getHddInfo {
 
             New-Object -TypeName PSObject -Property @{
                 'Name' = $_.Root
-                'Total(GB)' = $t
-                'Used(GB)' = $u
-                'Free(GB)' = $f
-                'Free(%)' = $p
+                'Total(GB)' = $t -replace ',','.'
+                'Used(GB)' = $u -replace ',','.'
+                'Free(GB)' = $f -replace ',','.'
+                'Free(%)' = $p -replace ',','.'
             }
 
         } 
