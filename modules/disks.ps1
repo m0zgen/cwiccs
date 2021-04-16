@@ -67,3 +67,46 @@ function getDiskInfo
     }
     ###
 }
+
+
+function getHddInfo {
+    
+    #$fss = Get-PSDrive -PSProvider FileSystem
+    $fss = Get-PSDrive -PSProvider FileSystem | Select-Object Name, Root, DisplayRoot, @{Name='Used';Expression={$_.Used/1GB}}, @{Name='Free';Expression={$_.Free/1GB}}
+
+    $diskInfo = $fss | ForEach-Object {
+        
+        # exlude readonly and network devices
+        if (!$null -eq $_.Used -and $null -eq $_.DisplayRoot) {
+
+            $f = [math]::Round($_.Free,2)
+            $u = [math]::Round($_.Used,2)
+            # total size
+            $t = $f + $u
+            # calculate persents
+            $p = [math]::Round($f / $t * 100,2)
+
+            # Write-Host $_.Name - $f - $u - $t - $p2 "%" - $_.Root
+
+            New-Object -TypeName PSObject -Property @{
+                'Name' = $_.Root
+                'Total(GB)' = $t
+                'Used(GB)' = $u
+                'Free(GB)' = $f
+                'Free(%)' = $p
+            }
+
+        } 
+    
+    }
+
+    regularMsg -msg "Disk info (sorted by disk letters)...`n"
+    foreach ($disk in $diskInfo)
+    {
+        if (!$disk.Name.Contains("\\?\")) {
+            regularMsg -msg "Disk "
+            infoMsg -msg "$( $disk.Name ) - Total $( $disk.'Total(GB)' )GB, Used $( $disk.'Used(GB)' )GB, Free $( $disk.'Free(GB)' )GB, Free $( $disk.'Free(%)' )%`n"    
+        }
+    }
+    
+}
