@@ -1,5 +1,7 @@
 ## Check Windows and Control Configs and Security
 
+[![made-with-powershell](https://img.shields.io/badge/PowerShell-1f425f?logo=Powershell)](https://microsoft.com/PowerShell)
+
 CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows settings from defined / whitelisted system config profiles:
 
 * Enabled Feature Lists
