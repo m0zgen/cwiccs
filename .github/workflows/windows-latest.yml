@@ -1,4 +1,4 @@
-name: CI
+name: Windows Latest
 
 on:
   push:
