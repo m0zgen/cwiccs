@@ -4,7 +4,9 @@
 
 CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows settings from defined / whitelisted system config profiles
 
-![cwiccs](./docs/images/logo.png)
+![cwiccs.org](./docs/images/logo.png)
+
+---
 
 * Compatibility list
   * Windows Server 2012/2016/2019
