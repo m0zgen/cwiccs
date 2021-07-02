@@ -9,7 +9,7 @@ CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows setti
 * Compatibility list
   * Windows Server 2012/2016/2019
   * Windows 10 (tested on Windows Pro)
-  * Powersgell v5, v6, v7
+  * Powershell v5, v6, v7
 
 * Enabled Feature Lists
 * Local Group Policy settings
