@@ -1,0 +1,16 @@
+name: Windows 2019
+
+on:
+  push:
+    branches:
+    - dev
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run a one-line script
+      run: powershell .\cwiccs.ps1
