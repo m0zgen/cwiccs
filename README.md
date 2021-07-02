@@ -2,6 +2,9 @@
 
 [![made-with-powershell](https://img.shields.io/badge/PowerShell-1f425f?logo=Powershell)](https://microsoft.com/PowerShell)
 [![Windows Latest](https://github.com/m0zgen/cwiccs/actions/workflows/windows-latest.yml/badge.svg)](https://github.com/m0zgen/cwiccs/actions/workflows/windows-latest.yml)
+[![Windows 2019](https://github.com/m0zgen/cwiccs/actions/workflows/windows-2019.yml/badge.svg)](https://github.com/m0zgen/cwiccs/actions/workflows/windows-2019.yml)
+[![Windows 2016](https://github.com/m0zgen/cwiccs/actions/workflows/windows-2016.yml/badge.svg)](https://github.com/m0zgen/cwiccs/actions/workflows/windows-2016.yml)
+
 
 CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows settings from defined / whitelisted system config profiles
 
