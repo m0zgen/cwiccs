@@ -1,0 +1,16 @@
+name: Windows 2016
+
+on:
+  push:
+    branches:
+    - dev
+
+jobs:
+  build:
+
+    runs-on: windows-2016
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run a one-line script
+      run: powershell .\cwiccs.ps1
