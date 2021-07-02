@@ -2,7 +2,14 @@
 
 [![made-with-powershell](https://img.shields.io/badge/PowerShell-1f425f?logo=Powershell)](https://microsoft.com/PowerShell)
 
-CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows settings from defined / whitelisted system config profiles:
+CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows settings from defined / whitelisted system config profiles
+
+![CWiCCS](https://cwiccs.org/static/images/logo.png)
+
+* Compatibility list
+  * Windows Server 2012/2016/2019
+  * Windows 10 (tested on Windows Pro)
+  * Powersgell v5, v6, v7
 
 * Enabled Feature Lists
 * Local Group Policy settings
