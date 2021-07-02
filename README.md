@@ -1,7 +1,7 @@
 ## Check Windows and Control Configs and Security
 
 [![made-with-powershell](https://img.shields.io/badge/PowerShell-1f425f?logo=Powershell)](https://microsoft.com/PowerShell)
-[![CI](https://github.com/m0zgen/cwiccs/actions/workflows/ci.yml/badge.svg)](https://github.com/m0zgen/cwiccs/actions/workflows/ci.yml)
+[![Windows Latest](https://github.com/m0zgen/cwiccs/actions/workflows/windows-latest.yml/badge.svg)](https://github.com/m0zgen/cwiccs/actions/workflows/windows-latest.yml)
 
 CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows settings from defined / whitelisted system config profiles
 
