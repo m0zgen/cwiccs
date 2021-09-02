@@ -19,7 +19,7 @@ $internalIP = $( getIP )
 $countError = 0
 $line = "-------------------------------------------------"
 # Get services array
-$timeStamp = (Get-Date).toString("yyyy/MM/dd HH:mm:ss")
+$timeStamp = (Get-Date).toString("yyyy-MM-dd_HH-mm-ss")
 $dateStamp = (Get-Date).toString("yyyy-MM-dd")
 $logFolder = $scriptFolder + "\log"
 $reportsFolder = $scriptFolder + "\reports"
@@ -41,7 +41,7 @@ $log = $logFolder + "\check-" + $dateStamp + ".log"
 # HTML
 # -------------------------------------------------------------------------------------------\
 New-Variable -Force -Name htmlData -Option AllScope -Value @()
-$htmlReport = $scriptFolder + "\reports\sec-report-" + $hostName + "-" + $dateStamp + ".html"
+$htmlReport = $scriptFolder + "\reports\sec-report-" + $hostName + "-" + $timeStamp + ".html"
 
 # Clear and bind html report vars
 # -------------------------------------------------------------------------------------------\
