@@ -95,6 +95,46 @@ Run with bypass powershell execution policy:
 powershell.exe -ep Bypass .\cwiccs.ps1 -report
 ```
 
+### Unblock files
+
+Unlock files:
+```powershell
+Get-ChildItem <cwiccs-master folder path> -recurse | Unblock-File
+```
+
+### Use in GPO
+
+Command:
+```powershell
+c:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+```
+
+Script parameters:
+```powershell
+-ExecutionPolicy Bypass <path to shared folder>\cwiccs.ps1
+```
+
+### How to Self Sign
+```powershell
+Get-ChildItem -Path C:\Share\cwiccs-master\*.ps1 -Recurse | Set-AuthenticodeSignature -Certificate (Get-ChildItem -Path Cert:\CurrentUser\My\ -CodeSigningCert)
+```
+
+Additional info:
+* https://sys-adm.in/programming/powershell-menu/882-powershell-kak-sozdat-sertifikat-i-podpisat-skript.html
+
+### Use PSExec
+
+You can use PSExec utility:
+
+```powershell
+PsExec.exe -s -i @c:\Share\servers.txt -e cmd /c "powershell -ExecutionPolicy Bypass \\dc01\Share\cwiccs-master\cwiccs.ps1"
+```
+or:
+
+```powershell
+PsExec.exe -s -i @c:\Share\servers.txt Powershell -File \\dc01\Share\cwiccs-master\cwiccs.ps1
+```
+
 Available options:
 ```
 - cwiccs.ps1 [-autofix] [-report] [-elevate] [-admin] [-profile] <profilename> [-profilelist] [-help]
