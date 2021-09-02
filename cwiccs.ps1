@@ -10,7 +10,7 @@ Scitpt can use from everywhere. Required files / folders:
 - cwiccs.ps1
 
 Available arguments
-- cwiccs.ps1 [-autofix] [-report] [-elevate] [-admin] [-profile] <profilename> [-profilelist] [-help]
+- cwiccs.ps1 [-report] [-elevate] [-admin] [-profile] <profilename> [-profilelist] [-help]
 - [-elevate] and [-admin] arguments it is same (made for convenience)
 
 .EXAMPLE
@@ -122,14 +122,18 @@ if ($help)
 # If -autofux using as script argument
 if ($autofix)
 {
-    echo "Autofix is TRUE"
-    if (!$isAdmin)
-    {
-        infoMsg -msg "INFO "
-        warningMsg -msg "-autofix can be using with ELEVATED PRIVILEGED ONLY!`n"
-        infoMsg -msg "Bye Bye!"
-        Break Script
-    }
+    # echo "Autofix is TRUE"
+    # if (!$isAdmin)
+    # {
+    #     infoMsg -msg "INFO "
+    #     warningMsg -msg "-autofix can be using with ELEVATED PRIVILEGED ONLY!`n"
+    #     infoMsg -msg "Bye Bye!"
+    #     Break Script
+    # }
+    warningMsg -msg "`nAutofix option is DISABLED in the current CWiCCS release`n`n"
+    infoMsg -msg "Bye Bye!"
+    Break Script
+
 }
 
 function sendInfoToTerminal($info)
