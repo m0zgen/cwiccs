@@ -8,6 +8,11 @@ TODO network disks
 TODO create "home" default security profiles
 TODO create "testing" default security profiles for servers
 TODO add cwiccs-master downloader
+TODO rollback `autofix`
+*        Computer Browser (Browser)
+*        IP Helper (iphlpsvc)
+*        Server (LanmanServer)
+*        Remote Registry (RemoteRegistry)
 
 + App Extra config
 + Fix report folder permission checking
