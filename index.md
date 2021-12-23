@@ -8,36 +8,118 @@
 
 CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows settings from defined / whitelisted system config profiles
 
-![cwiccs.org](./docs/images/logo.png)
+![cwiccs.org](https://github.com/m0zgen/cwiccs/raw/dev/docs/images/logo.png)
 
-### Markdown
+## Native PowerShell Tool
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+* Compatibility list
+  * Windows Server 2012/2016/2019
+  * Windows 10 (tested on Windows Pro)
+  * Powershell v5, v6, v7
 
-```markdown
-Syntax highlighted code block
+* HTML reports
+* OS information
+* Profiling checks
+  * Port listing
+  * Installed software names and versions
+  * GPO settings
+  * and more...
 
-# Header 1
-## Header 2
-### Header 3
+## Downoad / Install
 
-- Bulleted
-- List
+```bash
+git clone https://github.com/m0zgen/cwiccs.git
+```
+or
 
-1. Numbered
-2. List
+You can download archive from repository - Code > Download as ZIP
 
-**Bold** and _Italic_ and `Code` text
+## Runs / Options
 
-[Link](url) and ![Image](src)
+After download CWiCCS, please `cd` to `cwiccs` folder and them run script:
+
+```powershell
+.\cwiccs.ps1
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+Run with bypass powershell execution policy:
 
-### Jekyll Themes
+```powershell
+powershell.exe -ep Bypass .\cwiccs.ps1 -report
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/m0zgen/cwiccs/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Unblock files
 
-### Support or Contact
+Unlock files:
+```powershell
+Get-ChildItem <cwiccs-master folder path> -recurse | Unblock-File
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Use in GPO
+
+Command:
+```powershell
+c:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+```
+
+Script parameters:
+```powershell
+-ExecutionPolicy Bypass <path to shared folder>\cwiccs.ps1
+```
+
+### How to Self Sign
+```powershell
+Get-ChildItem -Path C:\Share\cwiccs-master\*.ps1 -Recurse | Set-AuthenticodeSignature -Certificate (Get-ChildItem -Path Cert:\CurrentUser\My\ -CodeSigningCert)
+```
+
+Additional info:
+* https://sys-adm.in/programming/powershell-menu/882-powershell-kak-sozdat-sertifikat-i-podpisat-skript.html
+
+### Use PSExec
+
+You can use PSExec utility:
+
+```powershell
+PsExec.exe -s -i @c:\Share\servers.txt -e cmd /c "powershell -ExecutionPolicy Bypass \\dc01\Share\cwiccs-master\cwiccs.ps1"
+```
+or:
+
+```powershell
+PsExec.exe -s -i @c:\Share\servers.txt Powershell -File \\dc01\Share\cwiccs-master\cwiccs.ps1
+```
+
+Available options:
+```
+- cwiccs.ps1 [-autofix] [-report] [-elevate] [-admin] [-profile] <profilename> [-profilelist] [-help]
+- [-elevate] and [-admin] arguments it is same (made for convenience)
+```
+
+## Operating Modes
+
+CWiCCS can works with two modes:
+
+1. from simple user
+2. from elevated (Administrator) mode
+
+`-autofix` option can works only from elevated mode
+
+## Profiles
+
+You can define own profile. CWiCCS use as default DEFAUL profile. Defined profiles:
+
+* Features
+* Gpo
+* Ports
+* Services
+* Software
+
+## Contribing
+
+You can send me feature requests to [forum.sys-adm.in](https://forum.sys-adm.in/) with new topic which contains `#cwiccs` tag
+
+## Info
+
+* Russian Article - [CWiCCS (Check Windows and Control Configs and Security) - PowerShell инструмент для проверки и контроля Windows конфигураций](https://sys-adm.in/systadm/windows/933-cwiccs-check-windows-and-control-configs-and-security-powershell-instrument-dlya-proverki-i-kontrolya-windows-konfiguratsij.html)
+
+
+
