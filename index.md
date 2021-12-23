@@ -1,8 +1,14 @@
-## Welcome to GitHub Pages
+## CWiCCS
 
-You can use the [editor on GitHub](https://github.com/m0zgen/cwiccs/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[![made-with-powershell](https://img.shields.io/badge/PowerShell-1f425f?logo=Powershell)](https://microsoft.com/PowerShell)
+[![Windows Latest](https://github.com/m0zgen/cwiccs/actions/workflows/windows-latest.yml/badge.svg)](https://github.com/m0zgen/cwiccs/actions/workflows/windows-latest.yml)
+[![Windows 2019](https://github.com/m0zgen/cwiccs/actions/workflows/windows-2019.yml/badge.svg)](https://github.com/m0zgen/cwiccs/actions/workflows/windows-2019.yml)
+[![Windows 2016](https://github.com/m0zgen/cwiccs/actions/workflows/windows-2016.yml/badge.svg)](https://github.com/m0zgen/cwiccs/actions/workflows/windows-2016.yml)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+
+CWiCCS (read as QUICKS) - Checking and Controlling and Fixing some Windows settings from defined / whitelisted system config profiles
+
+![cwiccs.org](./docs/images/logo.png)
 
 ### Markdown
 
